@@ -1,0 +1,26 @@
+{
+  "name": "obsidian-vault-worker",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test": "vitest run",
+    "test:watch": "vitest"
+  },
+  "dependencies": {
+    "@quartz-community/rehype-obsidian": "^0.1.2",
+    "@quartz-community/remark-obsidian": "^0.2.4",
+    "gray-matter": "^4.0.3",
+    "pdf-lib": "^1.17.1",
+    "rehype-raw": "^7.0.0",
+    "rehype-stringify": "^10.0.1",
+    "remark-parse": "^11.0.0",
+    "remark-rehype": "^11.1.2",
+    "unified": "^11.0.5"
+  },
+  "devDependencies": {
+    "tsx": "^4.23.13",
+    "typescript": "^7.0.2",
+    "vitest": "^5.0.0"
+  }
+}
