@@ -1,8 +1,8 @@
 import { describe, test, expect } from "vitest"
 import { readFileSync } from "node:fs"
 import { join } from "node:path"
-import { processObsidianMdToHtml } from "../processor/processObsidianMdToHtml"
-import { readCssSnippets } from "../processor/glue/readCssSnippets"
+import { processObsidianMdToHtml } from "../processObsidianMdToHtml"
+import { readCssSnippets } from "../glue/readCssSnippets"
 
 const fixturesDir = join(import.meta.dirname, "fixtures")
 

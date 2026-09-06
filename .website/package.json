@@ -6,12 +6,12 @@
   "scripts": {
     "test": "vitest run",
     "test:watch": "vitest",
-    "lint": "eslint processor worker tests --ext .ts",
-    "lint:fix": "eslint processor worker tests --fix",
+    "lint": "eslint processor worker --ext .ts",
+    "lint:fix": "eslint processor worker --fix",
     "coverage": "vitest run --coverage",
-    "generate": "tsx worker/generateVault.ts",
-    "dev": "npm run generate && wrangler dev --config worker/wrangler.jsonc",
-    "deploy": "npm run generate && wrangler deploy --config worker/wrangler.jsonc"
+    "bundleVaultIntoWorker": "tsx worker/bundleVaultIntoWorker.ts",
+    "dev": "npm run bundleVaultIntoWorker && wrangler dev --config worker/wrangler.jsonc",
+    "deploy": "npm run bundleVaultIntoWorker && wrangler deploy --config worker/wrangler.jsonc"
   },
   "dependencies": {
     "@quartz-community/rehype-obsidian": "^0.1.2",

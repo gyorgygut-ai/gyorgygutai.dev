@@ -1,5 +1,17 @@
-import { describe, it, expect, beforeEach } from "vitest"
-import worker, { resetCache } from "../worker/index"
+import { describe, it, expect, beforeEach, vi } from "vitest"
+
+vi.mock("../generated/bundle", () => ({
+  cssBundle: ":root{--background-primary:#000}",
+  vaultFiles: {
+    "index.md": "---\nas: home\n---\n# Home",
+    "hello.md": "---\nas: page\n---\n# Hello",
+    "a/b.md": "---\nas: page\n---\n# B",
+    "doc.md": "---\nas: [page, pdf]\n---\n# Doc",
+    "no-as.md": "# No",
+  },
+}))
+
+import worker, { resetCache } from "../index"
 
 describe("worker", () => {
   beforeEach(() => {
@@ -17,22 +29,22 @@ describe("worker", () => {
     expect(html).toContain("--background-primary")
   })
 
-  it("returns html for /links", async () => {
-    const res = await worker.fetch(new Request("https://example.com/links"))
+  it("returns html for /hello", async () => {
+    const res = await worker.fetch(new Request("https://example.com/hello"))
     expect(res.status).toBe(200)
     const html = await res.text()
-    expect(html).toContain("Face Value")
+    expect(html).toContain("Hello")
   })
 
-  it("returns html for /project-based from pdf folder", async () => {
-    const res = await worker.fetch(new Request("https://example.com/project-based"))
+  it("returns html for /a/b from nested folder", async () => {
+    const res = await worker.fetch(new Request("https://example.com/a/b"))
     expect(res.status).toBe(200)
     const html = await res.text()
-    expect(html).toContain("Full Stack Developer")
+    expect(html).toContain("B")
   })
 
   it("trailing slash normalized", async () => {
-    const res = await worker.fetch(new Request("https://example.com/links/"))
+    const res = await worker.fetch(new Request("https://example.com/hello/"))
     expect(res.status).toBe(200)
   })
 
@@ -47,8 +59,14 @@ describe("worker", () => {
     expect(a).toBe(b)
   })
 
-  it("pdf path 404 when no pdf variant", async () => {
-    const res = await worker.fetch(new Request("https://example.com/project-based.pdf"))
+  it("pdf path for doc", async () => {
+    const res = await worker.fetch(new Request("https://example.com/doc.pdf"))
+    expect(res.status).toBe(200)
+    expect(res.headers.get("Content-Type")).toContain("application/pdf")
+  })
+
+  it("pdf 404 when no pdf variant", async () => {
+    const res = await worker.fetch(new Request("https://example.com/hello.pdf"))
     expect(res.status).toBe(404)
   })
 

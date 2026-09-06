@@ -1,7 +1,7 @@
 import { describe, test, expect } from "vitest"
 import { readFileSync } from "node:fs"
 import { join } from "node:path"
-import { processObsidianMdToPdf } from "../processor/processObsidianMdToPdf"
+import { processObsidianMdToPdf } from "../processObsidianMdToPdf"
 
 const fixturesDir = join(import.meta.dirname, "fixtures")
 

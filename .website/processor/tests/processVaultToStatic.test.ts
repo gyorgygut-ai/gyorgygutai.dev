@@ -2,7 +2,7 @@ import { describe, test, expect } from "vitest"
 import { mkdtempSync, writeFileSync, readFileSync } from "node:fs"
 import { join } from "node:path"
 import { tmpdir } from "node:os"
-import { processVaultToStatic } from "../processor/processVaultToStatic"
+import { processVaultToStatic } from "../processVaultToStatic"
 
 const fixturesDir = join(import.meta.dirname, "fixtures")
 

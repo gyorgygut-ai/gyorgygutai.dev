@@ -26,7 +26,7 @@
   - `parser/`, `glue/`
 - `worker/`: Cloudflare Worker (thin wrapper, `default export`)
   - `index.ts`: builds once, serves cached immutable
-  - `generated/vault.ts`: auto-generated (`worker/generateVault.ts`)
+  - `generated/bundle.ts`: auto-generated (`worker/bundleVaultIntoWorker.ts`)
   - `wrangler.jsonc`
 
 **Obsidian Support**:
@@ -40,10 +40,11 @@
 
 ---
 
-## Tests (`tests/`)
+## Tests (`processor/tests/`, `worker/tests/`)
 
 - One `*.test.ts`; match subject under test; set input -> assert output
 - Deterministic processing output must be proven using fixtures
+- `processor/tests/` and `worker/tests/` live where they belong (no shared `tests/`)
 
 **Fixtures Example**:
 

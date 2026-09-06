@@ -1,6 +1,6 @@
 import { visit } from "unist-util-visit"
 
-export function callout() {
+export default function callout() {
   return (tree: unknown) => {
     visit(tree as Parameters<typeof visit>[0], "blockquote", (node: unknown) => {
       const n = node as {

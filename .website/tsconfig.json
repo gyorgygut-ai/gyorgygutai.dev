@@ -10,6 +10,6 @@
     "rootDir": ".",
     "types": ["node", "vitest/globals"]
   },
-  "include": ["processor/**/*", "worker/**/*", "tests/**/*"],
+  "include": ["processor/**/*", "worker/**/*"],
   "exclude": ["node_modules", "dist"]
 }

@@ -4,12 +4,12 @@ export default defineConfig({
   test: {
     globals: true,
     environment: "node",
-    include: ["tests/**/*.test.ts"],
+    include: ["processor/tests/**/*.test.ts", "worker/tests/**/*.test.ts"],
     coverage: {
       provider: "v8",
       reporter: ["text", "lcov"],
       include: ["processor/**/*.ts", "worker/**/*.ts"],
-      exclude: ["worker/generateVault.ts", "worker/generated/**"],
+      exclude: ["worker/bundleVaultIntoWorker.ts", "worker/generateVault.ts", "worker/generated/**"],
     },
   },
 })

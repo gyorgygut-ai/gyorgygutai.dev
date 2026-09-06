@@ -1,6 +1,3 @@
 import rehypeObsidian from "@quartz-community/rehype-obsidian"
 
-export const obsidianHtml: [typeof rehypeObsidian, Record<string, unknown>] = [
-  rehypeObsidian,
-  { checkbox: true, mermaid: false },
-]
+export default [rehypeObsidian, { checkbox: true, mermaid: false }] as unknown as [typeof rehypeObsidian, Record<string, unknown>]

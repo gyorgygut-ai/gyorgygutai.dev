@@ -1,6 +1,7 @@
-import { readFileSync, readdirSync } from "node:fs"
-import { join } from "node:path"
+import { readFileSync, readdirSync, existsSync } from "node:fs"
+import { join, relative } from "node:path"
 import { parseFrontmatter } from "./parser/parseFrontmatter"
+import { hasAs } from "./parser/hasAs"
 import { processObsidianMdToHtml } from "./processObsidianMdToHtml"
 import { processObsidianMdToPdf } from "./processObsidianMdToPdf"
 import { readCssSnippets } from "./glue/readCssSnippets"
@@ -9,19 +10,30 @@ interface VaultOptions {
   cssDir?: string
 }
 
-function hasAs(data: Record<string, unknown>, target: string): boolean {
-  const as = data["as"]
-  if (Array.isArray(as)) {
-    return as.includes(target)
+function collectMd(dir: string, base: string, out: string[]) {
+  if (!existsSync(dir)) {
+    return
   }
-  return as === target
+  for (const e of readdirSync(dir, { withFileTypes: true })) {
+    const full = join(dir, e.name)
+    if (e.isDirectory()) {
+      if (e.name.startsWith(".") || e.name === "node_modules" || e.name === ".website") {
+        continue
+      }
+      collectMd(full, base, out)
+    } else if (e.isFile() && e.name.endsWith(".md")) {
+      out.push(relative(base, full))
+    }
+  }
 }
 
 export async function processVaultToStatic(
   vaultDir: string,
   options: VaultOptions = {},
 ): Promise<{ html: Record<string, string>; pdf: Record<string, Uint8Array> }> {
-  const files = readdirSync(vaultDir).filter((f) => f.endsWith(".md"))
+  const files: string[] = []
+  collectMd(vaultDir, vaultDir, files)
+  files.sort()
   const html: Record<string, string> = {}
   const pdf: Record<string, Uint8Array> = {}
   const css = options.cssDir ? readCssSnippets(options.cssDir) : undefined

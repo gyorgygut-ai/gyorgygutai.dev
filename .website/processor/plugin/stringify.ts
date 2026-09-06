@@ -1,6 +1,3 @@
 import rehypeStringify from "rehype-stringify"
 
-export const stringify: [typeof rehypeStringify, Record<string, unknown>] = [
-  rehypeStringify,
-  { allowDangerousHtml: true },
-]
+export default [rehypeStringify, { allowDangerousHtml: true }] as unknown as [typeof rehypeStringify, Record<string, unknown>]

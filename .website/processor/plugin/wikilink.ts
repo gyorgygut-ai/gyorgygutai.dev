@@ -35,7 +35,4 @@ export function wikilinkHandler(state: unknown, node: unknown) {
   }
 }
 
-export const wikilink: [typeof remarkRehype, Record<string, unknown>] = [
-  remarkRehype,
-  { allowDangerousHtml: true, handlers: { wikilink: wikilinkHandler } },
-]
+export default [remarkRehype, { allowDangerousHtml: true, handlers: { wikilink: wikilinkHandler } }] as unknown as [typeof remarkRehype, Record<string, unknown>]
