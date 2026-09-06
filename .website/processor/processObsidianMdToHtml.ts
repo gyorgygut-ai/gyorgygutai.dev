@@ -1,12 +1,12 @@
 import { unified } from "unified"
 import { parseFrontmatter } from "./parser/parseFrontmatter"
-import { markdown } from "./processor/markdown"
-import { obsidian } from "./processor/obsidian"
-import { callout } from "./processor/callout"
-import { wikilink } from "./processor/wikilink"
-import { raw } from "./processor/raw"
-import { obsidianHtml } from "./processor/obsidianHtml"
-import { stringify } from "./processor/stringify"
+import { markdown } from "./plugin/markdown"
+import { obsidian } from "./plugin/obsidian"
+import { callout } from "./plugin/callout"
+import { wikilink } from "./plugin/wikilink"
+import { raw } from "./plugin/raw"
+import { obsidianHtml } from "./plugin/obsidianHtml"
+import { stringify } from "./plugin/stringify"
 
 export async function processObsidianMdToHtml(input: string, cssOrOptions?: string | { cssDir?: string }): Promise<string> {
   const { content } = parseFrontmatter(input)

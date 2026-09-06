@@ -14,14 +14,20 @@
 
 ---
 
-## Architecture (`src/`)
+## Architecture
 
 **File Structure**:
 
-- `processObsidianMdToHtml.ts`: input md, output html
-- `processObsidianMdToPdf.ts`: input md, output pdf
-- `processVaultToStatic.ts`: orchestrating the above
-- `processor/`: one file per processing step
+- `processor/`: vault → static (pure)
+  - `processObsidianMdToHtml.ts`: input md, output html
+  - `processObsidianMdToPdf.ts`: input md, output pdf
+  - `processVaultToStatic.ts`: orchestrating the above
+  - `plugin/`: one file per processing step (Plugin, not Processor)
+  - `parser/`, `glue/`
+- `worker/`: Cloudflare Worker (thin wrapper, `default export`)
+  - `index.ts`: builds once, serves cached immutable
+  - `generated/vault.ts`: auto-generated (`worker/generateVault.ts`)
+  - `wrangler.jsonc`
 
 **Obsidian Support**:
 

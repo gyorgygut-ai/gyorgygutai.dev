@@ -9,9 +9,9 @@
     "lint": "eslint src tests --ext .ts",
     "lint:fix": "eslint src tests --fix",
     "coverage": "vitest run --coverage",
-    "generate": "tsx scripts/generateVault.ts",
-    "dev": "npm run generate && wrangler dev",
-    "deploy": "npm run generate && wrangler deploy"
+    "generate": "tsx worker/generateVault.ts",
+    "dev": "npm run generate && wrangler dev --config worker/wrangler.jsonc",
+    "deploy": "npm run generate && wrangler deploy --config worker/wrangler.jsonc"
   },
   "dependencies": {
     "@quartz-community/rehype-obsidian": "^0.1.2",
@@ -26,6 +26,7 @@
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",
+    "@types/node": "^26.4.1",
     "@vitest/coverage-v8": "^5.0.0",
     "eslint": "^10.10.0",
     "tsx": "^4.23.13",

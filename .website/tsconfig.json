@@ -8,8 +8,8 @@
     "skipLibCheck": true,
     "outDir": "dist",
     "rootDir": ".",
-    "types": ["vitest/globals"]
+    "types": ["node", "vitest/globals"]
   },
-  "include": ["src/**/*", "tests/**/*"],
+  "include": ["processor/**/*", "worker/**/*", "tests/**/*"],
   "exclude": ["node_modules", "dist"]
 }

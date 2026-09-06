@@ -1,5 +1,5 @@
 import { describe, it, expect, beforeEach } from "vitest"
-import worker, { resetCache } from "../src/index"
+import worker, { resetCache } from "../worker/index"
 
 describe("worker", () => {
   beforeEach(() => {

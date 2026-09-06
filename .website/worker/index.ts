@@ -1,6 +1,6 @@
-import { parseFrontmatter } from "./parser/parseFrontmatter"
-import { processObsidianMdToHtml } from "./processObsidianMdToHtml"
-import { processObsidianMdToPdf } from "./processObsidianMdToPdf"
+import { parseFrontmatter } from "../processor/parser/parseFrontmatter"
+import { processObsidianMdToHtml } from "../processor/processObsidianMdToHtml"
+import { processObsidianMdToPdf } from "../processor/processObsidianMdToPdf"
 import { cssBundle, vaultFiles } from "./generated/vault"
 
 type Cache = {
