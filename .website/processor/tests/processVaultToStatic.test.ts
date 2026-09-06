@@ -49,6 +49,6 @@ describe("processVaultToStatic", () => {
 
     const output = await processVaultToStatic(input)
 
-    expect(output.pdf["both.md"]).toEqual(expected)
+    expect(Buffer.from(output.pdf["both.md"])).toEqual(expected)
   })
 })

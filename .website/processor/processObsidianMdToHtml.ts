@@ -2,16 +2,28 @@ import { unified } from "unified"
 import { parseFrontmatter } from "./parser/parseFrontmatter"
 import markdown from "./plugin/markdown"
 import obsidian from "./plugin/obsidian"
+import transclude, { setVaultFiles } from "./plugin/transclude"
 import callout from "./plugin/callout"
 import wikilink from "./plugin/wikilink"
 import raw from "./plugin/raw"
 import obsidianHtml from "./plugin/obsidianHtml"
 import stringify from "./plugin/stringify"
 
-export async function processObsidianMdToHtml(input: string, css?: string): Promise<string> {
+export async function processObsidianMdToHtml(input: string, css?: string, vaultFiles?: Record<string, string>): Promise<string> {
   const { content } = parseFrontmatter(input)
-  const html = String(await unified().use(markdown).use(...obsidian).use(callout).use(...wikilink).use(raw).use(...obsidianHtml).use(...stringify).process(content))
-  return css ? `<style>\n${css}\n</style>\n${html}` : html
+  const processor = unified().use(markdown).use(...obsidian).use(transclude).use(callout).use(...wikilink).use(raw).use(...obsidianHtml).use(...stringify)
+  if (vaultFiles !== undefined) {
+    processor.data("vaultFiles", vaultFiles)
+    setVaultFiles(vaultFiles)
+  }
+  try {
+    const html = String(await processor.process(content))
+    return css ? `<style>\n${css}\n</style>\n${html}` : html
+  } finally {
+    if (vaultFiles !== undefined) {
+      setVaultFiles(null)
+    }
+  }
 }
 
 export default processObsidianMdToHtml

@@ -1,9 +1,14 @@
 import remarkRehype from "remark-rehype"
 
+function normalizeAssetPath(p: string): string {
+  return p.replace(/^(\.\/|\.\.\/)+/, "")
+}
+
 export function wikilinkHandler(state: unknown, node: unknown) {
   const n = node as { embedded?: unknown; path?: unknown; alias?: unknown }
   const s = state as { all: (node: unknown) => unknown }
-  const path = typeof n.path === "string" ? n.path : ""
+  const rawPath = typeof n.path === "string" ? n.path : ""
+  const path = normalizeAssetPath(rawPath)
   if (n.embedded && /\.(png|jpg|jpeg|gif|webp|svg)$/i.test(path)) {
     return {
       type: "element",

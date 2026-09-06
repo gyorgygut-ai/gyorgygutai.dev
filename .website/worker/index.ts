@@ -12,7 +12,12 @@ type Cache = {
 let cache: Cache | null = null
 let building: Promise<Cache> | null = null
 
-function slugFor(path: string): string {
+export function __resetCache(): void {
+  cache = null
+  building = null
+}
+
+export function slugFor(path: string): string {
   const withoutExt = path.replace(/\.md$/, "")
   if (withoutExt === "index") {
     return "/"
@@ -40,14 +45,14 @@ async function buildCache(): Promise<Cache> {
       }
       const slug = slugFor(path)
       if (hasAs(data, "home")) {
-        html.set("/", await processObsidianMdToHtml(raw, cssBundle))
+        html.set("/", await processObsidianMdToHtml(raw, cssBundle, vaultFiles))
       }
       if (hasAs(data, "page")) {
-        html.set(slug, await processObsidianMdToHtml(raw, cssBundle))
+        html.set(slug, await processObsidianMdToHtml(raw, cssBundle, vaultFiles))
       }
       if (hasAs(data, "pdf")) {
         const pdfSlug = slug === "/" ? "/index.pdf" : `${slug}.pdf`
-        pdf.set(pdfSlug, await processObsidianMdToPdf(raw))
+        pdf.set(pdfSlug, await processObsidianMdToPdf(raw, vaultFiles))
       }
     }
     cache = { html, pdf }

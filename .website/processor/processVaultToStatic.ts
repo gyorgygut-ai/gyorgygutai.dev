@@ -38,8 +38,18 @@ export async function processVaultToStatic(
   const pdf: Record<string, Uint8Array> = {}
   const css = options.cssDir ? readCssSnippets(options.cssDir) : undefined
 
+  const vaultFiles: Record<string, string> = {}
   for (const file of files) {
-    const content = readFileSync(join(vaultDir, file), "utf-8")
+    try {
+      vaultFiles[file] = readFileSync(join(vaultDir, file), "utf-8")
+    } catch {}
+  }
+
+  for (const file of files) {
+    const content = vaultFiles[file]
+    if (content === undefined) {
+      continue
+    }
     const { data } = parseFrontmatter(content)
 
     const isPage = hasAs(data, "page")
@@ -50,10 +60,10 @@ export async function processVaultToStatic(
     }
 
     if (isPage || isHome) {
-      html[file] = await processObsidianMdToHtml(content, css)
+      html[file] = await processObsidianMdToHtml(content, css, vaultFiles)
     }
     if (isPdf) {
-      pdf[file] = await processObsidianMdToPdf(content)
+      pdf[file] = await processObsidianMdToPdf(content, vaultFiles)
     }
   }
 

@@ -12,7 +12,7 @@ describe("processObsidianMdToPdf", () => {
 
     const output = await processObsidianMdToPdf(input)
 
-    expect(output).toEqual(expected)
+    expect(Buffer.from(output)).toEqual(expected)
   })
 
   test("long-note fixture deterministic pdf", async () => {
@@ -21,7 +21,7 @@ describe("processObsidianMdToPdf", () => {
 
     const output = await processObsidianMdToPdf(input)
 
-    expect(output).toEqual(expected)
+    expect(Buffer.from(output)).toEqual(expected)
   })
 
   test("nested-transclusion fixture deterministic pdf", async () => {
@@ -30,6 +30,6 @@ describe("processObsidianMdToPdf", () => {
 
     const output = await processObsidianMdToPdf(input)
 
-    expect(output).toEqual(expected)
+    expect(Buffer.from(output)).toEqual(expected)
   })
 })

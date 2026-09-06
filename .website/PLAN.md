@@ -1,119 +1,37 @@
-# Worker Plan — Obsidian Vault to HTML/PDF
+# Implementation Status — Obsidian Vault to HTML/PDF
 
-## TODO
-
-- [ ] 1. Init `worker/` (package.json, tsconfig.json, vitest.config.ts)
-- [ ] 2. Create fixtures (7 markdown + 2 CSS snippets)
-- [ ] 3. Write tests (4 test files, 29 tests total)
-- [ ] 4. Implement `src/html.ts`
-- [ ] 5. Implement `src/pdf.ts`
-- [ ] 6. Create `src/index.ts` and `src/build.ts` with TODO comments
-- [ ] 7. Run `npx vitest run` — all 29 tests pass
-
-## Architecture
-
-Business logic extracted. Worker is a thin wrapper.
+## Current Architecture (matches AGENTS.md)
 
 ```
-src/
-├── html.ts          ← reusable: htmlFromObsidianMd, htmlsFromObsidianVault
-├── pdf.ts           ← reusable: pdfFromObsidianMd, pdfsFromObsidianVault
-├── index.ts         ← TODO: Worker wrapper (thin, calls html.ts/pdf.ts)
-└── build.ts         ← TODO: Build script wrapper (thin, calls html.ts/pdf.ts)
+processor/
+├── processObsidianMdToHtml.ts   # md → html (css?:string, vaultFiles?:Record)
+├── processObsidianMdToPdf.ts    # md → pdf (via html → stripHtml → pdf-lib)
+├── processVaultToStatic.ts      # vault dir → {html,pdf} (hasAs page/home/pdf)
+├── plugin/                      # one file per unified step
+│   ├── markdown.ts, obsidian.ts, transclude.ts, callout.ts, wikilink.ts, raw.ts, obsidianHtml.ts, stringify.ts
+├── parser/                      # pure: parseFrontmatter, hasAs, stripHtml, generatePdf
+└── glue/readCssSnippets.ts      # appearance.json order, alphabetical fallback
+worker/
+├── index.ts                     # thin wrapper, buildCache once, immutable, vaultFiles injected
+├── bundleVaultIntoWorker.ts     # collects md + css (+ appearance order) → generated/bundle.ts
+├── generated/bundle.ts          # auto-generated
+└── wrangler.jsonc               # nodejs_compat, no assets SPA
 ```
 
-## Step 1: Init `worker/`
+## Done
+- [x] Frontmatter `as: page|home|pdf` (string or array) via `hasAs`
+- [x] Obsidian: links, callouts, transclusions (nested/diamond/cycle/missing), images
+- [x] CSS snippets inlined via `<style>` with appearance.json ordering
+- [x] Worker builds once, serves cached immutable, no R2
+- [x] Transclude supports in-memory vaultFiles for Worker + FS fallback for local
+- [x] Tests: 4 files, 20 tests, deterministic fixtures
+- [x] Lint + coverage config fixed
 
-Create `package.json`, `tsconfig.json`, `vitest.config.ts`.
-
-Dependencies:
-- vitest, typescript, tsx
-- unified, remark-parse, remark-rehype, rehype-stringify, rehype-raw
-- @quartz-community/remark-obsidian, @quartz-community/rehype-obsidian
-- pdf-lib, gray-matter
-
-## Step 2: Fixtures
-
-### Markdown (`tests/fixtures/`)
-
-| File | Content |
-|------|---------|
-| `publish-true.md` | Frontmatter (`dg-publish: true`, `title`) + transclusion `![[content/header]]` + heading + `<hr>` + bold + inline code + list + link + `---` |
-| `publish-callout.md` | Frontmatter (`publish: true`) + `> [!profile-header]` callout with `![[../assets/photo.png\|60]]` |
-| `publish-false.md` | Frontmatter (`publish: false`) + heading |
-| `no-frontmatter.md` | Just heading + paragraph |
-| `empty.md` | Empty |
-| `minimal.md` | `publish: true` + one word |
-| `large.md` | `publish: true` + many project entries with all content types |
-
-### CSS Snippets (`tests/fixtures/snippets/`)
-
-| File | Content |
-|------|---------|
-| `cv-theme.css` | Subset of real: `:root` vars, `.theme-dark` |
-| `cv-markdown.css` | Subset of real: `.markdown-embed` rules |
-
-## Step 3: Tests
-
-### `tests/htmlFromObsidianMd.test.ts` — 13 tests
-
-| # | Requirement | Setup | Convert | Assert |
-|---|------------|-------|---------|--------|
-| 1 | Empty input | `""` | `htmlFromObsidianMd("")` | returns string, no throw |
-| 2 | Basic markdown → HTML | `"# Hello"` | `htmlFromObsidianMd(md)` | contains `<h1>`, `<p>` |
-| 3 | Transclusions rendered | `publish-true.md` (`![[content/header]]`) | `htmlFromObsidianMd(md)` | contains `<blockquote` or transclude class |
-| 4 | Callouts rendered | `publish-callout.md` (`> [!profile-header]`) | `htmlFromObsidianMd(md)` | contains `callout` or `data-callout` |
-| 5 | Image embed present | `publish-callout.md` (`![[../assets/photo.png\|60]]`) | `htmlFromObsidianMd(md)` | contains `<img` |
-| 6 | Bold rendered | `"**bold**"` | `htmlFromObsidianMd(md)` | contains `<strong>` |
-| 7 | Links rendered | `"[text](url)"` | `htmlFromObsidianMd(md)` | contains `<a href=\"url\">` |
-| 8 | Inline code rendered | `` `"\`code\`" `` | `htmlFromObsidianMd(md)` | contains `<code>` |
-| 9 | Lists rendered | `"- item"` | `htmlFromObsidianMd(md)` | contains `<li>` |
-| 10 | Horizontal rules | `"---"` | `htmlFromObsidianMd(md)` | contains `<hr` |
-| 11 | Raw HTML preserved | `'<hr class="header-separator">'` | `htmlFromObsidianMd(md)` | contains `header-separator` |
-| 12 | Frontmatter stripped | `publish-true.md` | `htmlFromObsidianMd(md)` | does not contain `dg-publish` |
-| 13 | CSS snippets inlined | `publish-true.md` + snippets dir | `htmlFromObsidianMd(md, { cssDir })` | contains `--background-primary` |
-
-### `tests/htmlsFromObsidianVault.test.ts` — 5 tests
-
-| # | Requirement | Setup | Convert | Assert |
-|---|------------|-------|---------|--------|
-| 1 | Returns only publish-true notes | 7 fixtures | `htmlsFromObsidianVault(dir)` | keys = `[\"publish-true.md\", \"publish-callout.md\", \"minimal.md\", \"large.md\"]` |
-| 2 | publish-false excluded | 7 fixtures | `htmlsFromObsidianVault(dir)` | `publish-false.md` absent |
-| 3 | no-frontmatter excluded | 7 fixtures | `htmlsFromObsidianVault(dir)` | `no-frontmatter.md` absent |
-| 4 | empty excluded | 7 fixtures | `htmlsFromObsidianVault(dir)` | `empty.md` absent |
-| 5 | vault values are HTML | 7 fixtures | `htmlsFromObsidianVault(dir)` | every value contains `<h1>` or `<h2>` or `<p>` |
-
-### `tests/pdfFromObsidianMd.test.ts` — 6 tests
-
-| # | Requirement | Setup | Convert | Assert |
-|---|------------|-------|---------|--------|
-| 1 | Empty → valid PDF | `""` | `pdfFromObsidianMd(\"")` | `Uint8Array`, starts `%PDF-` |
-| 2 | Basic markdown → PDF | `"# Hello"` | `pdfFromObsidianMd(md)` | starts `%PDF-`, length > 0 |
-| 3 | Transclusion in PDF | `publish-true.md` | `pdfFromObsidianMd(md)` | starts `%PDF-` |
-| 4 | Callout in PDF | `publish-callout.md` | `pdfFromObsidianMd(md)` | starts `%PDF-` |
-| 5 | Large → valid PDF | `large.md` | `pdfFromObsidianMd(md)` | starts `%PDF-`, length > small |
-| 6 | Different → different PDFs | two fixtures | both | `!a.equals(b)` |
-
-### `tests/pdfsFromObsidianVault.test.ts` — 5 tests
-
-| # | Requirement | Setup | Convert | Assert |
-|---|------------|-------|---------|--------|
-| 1 | Returns only publish-true notes | 7 fixtures | `pdfsFromObsidianVault(dir)` | keys = `[\"publish-true.md\", \"publish-callout.md\", \"minimal.md\", \"large.md\"]` |
-| 2 | publish-false excluded | 7 fixtures | `pdfsFromObsidianVault(dir)` | `publish-false.md` absent |
-| 3 | no-frontmatter excluded | 7 fixtures | `pdfsFromObsidianVault(dir)` | `no-frontmatter.md` absent |
-| 4 | empty excluded | 7 fixtures | `pdfsFromObsidianVault(dir)` | `empty.md` absent |
-| 5 | all values are valid PDFs | 7 fixtures | `pdfsFromObsidianVault(dir)` | every value starts `%PDF-` |
-
-## Step 4: Implement `src/html.ts`
-
-Unified pipeline: `remarkParse` → `remarkObsidian` → `remarkRehype` → `rehypeRaw` → `rehypeObsidian` → `rehypeStringify`. gray-matter for frontmatter. CSS snippets read from disk and inlined into `<style>`.
-
-## Step 5: Implement `src/pdf.ts`
-
-Calls `htmlFromObsidianMd` internally, strips HTML tags, draws text lines with pdf-lib.
-
-## Step 6: TODOs in `src/index.ts` and `src/build.ts`
-
-Empty files with TODO comments describing what they'll do.
-
-## Step 7: `npx vitest run` — all 29 tests pass
+## Verify locally
+```
+npm run lint
+npm test                 # 20 pass
+npm run bundleVaultIntoWorker
+npm run dev              # wrangler dev
+npm run deploy           # wrangler deploy
+```

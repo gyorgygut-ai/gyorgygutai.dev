@@ -1,5 +1,22 @@
 import { readFileSync, readdirSync, existsSync } from "node:fs"
-import { join } from "node:path"
+import { join, dirname } from "node:path"
+
+export function orderCssFiles(files: string[], ordered: string[] | null): string[] {
+  if (!ordered || ordered.length === 0) {
+    return files
+  }
+  const set = new Set(files)
+  const normalizedOrdered = ordered.map((f) => (f.endsWith(".css") ? f : f + ".css")).filter((f) => set.has(f))
+  const remaining = files.filter((f) => !normalizedOrdered.includes(f))
+  return [...normalizedOrdered, ...remaining]
+}
+
+export function cleanCss(css: string): string {
+  return css
+    .split("\n")
+    .filter((line) => line.trim() !== "")
+    .join("\n")
+}
 
 export function readCssSnippets(cssDir: string): string {
   let files: string[]
@@ -13,28 +30,26 @@ export function readCssSnippets(cssDir: string): string {
   }
 
   let ordered: string[] | null = null
-  const candidates = [join(cssDir, "appearance.json"), join(cssDir, "../appearance.json"), join(cssDir, "../.obsidian/appearance.json"), join(cssDir, ".obsidian/appearance.json")]
-  for (const p of candidates) {
-    try {
-      if (!existsSync(p)) {
-        continue
-      }
-      const raw = readFileSync(p, "utf-8")
-      const data = JSON.parse(raw)
+  try {
+    const appearancePath = join(dirname(cssDir), "appearance.json")
+    if (existsSync(appearancePath)) {
+      const data = JSON.parse(readFileSync(appearancePath, "utf-8"))
       if (Array.isArray(data.enabledCssSnippets)) {
         ordered = data.enabledCssSnippets as string[]
-        break
       }
-    } catch {}
-  }
+    } else {
+      const altPath = join(cssDir, "appearance.json")
+      if (existsSync(altPath)) {
+        const data = JSON.parse(readFileSync(altPath, "utf-8"))
+        if (Array.isArray(data.enabledCssSnippets)) {
+          ordered = data.enabledCssSnippets as string[]
+        }
+      }
+    }
+  } catch {}
 
-  if (ordered && ordered.length > 0) {
-    const set = new Set(files)
-    const orderedFiles = ordered.filter((f) => set.has(f) || set.has(f + ".css") || set.has(f.replace(/\.css$/, "")))
-    const normalizedOrdered = orderedFiles.map((f) => (f.endsWith(".css") ? f : f + ".css")).filter((f) => set.has(f))
-    const remaining = files.filter((f) => !normalizedOrdered.includes(f))
-    files = [...normalizedOrdered, ...remaining]
-  }
+  files = orderCssFiles(files, ordered)
 
-  return files.map((f) => readFileSync(join(cssDir, f), "utf-8")).join("\n")
+  const css = files.map((f) => readFileSync(join(cssDir, f), "utf-8")).join("\n")
+  return cleanCss(css)
 }

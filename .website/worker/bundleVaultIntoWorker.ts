@@ -1,6 +1,7 @@
 import { readFileSync, readdirSync, existsSync, writeFileSync, mkdirSync } from "node:fs"
-import { join, relative, dirname } from "node:path"
+import { join, relative, dirname, resolve } from "node:path"
 import { fileURLToPath } from "node:url"
+import { orderCssFiles, cleanCss } from "../processor/glue/readCssSnippets"
 
 const __dirname = dirname(fileURLToPath(import.meta.url))
 const defaultVaultRoot = join(__dirname, "../..")
@@ -29,20 +30,14 @@ function parseArgs(): { vaultRoot: string; outFile: string } {
   let outFile = defaultOutFile
   for (let i = 0; i < args.length; i++) {
     if (args[i] === "--vault" && args[i + 1]) {
-      vaultRoot = join(process.cwd(), args[i + 1] as string).includes(":") ? (args[i + 1] as string) : join(process.cwd(), args[i + 1] as string)
-      if ((args[i + 1] as string).startsWith("/")) {
-        vaultRoot = args[i + 1] as string
-      }
+      vaultRoot = resolve(process.cwd(), args[i + 1] as string)
       i++
     } else if (args[i] === "--out" && args[i + 1]) {
-      outFile = args[i + 1] as string
+      outFile = resolve(process.cwd(), args[i + 1] as string)
       i++
     } else if (!args[i]!.startsWith("-") && i === 0) {
-      vaultRoot = args[i] as string
+      vaultRoot = resolve(process.cwd(), args[i] as string)
     }
-  }
-  if (vaultRoot.startsWith("./") || vaultRoot.startsWith("../")) {
-    vaultRoot = join(process.cwd(), vaultRoot)
   }
   return { vaultRoot, outFile }
 }
@@ -73,23 +68,19 @@ try {
   }
 } catch {}
 
-if (ordered && ordered.length > 0) {
-  const set = new Set(cssFiles)
-  const orderedFiles = ordered.filter((f) => set.has(f) || set.has(f + ".css") || set.has(f.replace(/\.css$/, "")))
-  const normalizedOrdered = orderedFiles.map((f) => (f.endsWith(".css") ? f : f + ".css")).filter((f) => set.has(f))
-  const remaining = cssFiles.filter((f) => !normalizedOrdered.includes(f))
-  cssFiles = [...normalizedOrdered, ...remaining]
-}
+cssFiles = orderCssFiles(cssFiles, ordered)
 
-const cssBundle = cssFiles
-  .map((f) => {
-    try {
-      return readFileSync(join(cssDir, f), "utf-8")
-    } catch {
-      return ""
-    }
-  })
-  .join("\n")
+const cssBundle = cleanCss(
+  cssFiles
+    .map((f) => {
+      try {
+        return readFileSync(join(cssDir, f), "utf-8")
+      } catch {
+        return ""
+      }
+    })
+    .join("\n"),
+)
 
 const vaultEntries = mdFiles.map((rel) => {
   const content = readFileSync(join(vaultRoot, rel), "utf-8")
