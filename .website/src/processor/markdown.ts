@@ -1,3 +1,3 @@
-import remarkParse from "remark-parse";
+import remarkParse from "remark-parse"
 
-export const markdown = remarkParse;
+export const markdown = remarkParse

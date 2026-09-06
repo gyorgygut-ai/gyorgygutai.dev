@@ -1,3 +1,3 @@
-import rehypeStringify from "rehype-stringify";
+import rehypeStringify from "rehype-stringify"
 
-export const stringify: any = [rehypeStringify, { allowDangerousHtml: true }];
+export const stringify: any = [rehypeStringify, { allowDangerousHtml: true }]

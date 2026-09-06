@@ -1,4 +1,4 @@
-import remarkRehype from "remark-rehype";
+import remarkRehype from "remark-rehype"
 
 export function wikilinkHandler(state: any, node: any) {
   if (node.embedded && /\.(png|jpg|jpeg|gif|webp|svg)$/i.test(node.path)) {
@@ -11,7 +11,7 @@ export function wikilinkHandler(state: any, node: any) {
         ...(node.alias ? { width: parseInt(node.alias) } : {}),
       },
       children: [],
-    };
+    }
   }
   if (node.embedded) {
     return {
@@ -22,17 +22,17 @@ export function wikilinkHandler(state: any, node: any) {
         "data-path": node.path,
       },
       children: [],
-    };
+    }
   }
   return {
     type: "element",
     tagName: "a",
     properties: { href: "#" + node.path },
     children: [state.all(node)],
-  };
+  }
 }
 
 export const wikilink: any = [
   remarkRehype as any,
   { allowDangerousHtml: true, handlers: { wikilink: wikilinkHandler } },
-];
+]

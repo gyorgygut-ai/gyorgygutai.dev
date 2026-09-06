@@ -1,4 +1,4 @@
-import remarkObsidian from "@quartz-community/remark-obsidian";
+import remarkObsidian from "@quartz-community/remark-obsidian"
 
 export const obsidian: any = [
   remarkObsidian,
@@ -10,4 +10,4 @@ export const obsidian: any = [
     customTaskChars: true,
     math: true,
   },
-];
+]
