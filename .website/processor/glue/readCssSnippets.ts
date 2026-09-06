@@ -8,13 +8,17 @@ export function readCssSnippets(cssDir: string): string {
   } catch {
     return ""
   }
-  if (files.length === 0) return ""
+  if (files.length === 0) {
+    return ""
+  }
 
   let ordered: string[] | null = null
   const candidates = [join(cssDir, "appearance.json"), join(cssDir, "../appearance.json"), join(cssDir, "../.obsidian/appearance.json"), join(cssDir, ".obsidian/appearance.json")]
   for (const p of candidates) {
     try {
-      if (!existsSync(p)) continue
+      if (!existsSync(p)) {
+        continue
+      }
       const raw = readFileSync(p, "utf-8")
       const data = JSON.parse(raw)
       if (Array.isArray(data.enabledCssSnippets)) {

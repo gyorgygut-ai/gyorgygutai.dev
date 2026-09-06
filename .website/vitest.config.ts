@@ -9,6 +9,7 @@ export default defineConfig({
       provider: "v8",
       reporter: ["text", "lcov"],
       include: ["processor/**/*.ts", "worker/**/*.ts"],
+      exclude: ["worker/generateVault.ts", "worker/generated/**"],
     },
   },
 })

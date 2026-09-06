@@ -8,13 +8,19 @@ const vaultRoot = join(__dirname, "../..")
 const outFile = join(__dirname, "./generated/vault.ts")
 
 function collectMd(dir: string, base: string, out: string[]) {
-  if (!existsSync(dir)) return
+  if (!existsSync(dir)) {
+    return
+  }
   const entries = readdirSync(dir, { withFileTypes: true })
   for (const e of entries) {
     const full = join(dir, e.name)
     if (e.isDirectory()) {
-      if (e.name.startsWith(".") || e.name === "node_modules" || e.name === ".website") continue
-      if (e.name === "peach" || e.name === "research" || e.name === "img") continue
+      if (e.name.startsWith(".") || e.name === "node_modules" || e.name === ".website") {
+        continue
+      }
+      if (e.name === "peach" || e.name === "research" || e.name === "img") {
+        continue
+      }
       collectMd(full, base, out)
     } else if (e.isFile() && e.name.endsWith(".md")) {
       out.push(relative(base, full))
@@ -25,7 +31,9 @@ function collectMd(dir: string, base: string, out: string[]) {
 const mdFiles: string[] = []
 for (const p of ["index.md", "links.md"]) {
   const full = join(vaultRoot, p)
-  if (existsSync(full)) mdFiles.push(p)
+  if (existsSync(full)) {
+    mdFiles.push(p)
+  }
 }
 collectMd(join(vaultRoot, "content"), vaultRoot, mdFiles)
 collectMd(join(vaultRoot, "pdf"), vaultRoot, mdFiles)
@@ -46,7 +54,9 @@ try {
   if (existsSync(appearancePath)) {
     const raw = readFileSync(appearancePath, "utf-8")
     const data = JSON.parse(raw)
-    if (Array.isArray(data.enabledCssSnippets)) ordered = data.enabledCssSnippets as string[]
+    if (Array.isArray(data.enabledCssSnippets)) {
+      ordered = data.enabledCssSnippets as string[]
+    }
   }
 } catch {}
 

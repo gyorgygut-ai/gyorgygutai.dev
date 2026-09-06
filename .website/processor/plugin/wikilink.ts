@@ -1,25 +1,28 @@
 import remarkRehype from "remark-rehype"
 
-export function wikilinkHandler(state: any, node: any) {
-  if (node.embedded && /\.(png|jpg|jpeg|gif|webp|svg)$/i.test(node.path)) {
+export function wikilinkHandler(state: unknown, node: unknown) {
+  const n = node as { embedded?: unknown; path?: unknown; alias?: unknown }
+  const s = state as { all: (node: unknown) => unknown }
+  const path = typeof n.path === "string" ? n.path : ""
+  if (n.embedded && /\.(png|jpg|jpeg|gif|webp|svg)$/i.test(path)) {
     return {
       type: "element",
       tagName: "img",
       properties: {
-        src: node.path,
-        alt: node.path.split("/").pop() || node.path,
-        ...(node.alias ? { width: parseInt(node.alias) } : {}),
+        src: path,
+        alt: path.split("/").pop() || path,
+        ...(typeof n.alias === "string" && n.alias ? { width: parseInt(n.alias) } : {}),
       },
       children: [],
     }
   }
-  if (node.embedded) {
+  if (n.embedded) {
     return {
       type: "element",
       tagName: "span",
       properties: {
         className: ["transclude"],
-        "data-path": node.path,
+        "data-path": path,
       },
       children: [],
     }
@@ -27,12 +30,12 @@ export function wikilinkHandler(state: any, node: any) {
   return {
     type: "element",
     tagName: "a",
-    properties: { href: "#" + node.path },
-    children: [state.all(node)],
+    properties: { href: "#" + path },
+    children: [s.all(node)],
   }
 }
 
-export const wikilink: any = [
-  remarkRehype as any,
+export const wikilink: [typeof remarkRehype, Record<string, unknown>] = [
+  remarkRehype,
   { allowDangerousHtml: true, handlers: { wikilink: wikilinkHandler } },
 ]

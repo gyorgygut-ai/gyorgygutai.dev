@@ -6,12 +6,14 @@ import { processObsidianMdToPdf } from "./processObsidianMdToPdf"
 import { readCssSnippets } from "./glue/readCssSnippets"
 
 interface VaultOptions {
-  cssDir?: string;
+  cssDir?: string
 }
 
 function hasAs(data: Record<string, unknown>, target: string): boolean {
   const as = data["as"]
-  if (Array.isArray(as)) return as.includes(target)
+  if (Array.isArray(as)) {
+    return as.includes(target)
+  }
   return as === target
 }
 
@@ -31,7 +33,9 @@ export async function processVaultToStatic(
     const isPage = hasAs(data, "page")
     const isHome = hasAs(data, "home")
     const isPdf = hasAs(data, "pdf")
-    if (!isPage && !isHome && !isPdf) continue
+    if (!isPage && !isHome && !isPdf) {
+      continue
+    }
 
     if (isPage || isHome) {
       html[file] = await processObsidianMdToHtml(content, css)

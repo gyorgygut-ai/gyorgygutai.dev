@@ -6,8 +6,8 @@
   "scripts": {
     "test": "vitest run",
     "test:watch": "vitest",
-    "lint": "eslint src tests --ext .ts",
-    "lint:fix": "eslint src tests --fix",
+    "lint": "eslint processor worker tests --ext .ts",
+    "lint:fix": "eslint processor worker tests --fix",
     "coverage": "vitest run --coverage",
     "generate": "tsx worker/generateVault.ts",
     "dev": "npm run generate && wrangler dev --config worker/wrangler.jsonc",

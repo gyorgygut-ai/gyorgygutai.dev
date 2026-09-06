@@ -13,49 +13,71 @@ let building: Promise<Cache> | null = null
 
 function hasAs(data: Record<string, unknown>, target: string): boolean {
   const as = data.as as unknown
-  if (Array.isArray(as)) return (as as unknown[]).includes(target)
+  if (Array.isArray(as)) {
+    return (as as unknown[]).includes(target)
+  }
   return as === target
 }
 
 function normalize(data: Record<string, unknown>): { isHome: boolean; isPage: boolean; isPdf: boolean } {
-  const isHome = hasAs(data, "home") || data["dg-home"] === true
-  const isPage = hasAs(data, "page") || data["dg-publish"] === true || data["publish"] === true
+  const isHome = hasAs(data, "home")
+  const isPage = hasAs(data, "page")
   const isPdf = hasAs(data, "pdf")
-  if (isPdf) return { isHome, isPage, isPdf }
-  if (isHome || isPage) return { isHome, isPage, isPdf: false }
+  if (isPdf) {
+    return { isHome, isPage, isPdf }
+  }
+  if (isHome || isPage) {
+    return { isHome, isPage, isPdf: false }
+  }
   return { isHome: false, isPage: false, isPdf: false }
 }
 
 function slugFor(path: string): string {
-  if (path === "index.md") return "/"
+  if (path === "index.md") {
+    return "/"
+  }
   const withoutExt = path.replace(/\.md$/, "")
   const withoutContent = withoutExt.replace(/^content\//, "").replace(/^pdf\//, "")
   return "/" + withoutContent
 }
 
 async function buildCache(): Promise<Cache> {
-  if (cache) return cache
-  if (building) return building
+  if (cache) {
+    return cache
+  }
+  if (building) {
+    return building
+  }
   building = (async () => {
     const html = new Map<string, string>()
     const pdf = new Map<string, Uint8Array>()
     for (const [path, raw] of Object.entries(vaultFiles)) {
       const { data } = parseFrontmatter(raw)
       const { isHome, isPage, isPdf } = normalize(data)
-      if (!isHome && !isPage && !isPdf) continue
+      if (!isHome && !isPage && !isPdf) {
+        continue
+      }
       const slug = slugFor(path)
-      if (isHome) html.set("/", await processObsidianMdToHtml(raw, cssBundle))
-      if (isPage && !isHome) html.set(slug, await processObsidianMdToHtml(raw, cssBundle))
+      if (isHome) {
+        html.set("/", await processObsidianMdToHtml(raw, cssBundle))
+      }
+      if (isPage && !isHome) {
+        html.set(slug, await processObsidianMdToHtml(raw, cssBundle))
+      }
       if (isHome && isPage) {
         const rendered = html.get("/")!
-        if (!html.has(slug) && slug !== "/") html.set(slug, rendered)
+        if (!html.has(slug) && slug !== "/") {
+          html.set(slug, rendered)
+        }
       }
       if (isPdf) {
         const pdfSlug = slug === "/" ? "/index.pdf" : `${slug}.pdf`
         pdf.set(pdfSlug, await processObsidianMdToPdf(raw))
         if (isPage || isHome) {
           const htmlPdf = `${slug}.pdf`
-          if (!pdf.has(htmlPdf) && htmlPdf !== pdfSlug) pdf.set(htmlPdf, await processObsidianMdToPdf(raw))
+          if (!pdf.has(htmlPdf) && htmlPdf !== pdfSlug) {
+            pdf.set(htmlPdf, await processObsidianMdToPdf(raw))
+          }
         }
       }
     }
@@ -76,7 +98,9 @@ export default {
   async fetch(request: Request, env?: { ASSETS?: { fetch: typeof fetch } }): Promise<Response> {
     const url = new URL(request.url)
     let pathname = url.pathname
-    if (pathname.length > 1 && pathname.endsWith("/")) pathname = pathname.slice(0, -1)
+    if (pathname.length > 1 && pathname.endsWith("/")) {
+      pathname = pathname.slice(0, -1)
+    }
 
     const c = await buildCache()
 
@@ -115,7 +139,9 @@ export default {
     if (env?.ASSETS) {
       try {
         const assetRes = await env.ASSETS.fetch(request)
-        if (assetRes.status !== 404) return assetRes
+        if (assetRes.status !== 404) {
+          return assetRes
+        }
       } catch {}
     }
 

@@ -14,21 +14,21 @@ export async function processObsidianMdToHtml(input: string, cssOrOptions?: stri
 
   const processor = unified()
     .use(markdown)
-    .use(...(obsidian as any))
+    .use(obsidian[0], obsidian[1])
     .use(callout)
-    .use(...(wikilink as any))
+    .use(wikilink[0], wikilink[1])
     .use(raw)
-    .use(...(obsidianHtml as any))
-    .use(...(stringify as any))
+    .use(obsidianHtml[0], obsidianHtml[1])
+    .use(stringify[0], stringify[1])
 
   const html = String(await processor.process(body))
 
   let css: string | undefined
   if (typeof cssOrOptions === "string") {
     css = cssOrOptions
-  } else if (cssOrOptions && typeof cssOrOptions === "object" && (cssOrOptions as any).cssDir) {
+  } else if (cssOrOptions && typeof cssOrOptions === "object" && (cssOrOptions as { cssDir?: string }).cssDir) {
     const { readCssSnippets } = await import("./glue/readCssSnippets")
-    css = readCssSnippets((cssOrOptions as any).cssDir)
+    css = readCssSnippets((cssOrOptions as { cssDir: string }).cssDir)
   }
 
   if (css) {

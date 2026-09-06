@@ -1,6 +1,6 @@
 import remarkObsidian from "@quartz-community/remark-obsidian"
 
-export const obsidian: any = [
+export const obsidian: [typeof remarkObsidian, Record<string, unknown>] = [
   remarkObsidian,
   {
     wikilinks: true,
