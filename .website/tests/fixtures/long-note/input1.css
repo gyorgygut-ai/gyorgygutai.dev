@@ -5,3 +5,7 @@
 .markdown-embed-title {
     display: none;
 }
+
+.header-separator {
+    opacity: 0.5;
+}

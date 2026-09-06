@@ -1,29 +1,14 @@
 import { PDFDocument, StandardFonts, rgb } from "pdf-lib";
-import { htmlFromObsidianMd } from "./htmlFromObsidianMd";
 
-export async function pdfFromObsidianMd(
-  markdown: string,
-): Promise<Uint8Array> {
-  const html = await htmlFromObsidianMd(markdown);
-  const plainText = stripHtml(html);
-  return generatePdf(plainText);
-}
-
-function stripHtml(html: string): string {
-  return html
-    .replace(/<style[\s\S]*?<\/style>/gi, "")
-    .replace(/<[^>]+>/g, "")
-    .replace(/&amp;/g, "&")
-    .replace(/&lt;/g, "<")
-    .replace(/&gt;/g, ">")
-    .replace(/&quot;/g, '"')
-    .replace(/&#39;/g, "'")
-    .replace(/\n{3,}/g, "\n\n")
-    .trim();
-}
-
-async function generatePdf(text: string): Promise<Uint8Array> {
+export async function generatePdf(text: string): Promise<Uint8Array> {
   const pdfDoc = await PDFDocument.create();
+  pdfDoc.setCreationDate(new Date("2026-01-01T00:00:00Z"));
+  pdfDoc.setModificationDate(new Date("2026-01-01T00:00:00Z"));
+  pdfDoc.setCreator("");
+  pdfDoc.setProducer("");
+  pdfDoc.setTitle("");
+  pdfDoc.setAuthor("");
+
   const font = await pdfDoc.embedFont(StandardFonts.Helvetica);
 
   const page = pdfDoc.addPage();

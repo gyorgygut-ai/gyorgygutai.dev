@@ -26,7 +26,7 @@
 **Obsidian Support**:
 
 - [ ] Frontmatter: for per-note ettings
-  - [ ] `as`: `page` | `home` | `pdf` (no default)
+  - [ ] `as`: `page` | `home` | `pdf` (no default, can be array)
 - [ ] Obsidian-flavoured markdown:
   - [ ] Links, Callouts, Translucions
   - [ ] Images: proper image files
