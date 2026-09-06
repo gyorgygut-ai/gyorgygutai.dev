@@ -105,6 +105,4 @@ export const appearanceOrder = ${JSON.stringify(ordered ?? [], null, 2)}
 `
 
 writeFileSync(outFile, out)
-const legacyOut = join(dirname(outFile), "vault.ts")
-writeFileSync(legacyOut, out.replace("bundleVaultIntoWorker.ts", "bundleVaultIntoWorker.ts"))
 console.log(`generated ${mdFiles.length} md files, ${cssFiles.length} css files -> ${outFile}`)

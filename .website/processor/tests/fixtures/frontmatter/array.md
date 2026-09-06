@@ -1,0 +1,5 @@
+---
+as: [page, pdf]
+---
+
+# Array

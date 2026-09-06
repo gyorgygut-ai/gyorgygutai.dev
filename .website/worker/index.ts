@@ -58,13 +58,8 @@ async function buildCache(): Promise<Cache> {
   return result
 }
 
-export function resetCache(): void {
-  cache = null
-  building = null
-}
-
 export default {
-  async fetch(request: Request, env?: { ASSETS?: { fetch: typeof fetch } }): Promise<Response> {
+  async fetch(request: Request): Promise<Response> {
     const url = new URL(request.url)
     let pathname = url.pathname
     if (pathname.length > 1 && pathname.endsWith("/")) {
@@ -84,34 +79,12 @@ export default {
     }
 
     if (c.html.has(pathname)) {
-      const accept = request.headers.get("Accept") ?? ""
-      if (accept.includes("application/pdf")) {
-        const pdfPath = pathname === "/" ? "/index.pdf" : `${pathname}.pdf`
-        if (c.pdf.has(pdfPath)) {
-          const bytes = c.pdf.get(pdfPath)!
-          return new Response(bytes as unknown as BodyInit, {
-            headers: {
-              "Content-Type": "application/pdf",
-              "Cache-Control": "public, max-age=31536000, immutable",
-            },
-          })
-        }
-      }
       return new Response(c.html.get(pathname)!, {
         headers: {
           "Content-Type": "text/html; charset=utf-8",
           "Cache-Control": "public, max-age=31536000, immutable",
         },
       })
-    }
-
-    if (env?.ASSETS) {
-      try {
-        const assetRes = await env.ASSETS.fetch(request)
-        if (assetRes.status !== 404) {
-          return assetRes
-        }
-      } catch {}
     }
 
     return new Response("Not found", {
