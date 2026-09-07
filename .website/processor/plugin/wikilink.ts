@@ -1,7 +1,8 @@
 import remarkRehype from "remark-rehype"
 
 function normalizeAssetPath(p: string): string {
-  return p.replace(/^(\.\/|\.\.\/)+/, "")
+  const cleaned = p.replace(/^(\.\/|\.\.\/)+/, "").replace(/^\/+/, "")
+  return "/" + cleaned
 }
 
 export function wikilinkHandler(state: unknown, node: unknown) {

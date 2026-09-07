@@ -1,6 +1,6 @@
 ---
 dg-publish: true
-as: page
+as: [page, pdf]
 ---
 
 ![[content/header]]

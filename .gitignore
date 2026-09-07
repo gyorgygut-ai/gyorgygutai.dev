@@ -2,5 +2,7 @@
 .env
 node_modules
 peach/
+research/
+Research - Obsidian MD to HTML-PDF Tools (Last 2 Years).md
 .obsidian/plugins/digitalgarden/data.json
 .obsidian/workspace*.json

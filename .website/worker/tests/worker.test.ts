@@ -1,6 +1,6 @@
 import { describe, it, expect, beforeEach } from "vitest"
 import worker, { __resetCache, slugFor } from "../index"
-import { vaultFiles } from "../generated/bundle"
+import { vaultFiles, assetFiles } from "../generated/bundle"
 import { parseFrontmatter } from "../../processor/parser/parseFrontmatter"
 import { hasAs } from "../../processor/parser/hasAs"
 
@@ -83,6 +83,29 @@ describe("worker.fetch", () => {
     expect(res.status).toBe(404)
     expect(res.headers.get("Cache-Control")).toBe("no-store")
     expect(await res.text()).toBe("Not found")
+  })
+
+  it("each asset route serves 200 with correct mime and immutable cache", async () => {
+    const assets = Object.keys(assetFiles ?? {})
+    if (assets.length === 0) 
+{return}
+    for (const rel of assets) {
+      const route = "/" + rel.replace(/^\/+/, "")
+      const res = await worker.fetch(new Request(`http://example.com${route}`))
+      expect(res.status).toBe(200)
+      expect(res.headers.get("Cache-Control")).toBe("public, max-age=31536000, immutable")
+      const ct = res.headers.get("Content-Type")
+      expect(ct).toBeTruthy()
+      const buf = new Uint8Array(await res.arrayBuffer())
+      expect(buf.length).toBeGreaterThan(0)
+      if (route.endsWith(".png")) {
+        expect(ct).toBe("image/png")
+        expect(buf[0]).toBe(0x89)
+        expect(buf[1]).toBe(0x50)
+      }
+    }
+    const res404 = await worker.fetch(new Request("http://example.com/assets/__missing__.png"))
+    expect(res404.status).toBe(404)
   })
 
   it("stub sanity: hello/doc still work when stub bundle present", async () => {
