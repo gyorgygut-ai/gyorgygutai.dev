@@ -1,0 +1,10 @@
+{
+  "name": "@gyorgygutai/vault",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "validate": "echo \"vault validation not implemented\"",
+    "sync-css": "echo \"CSS sync handled by VS Code workspace\"",
+    "test": "echo \"vault has no tests\""
+  }
+}

@@ -1,10 +1,10 @@
 import { readFileSync, readdirSync, existsSync, writeFileSync, mkdirSync } from "node:fs"
 import { join, relative, dirname, resolve } from "node:path"
 import { fileURLToPath } from "node:url"
-import { orderCssFiles, cleanCss } from "../processor/glue/readCssSnippets"
+import { orderCssFiles, cleanCss } from "@gyorgygutai/processor"
 
 const __dirname = dirname(fileURLToPath(import.meta.url))
-const defaultVaultRoot = join(__dirname, "../..")
+const defaultVaultRoot = join(__dirname, "../../../vault")
 const defaultOutFile = join(__dirname, "./generated/bundle.ts")
 
 function collectMd(dir: string, base: string, out: string[]) {
@@ -14,7 +14,7 @@ function collectMd(dir: string, base: string, out: string[]) {
   for (const e of readdirSync(dir, { withFileTypes: true })) {
     const full = join(dir, e.name)
     if (e.isDirectory()) {
-      if (e.name.startsWith(".") || e.name === "node_modules" || e.name === ".website") {
+      if (e.name.startsWith(".") || e.name === "node_modules") {
         continue
       }
       collectMd(full, base, out)
@@ -27,18 +27,18 @@ function collectMd(dir: string, base: string, out: string[]) {
 const ASSET_EXTS = new Set([".png", ".jpg", ".jpeg", ".gif", ".webp", ".svg", ".ico", ".avif"])
 
 function collectAssets(dir: string, base: string, out: string[]) {
-  if (!existsSync(dir)) 
-{return}
+  if (!existsSync(dir))
+    return
   for (const e of readdirSync(dir, { withFileTypes: true })) {
     const full = join(dir, e.name)
     if (e.isDirectory()) {
-      if (e.name.startsWith(".") || e.name === "node_modules" || e.name === ".website") 
-{continue}
+      if (e.name.startsWith(".") || e.name === "node_modules")
+        continue
       collectAssets(full, base, out)
     } else if (e.isFile()) {
       const ext = "." + e.name.split(".").pop()!.toLowerCase()
-      if (ASSET_EXTS.has(ext)) 
-{out.push(relative(base, full))}
+      if (ASSET_EXTS.has(ext))
+        out.push(relative(base, full))
     }
   }
 }

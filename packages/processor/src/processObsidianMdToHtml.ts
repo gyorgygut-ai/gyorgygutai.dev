@@ -13,7 +13,7 @@ export async function processObsidianMdToHtml(input: string, css?: string, vault
   const { content } = parseFrontmatter(input)
   const processor = unified().use(markdown).use(...obsidian).use(transclude).use(callout).use(...wikilink).use(raw).use(...obsidianHtml).use(...stringify)
   if (vaultFiles !== undefined) {
-    processor.data("vaultFiles", vaultFiles)
+    ;(processor as unknown as { data(key: string, value: unknown): void }).data("vaultFiles", vaultFiles)
     setVaultFiles(vaultFiles)
   }
   try {

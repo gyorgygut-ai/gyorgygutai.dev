@@ -1,9 +1,12 @@
 {
   "name": "obsidian-vault-worker",
   "main": "index.ts",
-  "compatibility_date": "2026-09-05",
+  "compatibility_date": "2026-09-08",
   "compatibility_flags": ["nodejs_compat"],
   "observability": {
-    "enabled": true
+    "enabled": true,
+    "traces": {
+      "enabled": true
+    }
   }
 }

@@ -4,5 +4,10 @@ node_modules
 peach/
 research/
 Research - Obsidian MD to HTML-PDF Tools (Last 2 Years).md
-.obsidian/plugins/digitalgarden/data.json
-.obsidian/workspace*.json
+packages/*/node_modules
+packages/*/dist
+packages/*/coverage
+packages/*/.wrangler
+packages/worker/src/generated
+packages/vault/.obsidian/plugins/digitalgarden/data.json
+packages/vault/.obsidian/workspace*.json

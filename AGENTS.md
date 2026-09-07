@@ -1,30 +1,28 @@
-# Rules for Agents
+# Obsidian Vault to Static Website — Monorepo
 
-The Obsidian vault for my CV.
+## Structure
 
-## Key Facts + Rules
+- `packages/vault/` — Obsidian vault (content + `.obsidian`)
+- `packages/processor/` — Pure TS: markdown → HTML/PDF
+- `packages/worker/` — Cloudflare Worker thin wrapper
 
-- Vault deployed as a Digital Garden website - [source](/Users/gyorgygutai/Projects/digitalgarden/digitalgarden-cv)
-- **Vault = DG parity**: vault must look identical to the Digital Garden site
-- **One-directional**: vault → DG only, never reverse
-  - Notes published via DG plugin's GitHub integration
-  - CSS snippets auto-sync'd via VS Code workflow (see below)
-- Any css customization only using Obsidian css snippets as source of truth
-- Css snippets are isolated units: one component/feature per file
-- **Do not edit CSS snippets in Obsidian** — use VS Code instead
-  - Open the workspace: `gyorgygutai-dev.code-workspace`
-  - Install recommended "Run on Save" extension when prompted
-  - Edit `.obsidian/snippets/*.css` in VS Code
-  - On every save, `rsync` auto-copies to DG repo (`src/site/styles/user/`)
-  - DG copies are overwritten — never edit them directly
+## Commands
 
-## TODO
+- `npm test` — build processor, then run all workspace tests
+- `npm run dev` — build processor, bundle vault, run wrangler dev
+- `npm run deploy` — build processor, bundle vault, deploy
 
-**Maybe AI-assisted**:
+## Cross-Package Contracts
 
-- [ ] Pdf gen
-- [ ] Name gradient
+- `processor` is the only package that knows how to read/write vault files; `worker` depends on it via workspace link
+- `processor/src/glue/readCssSnippets.ts` is single source for CSS ordering/cleaning; `worker/src/bundleVaultIntoWorker.ts` imports it
+- `processor/src/parser/parseFrontmatter.ts` and `processor/src/parser/hasAs.ts` are SSOT for frontmatter
+- `worker/src/index.ts:slugFor` is SSOT for URL slug transformation (`/index`→`/`, pdf `/index.pdf`)
+- `worker/src/generated/bundle.ts` is gitignored, produced only by `bundleVaultIntoWorker`
 
-**Human only**:"
+## Testing Conventions
 
-- [ ] Restructure projects
+- One `*.test.ts` per subject; input → assert output
+- Fixtures deterministic; no shared `tests/`
+- Vault-agnostic: tests never read `../../../vault`; only `processor/src/tests/fixtures/**` + `worker/src/generated/bundle.ts` stub
+- Worker tests derive routes from bundle invariants — passes on stub and real bundle

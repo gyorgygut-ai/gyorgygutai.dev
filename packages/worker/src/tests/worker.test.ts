@@ -1,8 +1,7 @@
 import { describe, it, expect, beforeEach } from "vitest"
-import worker, { __resetCache, slugFor } from "../index"
+import worker, { __resetCache, __cachedKeys, slugFor } from "../index"
 import { vaultFiles, assetFiles } from "../generated/bundle"
-import { parseFrontmatter } from "../../processor/parser/parseFrontmatter"
-import { hasAs } from "../../processor/parser/hasAs"
+import { parseFrontmatter, hasAs } from "@gyorgygutai/processor"
 
 function expectedRoutes() {
   const html = new Set<string>()
@@ -87,8 +86,9 @@ describe("worker.fetch", () => {
 
   it("each asset route serves 200 with correct mime and immutable cache", async () => {
     const assets = Object.keys(assetFiles ?? {})
-    if (assets.length === 0) 
-{return}
+    if (assets.length === 0) {
+      return
+    }
     for (const rel of assets) {
       const route = "/" + rel.replace(/^\/+/, "")
       const res = await worker.fetch(new Request(`http://example.com${route}`))
@@ -106,6 +106,32 @@ describe("worker.fetch", () => {
     }
     const res404 = await worker.fetch(new Request("http://example.com/assets/__missing__.png"))
     expect(res404.status).toBe(404)
+  })
+
+  it("lazy build: one html request caches only that html route", async () => {
+    __resetCache()
+    const { html } = expectedRoutes()
+    const first = Array.from(html)[0]
+    if (!first) {
+      return
+    }
+    await worker.fetch(new Request(`http://example.com${first}`))
+    const keys = __cachedKeys()
+    expect(keys.html).toEqual([first])
+    expect(keys.pdf).toEqual([])
+  })
+
+  it("lazy build: one pdf request caches only that pdf route", async () => {
+    __resetCache()
+    const { pdf } = expectedRoutes()
+    const first = Array.from(pdf)[0]
+    if (!first) {
+      return
+    }
+    await worker.fetch(new Request(`http://example.com${first}`))
+    const keys = __cachedKeys()
+    expect(keys.pdf).toEqual([first])
+    expect(keys.html).toEqual([])
   })
 
   it("stub sanity: hello/doc still work when stub bundle present", async () => {

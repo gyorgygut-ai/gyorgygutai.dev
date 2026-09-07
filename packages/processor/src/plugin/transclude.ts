@@ -158,10 +158,10 @@ export default function transclude(this: Processor): void {
   if (!parse) {
     return
   }
-  const dataVaultFiles = this.data("vaultFiles") as Record<string, string> | undefined
+  const dataVaultFiles = (this as unknown as { data(key: string): unknown }).data("vaultFiles") as Record<string, string> | undefined
   const getVaultFiles = (): Record<string, string> | null => dataVaultFiles ?? fallbackVaultFiles
   this.parser = (document, file) => {
-    const vaultFiles = (this.data("vaultFiles") as Record<string, string> | undefined) ?? getVaultFiles()
+    const vaultFiles = (this as unknown as { data(key: string): unknown }).data("vaultFiles") as Record<string, string> | undefined ?? getVaultFiles()
     const seen = new Set<string>()
     const root = findNoteFileByBody(document, vaultFiles)
     if (root !== null) {

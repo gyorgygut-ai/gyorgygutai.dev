@@ -7,9 +7,11 @@
     "esModuleInterop": true,
     "skipLibCheck": true,
     "outDir": "dist",
-    "rootDir": ".",
+    "rootDir": "src",
+    "declaration": true,
+    "declarationMap": true,
     "types": ["node", "vitest/globals"]
   },
-  "include": ["processor/**/*", "worker/**/*"],
+  "include": ["src/**/*"],
   "exclude": ["node_modules", "dist"]
 }
