@@ -4,7 +4,7 @@ import { fileURLToPath } from "node:url"
 import { orderCssFiles, cleanCss } from "@gyorgygutai/processor-md-to-html"
 
 const __dirname = dirname(fileURLToPath(import.meta.url))
-const defaultVaultRoot = join(__dirname, "../../../vault")
+const defaultVaultRoot = join(__dirname, "../../vault")
 const defaultOutFile = join(__dirname, "./generated/bundle.ts")
 
 function collectMd(dir: string, base: string, out: string[]) {
