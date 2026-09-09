@@ -6,14 +6,14 @@
     "packages/*"
   ],
   "scripts": {
-    "build": "npm run build --workspaces",
-    "test": "npm run build --workspace=packages/processor-md-to-html && npm run build --workspace=packages/processor-md-to-pdf && npm run test --workspaces --if-present",
+    "build": "npm run build --workspace=packages/processor-md-to-html && npm run build --workspace=packages/processor-md-to-pdf",
+    "test": "npm run build && npm run test --workspaces --if-present",
     "test:watch": "npm run test:watch --workspaces --if-present",
     "lint": "npm run lint --workspaces --if-present",
     "lint:fix": "npm run lint:fix --workspaces --if-present",
     "bundleVaultIntoWorker": "npm run bundleVaultIntoWorker --workspace=packages/worker-website",
-    "dev": "npm run build --workspaces && npm run dev --workspace=packages/worker-website",
-    "deploy": "npm run build --workspaces && npm run deploy --workspace=packages/worker-website"
+    "dev": "npm run build && npm run dev --workspace=packages/worker-website",
+    "deploy": "npm run build && npm run deploy --workspace=packages/worker-website"
   },
   "devDependencies": {
     "typescript": "^6.0.3"
