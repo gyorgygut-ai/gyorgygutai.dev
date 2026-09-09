@@ -1,7 +1,0 @@
----
-as: home
----
-
-# Home
-
-Welcome

@@ -1,7 +1,0 @@
----
-as: page
----
-
-# Outer
-
-![[middle]]
