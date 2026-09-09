@@ -1,5 +1,6 @@
 import { describe, it, expect, beforeEach } from "vitest"
-import worker, { __resetCache, __cachedKeys, slugFor } from "../index"
+import worker from "../index"
+import { __resetCache, __cachedKeys, slugFor } from "../processVaultToPdf"
 import { vaultFiles } from "../generated/bundle"
 import { parseFrontmatter, hasAs } from "@gyorgygutai/processor-md-to-html"
 
