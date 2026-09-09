@@ -1,16 +1,18 @@
 import { visit } from "unist-util-visit"
 
+interface CalloutNode {
+  children?: Array<{
+    type?: unknown
+    children?: Array<{ value?: unknown }>
+    value?: unknown
+  }>
+  data?: { hProperties?: unknown }
+}
+
 export default function callout() {
   return (tree: unknown) => {
     visit(tree as Parameters<typeof visit>[0], "blockquote", (node: unknown) => {
-      const n = node as {
-        children?: Array<{
-          type?: unknown
-          children?: Array<{ value?: unknown }>
-          value?: unknown
-        }>
-        data?: { hProperties?: unknown }
-      }
+      const n = node as CalloutNode
       if (n.children && n.children.length > 0) {
         const firstChild = n.children[0]
         if (firstChild.type === "paragraph") {

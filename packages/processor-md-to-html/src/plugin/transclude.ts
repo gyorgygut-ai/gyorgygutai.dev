@@ -49,13 +49,7 @@ function findInVaultFiles(fileName: string, vaultFiles: Record<string, string> |
   if (!vaultFiles) {
     return null
   }
-  const keys = Object.keys(vaultFiles).sort()
-  for (const k of keys) {
-    if (k === fileName || k.endsWith("/" + fileName)) {
-      return k
-    }
-  }
-  return null
+  return Object.keys(vaultFiles).sort().find((k) => k === fileName || k.endsWith("/" + fileName)) ?? null
 }
 
 function findNoteFile(fileName: string, vaultFiles: Record<string, string> | null): string | null {
@@ -74,12 +68,15 @@ function findNoteFile(fileName: string, vaultFiles: Record<string, string> | nul
 
 function findNoteFileByBody(body: string, vaultFiles: Record<string, string> | null): string | null {
   if (vaultFiles) {
-    for (const [k, v] of Object.entries(vaultFiles)) {
+    const found = Object.entries(vaultFiles).find(([, v]) => {
       try {
-        if (parseFrontmatter(v).content === body) {
-          return k
-        }
-      } catch {}
+        return parseFrontmatter(v).content === body
+      } catch {
+        return false
+      }
+    })
+    if (found) {
+      return found[0]
     }
   }
   return searchNotes(vaultRoot(), (path) => {

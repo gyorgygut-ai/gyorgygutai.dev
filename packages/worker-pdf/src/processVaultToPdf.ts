@@ -42,7 +42,6 @@ export function processVaultToPdf(bundle: PdfBundle): {
   ensureCache: () => PdfCache
   knownPdf: Set<string>
   handleRequest: (request: Request) => Promise<Response>
-  slugFor: (path: string) => string
 } {
   const { vaultFiles } = bundle
 
@@ -121,5 +120,5 @@ export function processVaultToPdf(bundle: PdfBundle): {
     })
   }
 
-  return { buildRoute, ensureCache, knownPdf, handleRequest, slugFor }
+  return { buildRoute, ensureCache, knownPdf, handleRequest }
 }

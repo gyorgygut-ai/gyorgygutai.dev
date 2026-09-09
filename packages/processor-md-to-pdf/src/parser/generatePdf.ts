@@ -1,5 +1,46 @@
 import { PDFDocument, StandardFonts, rgb } from "pdf-lib"
 
+interface TextMeasurer {
+  widthOfTextAtSize(text: string, size: number): number
+}
+
+export function wrapText(font: TextMeasurer, fontSize: number, maxWidth: number, input: string): string[] {
+  if (font.widthOfTextAtSize(input, fontSize) <= maxWidth) {
+    return [input]
+  }
+  const words = input.split(" ")
+  const out: string[] = []
+  let cur = ""
+  for (const w of words) {
+    const test = cur ? cur + " " + w : w
+    if (font.widthOfTextAtSize(test, fontSize) <= maxWidth) {
+      cur = test
+    } else {
+      if (cur) {
+        out.push(cur)
+      }
+      if (font.widthOfTextAtSize(w, fontSize) > maxWidth) {
+        let chunk = ""
+        for (const ch of w) {
+          if (font.widthOfTextAtSize(chunk + ch, fontSize) <= maxWidth) {
+            chunk += ch
+          } else {
+            out.push(chunk)
+            chunk = ch
+          }
+        }
+        cur = chunk
+      } else {
+        cur = w
+      }
+    }
+  }
+  if (cur) {
+    out.push(cur)
+  }
+  return out
+}
+
 export async function generatePdf(text: string): Promise<Uint8Array> {
   const pdfDoc = await PDFDocument.create()
   pdfDoc.setCreationDate(new Date("2026-01-01T00:00:00Z"))
@@ -18,39 +59,6 @@ export async function generatePdf(text: string): Promise<Uint8Array> {
   const margin = 50
   const maxWidth = width - margin * 2
 
-  function wrapText(input: string): string[] {
-    if (font.widthOfTextAtSize(input, fontSize) <= maxWidth) 
-{return [input]}
-    const words = input.split(" ")
-    const out: string[] = []
-    let cur = ""
-    for (const w of words) {
-      const test = cur ? cur + " " + w : w
-      if (font.widthOfTextAtSize(test, fontSize) <= maxWidth) {
-        cur = test
-      } else {
-        if (cur) 
-{out.push(cur)}
-        if (font.widthOfTextAtSize(w, fontSize) > maxWidth) {
-          let chunk = ""
-          for (const ch of w) {
-            if (font.widthOfTextAtSize(chunk + ch, fontSize) <= maxWidth) 
-{chunk += ch}
-            else {
-              out.push(chunk)
-              chunk = ch
-            }
-          }
-          cur = chunk
-        } else 
-{cur = w}
-      }
-    }
-    if (cur) 
-{out.push(cur)}
-    return out
-  }
-
   let y = height - margin
   let currentPage = firstPage
 
@@ -63,7 +71,7 @@ export async function generatePdf(text: string): Promise<Uint8Array> {
       }
       continue
     }
-    const wrapped = wrapText(rawLine)
+    const wrapped = wrapText(font, fontSize, maxWidth, rawLine)
     for (const wline of wrapped) {
       if (y < margin) {
         currentPage = pdfDoc.addPage()

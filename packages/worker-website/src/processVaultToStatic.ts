@@ -153,5 +153,5 @@ export function processVaultToStatic(bundle: VaultBundle): StaticHandler {
     })
   }
 
-  return { buildRoute, ensureCache, knownHtml, assets: ensureCache().assets, handleRequest, slugFor }
+  return { buildRoute, ensureCache, knownHtml, assets: ensureCache().assets, handleRequest }
 }
