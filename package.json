@@ -6,7 +6,7 @@
     "packages/*"
   ],
   "scripts": {
-    "build": "npm run build --workspace=packages/processor-md-to-html && npm run build --workspace=packages/processor-md-to-pdf",
+    "build": "npm run build --workspace=packages/processor-md-to-html && npm run build --workspace=packages/bitch-ass-shit && npm run build --workspace=packages/processor-md-to-pdf",
     "test": "npm run build && npm run test --workspaces --if-present",
     "test:integration": "vitest run tests/integration.test.ts",
     "test:watch": "npm run test:watch --workspaces --if-present",

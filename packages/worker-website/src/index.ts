@@ -1,17 +1,15 @@
-import { processVaultToStatic } from "./processVaultToStatic"
-import { cssBundle, vaultFiles, assetFiles } from "./generated/bundle"
+import { processObsidianMdToHtml } from "@gyorgygutai/processor-md-to-html"
+import { processHtmlToWebsite, siteCss, siteJs } from "@gyorgygutai/bitch-ass-shit"
+import { vaultFiles, cssBundle, assetFiles } from "./generated/bundle"
 
-const handler = processVaultToStatic({ vaultFiles, cssBundle, assetFiles })
+const handler = processHtmlToWebsite(
+  processObsidianMdToHtml,
+  { vaultFiles, cssBundle, assetFiles },
+  { siteCss, siteJs }
+)
 
 export default {
   async fetch(request: Request): Promise<Response> {
-    const url = new URL(request.url)
-    if (url.pathname.endsWith(".pdf")) {
-      return new Response("Not found", {
-        status: 404,
-        headers: { "Cache-Control": "no-store" },
-      })
-    }
     return handler.handleRequest(request)
   },
 }

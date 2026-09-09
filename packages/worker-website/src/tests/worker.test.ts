@@ -1,6 +1,6 @@
 import { describe, it, expect, beforeEach } from "vitest"
 import worker from "../index"
-import { slugFor } from "../processVaultToStatic"
+import { slugFor } from "@gyorgygutai/processor-md-to-html"
 import { vaultFiles, assetFiles } from "../generated/bundle"
 import { parseFrontmatter, hasAs } from "@gyorgygutai/processor-md-to-html"
 
@@ -27,7 +27,11 @@ describe("worker-website.fetch", () => {
       expect(res.status).toBe(200)
       expect(res.headers.get("Content-Type")).toBe("text/html; charset=utf-8")
       expect(res.headers.get("Cache-Control")).toBe("public, max-age=31536000, immutable")
-      expect((await res.text()).length).toBeGreaterThan(0)
+      const body = await res.text()
+      expect(body.length).toBeGreaterThan(0)
+      expect(body).toContain("<!DOCTYPE html>")
+      expect(body).toContain("<html")
+      expect(body).toContain("<main")
     } else {
       expect(res.status).toBe(404)
     }

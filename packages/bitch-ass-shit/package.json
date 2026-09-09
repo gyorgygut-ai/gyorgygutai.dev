@@ -1,0 +1,23 @@
+{
+  "name": "@gyorgygutai/bitch-ass-shit",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc && cp src/site.css dist/site.css && cp src/site.js dist/site.js",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "lint": "eslint src",
+    "lint:fix": "eslint src --fix"
+  },
+  "dependencies": {
+    "@gyorgygutai/processor-md-to-html": "*"
+  },
+  "devDependencies": {
+    "@types/node": "^26.4.1",
+    "typescript": "^6.0.3",
+    "vitest": "^4.1.11"
+  }
+}

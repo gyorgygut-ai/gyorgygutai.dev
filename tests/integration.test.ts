@@ -99,6 +99,10 @@ describe("integration: full pipeline", () => {
     expect(res.status).toBe(200)
     expect(res.headers.get("content-type")).toBe("text/html; charset=utf-8")
     expect(res.headers.get("cache-control")).toBe("public, max-age=31536000, immutable")
+    const body = await res.text()
+    expect(body).toContain("<!DOCTYPE html>")
+    expect(body).toContain("<title>György Gutai - Full Stack Web Developer</title>")
+    expect(body).toContain("<main")
   })
 
   it("GET /links returns 200 HTML with immutable cache", async () => {
@@ -106,6 +110,9 @@ describe("integration: full pipeline", () => {
     expect(res.status).toBe(200)
     expect(res.headers.get("content-type")).toBe("text/html; charset=utf-8")
     expect(res.headers.get("cache-control")).toBe("public, max-age=31536000, immutable")
+    const body = await res.text()
+    expect(body).toContain("<!DOCTYPE html>")
+    expect(body).toContain("<title>")
   })
 
   it("GET /assets/cv_photo_2026_2.png returns 200 PNG with immutable cache", async () => {
