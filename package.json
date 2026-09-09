@@ -8,16 +8,18 @@
   "scripts": {
     "build": "npm run build --workspace=packages/processor-md-to-html && npm run build --workspace=packages/processor-md-to-pdf",
     "test": "npm run build && npm run test --workspaces --if-present",
+    "test:integration": "vitest run tests/integration.test.ts",
     "test:watch": "npm run test:watch --workspaces --if-present",
     "lint": "npm run lint --workspaces --if-present",
     "lint:fix": "npm run lint:fix --workspaces --if-present",
     "bundleVaultIntoWorker": "npm run bundleVaultIntoWorker --workspace=packages/worker-website",
     "bundleVaultIntoWorker:pdf": "npm run bundleVaultIntoWorker --workspace=packages/worker-pdf",
     "dev": "npm run build && npm run dev --workspace=packages/worker-website",
-    "dev:pdf": "npm run dev --workspace=packages/worker-pdf",
+    "dev:pdf": "npm run build && npm run dev --workspace=packages/worker-pdf",
     "deploy": "npm run deploy --workspace=packages/worker-website && npm run deploy --workspace=packages/worker-pdf"
   },
   "devDependencies": {
-    "typescript": "^6.0.3"
+    "typescript": "^6.0.3",
+    "vitest": "^4.1.11"
   }
 }
