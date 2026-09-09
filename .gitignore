@@ -7,7 +7,8 @@ Research - Obsidian MD to HTML-PDF Tools (Last 2 Years).md
 packages/*/node_modules
 packages/*/dist
 packages/*/coverage
-packages/*/.wrangler
+packages/*/**/.wrangler
 packages/worker-website/src/generated
+packages/worker-pdf/src/generated
 packages/obsidian-vault/.obsidian/plugins/digitalgarden/data.json
 packages/obsidian-vault/.obsidian/workspace*.json
