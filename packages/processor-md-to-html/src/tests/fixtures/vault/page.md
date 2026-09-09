@@ -1,0 +1,7 @@
+---
+as: page
+---
+
+# Page
+
+Content

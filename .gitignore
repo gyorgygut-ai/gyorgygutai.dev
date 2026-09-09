@@ -8,6 +8,6 @@ packages/*/node_modules
 packages/*/dist
 packages/*/coverage
 packages/*/.wrangler
-packages/worker/src/generated
-packages/vault/.obsidian/plugins/digitalgarden/data.json
-packages/vault/.obsidian/workspace*.json
+packages/worker-website/src/generated
+packages/obsidian-vault/.obsidian/plugins/digitalgarden/data.json
+packages/obsidian-vault/.obsidian/workspace*.json
