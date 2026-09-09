@@ -2,7 +2,7 @@ import { describe, it, expect, beforeEach } from "vitest"
 import worker from "../index"
 import { __resetCache, __cachedKeys, slugFor } from "../processVaultToPdf"
 import { vaultFiles } from "../generated/bundle"
-import { parseFrontmatter, hasAs } from "@gyorgygutai/processor-md-to-html"
+import { hasAs, parseFrontmatter } from "@gyorgygutai/preset-obsidian-md"
 
 function expectedPdfRoutes() {
   const pdf = new Set<string>()

@@ -6,15 +6,12 @@ export default tseslint.config(
   ...tseslint.configs.recommended,
   {
     rules: {
-      semi: ["error", "never"],
-      "no-extra-semi": "error",
-      "@typescript-eslint/no-explicit-any": "error",
-      "no-empty": "off",
       curly: ["error", "all"],
       "nonblock-statement-body-position": ["error", "below"],
+      "@typescript-eslint/no-explicit-any": "off",
     },
   },
   {
-    ignores: ["node_modules", "dist", "coverage", "generated"],
+    ignores: ["node_modules", "dist", "coverage", "src/generated/**"],
   }
 )

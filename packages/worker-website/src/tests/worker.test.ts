@@ -1,8 +1,7 @@
-import { describe, it, expect, beforeEach } from "vitest"
-import worker from "../index"
-import { slugFor } from "@gyorgygutai/processor-md-to-html"
+import { describe, it, expect } from "vitest"
+import worker, { slugFor } from "../index"
 import { vaultFiles, assetFiles } from "../generated/bundle"
-import { parseFrontmatter, hasAs } from "@gyorgygutai/processor-md-to-html"
+import { hasAs, parseFrontmatter } from "@gyorgygutai/preset-obsidian-md"
 
 function expectedHtmlRoutes() {
   const html = new Set<string>()
@@ -29,7 +28,7 @@ describe("worker-website.fetch", () => {
       expect(res.headers.get("Cache-Control")).toBe("public, max-age=31536000, immutable")
       const body = await res.text()
       expect(body.length).toBeGreaterThan(0)
-      expect(body).toContain("<!DOCTYPE html>")
+      expect(body).toContain("<!doctype html>")
       expect(body).toContain("<html")
       expect(body).toContain("<main")
     } else {

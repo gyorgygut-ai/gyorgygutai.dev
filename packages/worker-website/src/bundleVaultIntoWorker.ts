@@ -1,11 +1,23 @@
 import { readFileSync, readdirSync, existsSync, writeFileSync, mkdirSync } from "node:fs"
 import { join, relative, dirname, resolve } from "node:path"
 import { fileURLToPath } from "node:url"
-import { orderCssFiles, cleanCss } from "@gyorgygutai/processor-md-to-html"
 
 const __dirname = dirname(fileURLToPath(import.meta.url))
 const defaultVaultRoot = join(__dirname, "../../obsidian-vault")
 const defaultOutFile = join(__dirname, "./generated/bundle.ts")
+
+function orderCssFiles(files: string[], ordered: string[] | null): string[] {
+  if (!ordered || ordered.length === 0) 
+{return files}
+  const set = new Set(files)
+  const normalized = ordered.map((f) => f.endsWith(".css") ? f : f + ".css").filter((f) => set.has(f))
+  const remaining = files.filter((f) => !normalized.includes(f))
+  return [...normalized, ...remaining]
+}
+
+function cleanCss(css: string): string {
+  return css.split("\n").filter((line) => line.trim() !== "").join("\n")
+}
 
 function collectMd(dir: string, base: string, out: string[]) {
   if (!existsSync(dir)) {
@@ -28,17 +40,17 @@ const ASSET_EXTS = new Set([".png", ".jpg", ".jpeg", ".gif", ".webp", ".svg", ".
 
 function collectAssets(dir: string, base: string, out: string[]) {
   if (!existsSync(dir))
-    return
+    {return}
   for (const e of readdirSync(dir, { withFileTypes: true })) {
     const full = join(dir, e.name)
     if (e.isDirectory()) {
       if (e.name.startsWith(".") || e.name === "node_modules")
-        continue
+        {continue}
       collectAssets(full, base, out)
     } else if (e.isFile()) {
       const ext = "." + e.name.split(".").pop()!.toLowerCase()
       if (ASSET_EXTS.has(ext))
-        out.push(relative(base, full))
+        {out.push(relative(base, full))}
     }
   }
 }
@@ -73,7 +85,9 @@ try {
   cssFiles = readdirSync(cssDir)
     .filter((f) => f.endsWith(".css"))
     .sort()
-} catch {}
+} catch {
+  // No snippets directory: bundle without CSS.
+}
 
 let ordered: string[] | null = null
 const appearancePath = join(vaultRoot, ".obsidian/appearance.json")
@@ -85,7 +99,9 @@ try {
       ordered = data.enabledCssSnippets as string[]
     }
   }
-} catch {}
+} catch {
+  // Unreadable appearance.json: fall back to alphabetical CSS order.
+}
 
 cssFiles = orderCssFiles(cssFiles, ordered)
 

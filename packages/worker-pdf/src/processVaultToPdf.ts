@@ -1,5 +1,5 @@
-import { parseFrontmatter, hasAs } from "@gyorgygutai/processor-md-to-html"
-import { processObsidianMdToPdf } from "@gyorgygutai/processor-md-to-pdf"
+import { process } from "@gyorgygutai/processor-pdf"
+import { hasAs, parseFrontmatter } from "@gyorgygutai/preset-obsidian-md"
 
 export interface PdfBundle {
   vaultFiles: Record<string, string>
@@ -81,7 +81,7 @@ export function processVaultToPdf(bundle: PdfBundle): {
       const raw = vaultFiles[filePath]
       const slug = slugFor(filePath)
       const pdfSlug = slug === "/" ? "/index.pdf" : `${slug}.pdf`
-      c.pdf.set(pdfSlug, await processObsidianMdToPdf(raw, vaultFiles))
+      c.pdf.set(pdfSlug, await process({ markdown: raw, vaultFiles, path: filePath }))
     })()
     buildingByFile.set(filePath, p)
     await p

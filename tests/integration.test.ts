@@ -100,7 +100,7 @@ describe("integration: full pipeline", () => {
     expect(res.headers.get("content-type")).toBe("text/html; charset=utf-8")
     expect(res.headers.get("cache-control")).toBe("public, max-age=31536000, immutable")
     const body = await res.text()
-    expect(body).toContain("<!DOCTYPE html>")
+    expect(body).toContain("<!doctype html>")
     expect(body).toContain("<title>György Gutai - Full Stack Web Developer</title>")
     expect(body).toContain("<main")
   })
@@ -111,7 +111,7 @@ describe("integration: full pipeline", () => {
     expect(res.headers.get("content-type")).toBe("text/html; charset=utf-8")
     expect(res.headers.get("cache-control")).toBe("public, max-age=31536000, immutable")
     const body = await res.text()
-    expect(body).toContain("<!DOCTYPE html>")
+    expect(body).toContain("<!doctype html>")
     expect(body).toContain("<title>")
   })
 
