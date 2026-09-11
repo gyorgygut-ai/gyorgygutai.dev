@@ -1,5 +1,6 @@
 import { describe, it, expect } from "vitest"
-import worker, { slugFor } from "../index"
+import worker from "../index"
+import { slugFor } from "../processVaultToStatic"
 import { vaultFiles, assetFiles } from "../generated/bundle"
 import { hasAs, parseFrontmatter } from "@gyorgygutai/preset-obsidian-md"
 

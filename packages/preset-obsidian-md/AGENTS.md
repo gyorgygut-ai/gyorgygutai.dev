@@ -1,15 +1,13 @@
-# Processor — Markdown → HTML
+# Preset — Obsidian Markdown (unified plugin array)
 
 ## Why This Package Exists
 
-All vault-to-HTML transformation logic lives here. It has zero Cloudflare dependencies and can be tested/debugged in plain Node.
+One place that turns Obsidian-flavored markdown into mdast. Mostly npm plugins; custom code only where no library covers the syntax.
 
 ## Responsibility
 
-- Convert Obsidian-flavored markdown to HTML
-- Handle frontmatter, callouts, transclusions, wikilinks, embedded images
-- Read and inline CSS snippets in deterministic order
-- Provide pure function: `processObsidianMdToHtml`
+- Export `createPreset({vaultFiles, path})`: imports + plugin array, nothing else
+- Frontmatter (`parseFrontmatter`, `hasAs`), callouts, transclusions, wikilinks, embedded images
 
 ## Obsidian Support
 
@@ -17,28 +15,27 @@ All vault-to-HTML transformation logic lives here. It has zero Cloudflare depend
   - [x] `as`: `page` | `home` | `pdf` (no default, can be array)
 - [x] Obsidian-flavoured markdown:
   - [x] Links, Callouts, Transclusions
-  - [x] Images: proper image files
-- [x] CSS Snippets: inlined into HTML (appearance.json order, alphabetical fallback)
+  - [x] Images: proper image files (+ numeric alias = width)
 
 ## File Structure
 
-- `src/processObsidianMdToHtml.ts`: input md, output html
-- `src/plugin/`: one file per processing step (Plugin, not Processor)
-- `src/parser/`, `src/glue/`
+- `src/index.ts`: imports, `VaultFiles`, `parseFrontmatter`, `hasAs`, `createPreset` — the plugin array
+- `src/plugin/`: only custom code — `callout.ts`, `wikilink.ts` (handler), `resolveTranscludes.ts` (in-memory `vaultFiles` resolver)
+- `src/tests/`
 
 ## Public API
 
-- `src/index.ts` is the single source of truth for exports
+- `src/index.ts` is the single source of truth for exports: `createPreset`, `parseFrontmatter`, `hasAs`, `VaultFiles`, `PresetOptions`
 
 ## Contracts
 
-- `src/parser/parseFrontmatter.ts`: only `gray-matter` allowed
-- `src/parser/hasAs.ts`: SSOT for frontmatter `as` parsing
-- `src/glue/readCssSnippets.ts`: `orderCssFiles` + `cleanCss` is single source (`appearance.json` authoritative, alphabetical fallback)
-- `src/plugin/transclude.ts`: pure `vaultFiles` param via `processor.data("vaultFiles")`; no global state, no fallback
+- Only `gray-matter` user in the repo (declared here, nowhere else)
+- `Wikilink` type imported from `@quartz-community/remark-obsidian` — never redefined
+- `resolveTranscludes` re-parses embeds with `this.parse` (same processor config, no second setup)
+- Transclusion needs explicit `vaultFiles` + optional `path` (cycle root seed); no `node:fs`, no fallback
 
 ## Tests
 
 - One `*.test.ts` per subject; input → assert output
-- Fixtures in `src/tests/fixtures/**`
+- `pipeline.test.ts`: end-to-end render through `createPreset`
 - Deterministic; no external I/O

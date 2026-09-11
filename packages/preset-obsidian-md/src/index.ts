@@ -1,32 +1,58 @@
-import markdown from "./plugin/markdown"
-import obsidian from "./plugin/obsidian"
-import { resolveTranscludes, type ResolveTranscludesOptions } from "./plugin/resolveTranscludes"
+import grayMatter from "gray-matter"
+import remarkParse from "remark-parse"
+import remarkObsidian from "@quartz-community/remark-obsidian"
+import remarkRehype from "remark-rehype"
+import rehypeRaw from "rehype-raw"
+import rehypeObsidian from "@quartz-community/rehype-obsidian"
+import { resolveTranscludes } from "./plugin/resolveTranscludes"
 import callout from "./plugin/callout"
-import wikilink from "./plugin/wikilink"
-import raw from "./plugin/raw"
-import obsidianHtml from "./plugin/obsidianHtml"
-import type { VaultFiles } from "./types"
+import { wikilinkHandler } from "./plugin/wikilink"
+
+export type VaultFiles = Record<string, string>
 
 export interface PresetOptions {
   vaultFiles: VaultFiles
   path?: string
 }
 
-export function createPreset(options: PresetOptions) {
-  const transcludeEntry = [resolveTranscludes, { vaultFiles: options.vaultFiles, path: options.path }] as [
-    typeof resolveTranscludes,
-    ResolveTranscludesOptions,
-  ]
-  return [markdown, obsidian, transcludeEntry, callout, wikilink, raw, obsidianHtml]
+export function parseFrontmatter(markdown: string): { content: string; data: Record<string, unknown> } {
+  const { content, data } = grayMatter(markdown)
+  return { content, data }
 }
 
-const defaultTranscludeEntry = [resolveTranscludes, { vaultFiles: {} as VaultFiles }] as [
-  typeof resolveTranscludes,
-  ResolveTranscludesOptions,
-]
+export function hasAs(data: Record<string, unknown>, target: string): boolean {
+  const as = data.as as string | string[] | undefined
+  if (Array.isArray(as)) {
+    return as.includes(target)
+  }
+  return as === target
+}
 
-export default [markdown, obsidian, defaultTranscludeEntry, callout, wikilink, raw, obsidianHtml]
+const obsidianOptions = {
+  wikilinks: true,
+  highlights: true,
+  comments: true,
+  tags: true,
+  customTaskChars: true,
+  math: true,
+}
 
-export { parseFrontmatter } from "./parser/parseFrontmatter"
-export { hasAs } from "./parser/hasAs"
-export type { VaultFiles, AssetFiles, AppearanceOrder } from "./types"
+const rehypeOptions = { allowDangerousHtml: true, handlers: { wikilink: wikilinkHandler } }
+
+const htmlOptions = { checkbox: true, mermaid: false }
+
+export function createPreset(options: PresetOptions) {
+  const transcludes = [resolveTranscludes, { vaultFiles: options.vaultFiles, path: options.path }] as [
+    typeof resolveTranscludes,
+    { vaultFiles: VaultFiles; path?: string },
+  ]
+  return [
+    remarkParse,
+    [remarkObsidian, obsidianOptions] as [typeof remarkObsidian, typeof obsidianOptions],
+    transcludes,
+    callout,
+    [remarkRehype, rehypeOptions] as [typeof remarkRehype, typeof rehypeOptions],
+    rehypeRaw,
+    [rehypeObsidian, htmlOptions] as [typeof rehypeObsidian, typeof htmlOptions],
+  ]
+}

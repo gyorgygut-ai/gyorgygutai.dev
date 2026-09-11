@@ -14,8 +14,8 @@
   },
   "dependencies": {
     "@gyorgygutai/preset-obsidian-md": "*",
-    "@gyorgygutai/processor-website": "*",
-    "gray-matter": "^4.0.3"
+    "@gyorgygutai/collect-vault": "*",
+    "@gyorgygutai/processor-website": "*"
   },
   "devDependencies": {
     "@cloudflare/vitest-plugin": "^1.1.4",

@@ -1,40 +1,17 @@
 import type { Paragraph, Root } from "mdast"
-import remarkParse from "remark-parse"
-import { unified } from "unified"
+import type { Processor } from "unified"
+import type { Wikilink } from "@quartz-community/remark-obsidian"
+import grayMatter from "gray-matter"
 import { SKIP, visit } from "unist-util-visit"
-import { parseFrontmatter } from "../parser/parseFrontmatter"
-import type { VaultFiles } from "../types"
-import remarkObsidian from "@quartz-community/remark-obsidian"
+import type { VaultFiles } from "../index"
 
-interface WikilinkNode {
-  type: string
-  embedded?: boolean
-  path?: string
-  alias?: string
-}
-
-function isNoteEmbed(node: WikilinkNode): boolean {
-  if (!node.embedded) {
-    return false
-  }
-  if (typeof node.path !== "string" || node.path.length === 0) {
-    return false
-  }
-  if (node.alias && node.alias.length > 0) {
-    return false
-  }
-  if (/\.(png|jpg|jpeg|gif|webp|svg)$/i.test(node.path)) {
-    return false
-  }
-  return true
-}
+const IMAGE_EXT = /\.(png|jpg|jpeg|gif|webp|svg)$/i
 
 function buildIndex(vaultFiles: VaultFiles): Map<string, string> {
   const index = new Map<string, string>()
   for (const key of Object.keys(vaultFiles)) {
     const base = key.split("/").pop() ?? key
-    const noExt = base.replace(/\.md$/i, "")
-    for (const variant of [key, base, noExt]) {
+    for (const variant of [key, base, base.replace(/\.md$/i, "")]) {
       const lowered = variant.toLowerCase()
       if (!index.has(lowered)) {
         index.set(lowered, key)
@@ -44,48 +21,31 @@ function buildIndex(vaultFiles: VaultFiles): Map<string, string> {
   return index
 }
 
-function parseNote(markdown: string): Root {
-  const { content } = parseFrontmatter(markdown)
-  return unified()
-    .use(remarkParse)
-    .use(remarkObsidian, { wikilinks: true, highlights: true, comments: true, tags: true, customTaskChars: true, math: true })
-    .parse(content)
-}
-
-function messageParagraph(text: string): Paragraph {
+function note(text: string): Paragraph {
   return {
     type: "paragraph",
     children: [{ type: "html", value: `<em>${text}</em>` }],
   }
 }
 
-export interface ResolveTranscludesOptions {
-  vaultFiles: VaultFiles
-  path?: string
-}
-
-export function resolveTranscludes(options: ResolveTranscludesOptions) {
+export function resolveTranscludes(this: Processor, options: { vaultFiles: VaultFiles; path?: string }) {
   const index = buildIndex(options.vaultFiles)
-  const vaultFiles = options.vaultFiles
+  const { vaultFiles } = options
   const rootKey = options.path ? index.get(options.path.toLowerCase()) : undefined
 
-  function resolveTarget(target: string): { key: string } | { missing: string } {
-    const key = index.get(target.toLowerCase()) ?? index.get(`${target.toLowerCase()}.md`)
-    if (!key) {
-      return { missing: target }
-    }
-    return { key }
-  }
-
-  function expand(tree: Root, seen: Set<string>): void {
+  const expand = (tree: Root, seen: Set<string>): void => {
     visit(tree, "paragraph", (node, idx, parent) => {
       if (!parent || typeof idx !== "number") {
         return
       }
       const embeddable = node.children.every(
         (child) =>
-          (child.type === "wikilink" && isNoteEmbed(child as WikilinkNode)) ||
-          (child.type === "text" && (child as { value: string }).value.trim() === "")
+          (child.type === "text" && child.value.trim() === "") ||
+          (child.type === "wikilink" &&
+            child.embedded &&
+            child.path.length > 0 &&
+            child.alias.length === 0 &&
+            !IMAGE_EXT.test(child.path)),
       )
       if (!embeddable) {
         return
@@ -95,26 +55,20 @@ export function resolveTranscludes(options: ResolveTranscludesOptions) {
         if (child.type !== "wikilink") {
           continue
         }
-        const link = child as WikilinkNode
-        const target = (link.path ?? "").replace(/\.md$/i, "")
-        const resolved = resolveTarget(target)
-        if ("missing" in resolved) {
-          blocks.push(messageParagraph(`Transclusion missing: ${resolved.missing}`))
+        const target = child.path.replace(/\.md$/i, "")
+        const key = index.get(target.toLowerCase()) ?? index.get(`${target.toLowerCase()}.md`)
+        if (!key) {
+          blocks.push(note(`Transclusion missing: ${child.path}`))
           continue
         }
-        if (seen.has(resolved.key)) {
-          blocks.push(messageParagraph(`Transclusion cycle detected: ${link.path}`))
+        if (seen.has(key)) {
+          blocks.push(note(`Transclusion cycle detected: ${child.path}`))
           continue
         }
-        const raw = vaultFiles[resolved.key]
-        if (typeof raw !== "string") {
-          blocks.push(messageParagraph(`Transclusion missing: ${target}`))
-          continue
-        }
-        const sub = parseNote(raw)
-        seen.add(resolved.key)
+        seen.add(key)
+        const sub = this.parse(grayMatter(vaultFiles[key] ?? "").content) as Root
         expand(sub, seen)
-        seen.delete(resolved.key)
+        seen.delete(key)
         blocks.push(...sub.children)
       }
       parent.children.splice(idx, 1, ...blocks)
@@ -130,5 +84,3 @@ export function resolveTranscludes(options: ResolveTranscludesOptions) {
     expand(tree, seen)
   }
 }
-
-export default resolveTranscludes

@@ -19,7 +19,6 @@
   },
   "dependencies": {
     "@gyorgygutai/preset-obsidian-md": "*",
-    "gray-matter": "^4.0.3",
     "pdf-lib": "^1.17.1",
     "rehype-stringify": "^10.0.1",
     "unified": "^11.0.5",
