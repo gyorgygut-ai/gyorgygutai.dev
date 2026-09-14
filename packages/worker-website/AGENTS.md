@@ -22,7 +22,7 @@ It composes the processors into a deployable Cloudflare Worker that builds once 
 ## Contracts
 
 - `src/generated/**`: gitignored, eslint/coverage ignored; stub exports `cssBundle`/`vaultFiles`/`appearanceOrder`; real `../../obsidian-vault` read only in `bundleVaultIntoWorker.ts`, run only via `bundleVaultIntoWorker`/`dev`/`deploy` — never `npm test`
-- `src/wrangler.jsonc`: `main`, `compatibility_date`, `nodejs_compat` only; no `assets`/`r2`
+- `src/wrangler.jsonc`: `name`, `main`, `compatibility_date`, `compatibility_flags` (`nodejs_compat`), `observability` only; no `assets`/`r2`
 - `slugFor` in this file: `/index`→`/`, pdf `/index.pdf` (SSOT)
 
 ## Commands

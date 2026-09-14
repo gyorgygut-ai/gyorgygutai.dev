@@ -21,7 +21,7 @@ It generates PDFs from vault content. It is the PDF generation layer — indepen
 ## Contracts
 
 - `src/generated/**`: gitignored, eslint/coverage ignored; stub exports `cssBundle`/`vaultFiles`/`appearanceOrder`; real `../../obsidian-vault` read only in `bundleVaultIntoWorker.ts`, run only via `bundleVaultIntoWorker`/`dev`/`deploy` — never `npm test`
-- `src/wrangler.jsonc`: `main`, `compatibility_date`, `nodejs_compat`, `routes` for `*.pdf` only; no `assets`/`r2`
+- `src/wrangler.jsonc`: `name`, `main`, `compatibility_date`, `compatibility_flags` (`nodejs_compat`), `observability`, `routes` for `*.pdf` only; no `assets`/`r2`
 
 ## Commands
 

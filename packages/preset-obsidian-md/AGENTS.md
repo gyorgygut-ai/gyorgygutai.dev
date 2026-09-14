@@ -20,7 +20,7 @@ One place that turns Obsidian-flavored markdown into mdast. Mostly npm plugins; 
 ## File Structure
 
 - `src/index.ts`: imports, `VaultFiles`, `parseFrontmatter`, `hasAs`, `createPreset` — the plugin array
-- `src/plugin/`: only custom code — `callout.ts`, `wikilink.ts` (handler), `resolveTranscludes.ts` (in-memory `vaultFiles` resolver)
+- `src/plugin/`: custom code — `callout.ts`, `wikilink.ts` (handler), `resolveTranscludes.ts` (in-memory `vaultFiles` resolver) — plus thin re-export wrappers for vendor plugins: `remarkParse.ts`, `remarkObsidian.ts`, `remarkRehype.ts`, `rehypeRaw.ts`, `rehypeObsidian.ts`
 - `src/tests/`
 
 ## Public API
@@ -30,6 +30,7 @@ One place that turns Obsidian-flavored markdown into mdast. Mostly npm plugins; 
 ## Contracts
 
 - Only `gray-matter` user in the repo (declared here, nowhere else)
+- Every `createPreset` plugin-array item is imported from `src/plugin/` — vendor plugins via thin re-export wrappers; `gray-matter` (helper, not a plugin item) stays direct
 - `Wikilink` type imported from `@quartz-community/remark-obsidian` — never redefined
 - `resolveTranscludes` re-parses embeds with `this.parse` (same processor config, no second setup)
 - Transclusion needs explicit `vaultFiles` + optional `path` (cycle root seed); no `node:fs`, no fallback

@@ -2,13 +2,13 @@
 
 ## Why This Package Exists
 
-It converts rendered HTML into PDF. It depends on `processor-md-to-html` for the HTML input.
+It converts rendered HTML into PDF. It depends on `@gyorgygutai/preset-obsidian-md` for the HTML input.
 
 ## Responsibility
 
 - Strip HTML tags from rendered HTML
 - Generate PDF bytes from plain text
-- Provide pure function: `processObsidianMdToPdf`
+- Provide pure function: `process`
 
 ## File Structure
 
@@ -22,7 +22,7 @@ It converts rendered HTML into PDF. It depends on `processor-md-to-html` for the
 
 ## Contracts
 
-- Depends on `@gyorgygutai/processor-md-to-html` for HTML generation
+- Depends on `@gyorgygutai/preset-obsidian-md` for HTML generation
 - Uses `pdf-lib` for PDF generation
 
 ## Tests
