@@ -4,7 +4,7 @@ import remarkObsidian from "./plugin/remarkObsidian"
 import remarkRehype from "./plugin/remarkRehype"
 import rehypeRaw from "./plugin/rehypeRaw"
 import rehypeObsidian from "./plugin/rehypeObsidian"
-import { resolveTranscludes } from "./plugin/resolveTranscludes"
+import { resolveTranscludes } from "./plugin/transclusion"
 import callout from "./plugin/callout"
 import { wikilinkHandler } from "./plugin/wikilink"
 

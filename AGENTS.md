@@ -5,7 +5,7 @@
 - `packages/obsidian-vault/` — Obsidian vault (content + `.obsidian`)
 - `packages/preset-obsidian-md/` — unified preset: Obsidian markdown → mdast (npm plugins + 3 custom files)
 - `packages/preset-website-shell/` — unified preset: mdast → HTML document shell
-- `packages/processor-website/` — thin wrapper: preset + shell → HTML string
+- `packages/processor-html/` — thin wrapper: preset + shell → HTML string
 - `packages/processor-pdf/` — thin wrapper: preset → plain text → PDF bytes
 - `packages/collect-vault/` — build-time vault reader: md/assets/css → generated bundle
 - `packages/worker-website/` — Cloudflare Worker (HTML + assets)
@@ -17,7 +17,7 @@
   Edit markdown, assets, or `.obsidian/snippets/*.css`.
 - `preset-obsidian-md`: `src/index.ts` is imports + plugin array + tiny helpers (`VaultFiles`, `parseFrontmatter`, `hasAs`, `createPreset`). Custom code lives only in `src/plugin/` (`callout`, `wikilink`, `resolveTranscludes`).
   Test with `npx vitest run` in the package.
-- `processor-website` / `processor-pdf`: thin `process()` wrappers over `createPreset`. No duplicated parsing.
+- `processor-html` / `processor-pdf`: thin `process()` wrappers over `createPreset`. No duplicated parsing.
 - `collect-vault`: `collectVault(vaultRoot, includeAssets)` + `writeBundle`. Used only by the workers' `bundleVaultIntoWorker` scripts (run via `tsx`, never bundled to edge, never imported by tests).
 - `worker-website`: Integration layer. Depends on both processors and the vault.
   Run `npm run dev --workspace=packages/worker-website` to bundle vault and start wrangler dev.

@@ -1,18 +1,11 @@
 import type { Element, Root } from "hast"
 import type { Wikilink } from "@quartz-community/remark-obsidian"
 
-function normalizeAssetPath(p: string): string {
-  const cleaned = p.replace(/^(\.\/|\.\.\/)+/, "").replace(/^\/+/, "")
-  return "/" + cleaned
-}
+const IMAGE_EXT = /\.(png|jpg|jpeg|gif|webp|svg)$/i
 
-interface WikilinkState {
-  all: (node: Root) => Element[]
-}
-
-export function wikilinkHandler(state: WikilinkState, node: Wikilink): Element {
-  const path = normalizeAssetPath(node.path)
-  if (node.embedded && /\.(png|jpg|jpeg|gif|webp|svg)$/i.test(path)) {
+export function wikilinkHandler(state: { all: (node: Root) => Element[] }, node: Wikilink): Element {
+  const path = "/" + node.path.replace(/^(\.\/|\.\.\/)+/, "").replace(/^\/+/, "")
+  if (node.embedded && IMAGE_EXT.test(path)) {
     const width = node.alias ? Number.parseInt(node.alias, 10) : Number.NaN
     return {
       type: "element",
@@ -29,10 +22,7 @@ export function wikilinkHandler(state: WikilinkState, node: Wikilink): Element {
     return {
       type: "element",
       tagName: "span",
-      properties: {
-        className: ["transclude"],
-        "data-path": path,
-      },
+      properties: { className: ["transclude"], "data-path": path },
       children: [],
     }
   }

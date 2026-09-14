@@ -1,4 +1,4 @@
-import { process } from "@gyorgygutai/processor-website"
+import { process } from "@gyorgygutai/processor-html"
 import { hasAs, parseFrontmatter } from "@gyorgygutai/preset-obsidian-md"
 
 export interface StaticBundle {

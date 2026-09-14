@@ -1,5 +1,5 @@
 {
-  "name": "@gyorgygutai/preset-obsidian-md",
+  "name": "@gyorgygutai/processor-html",
   "version": "0.0.0",
   "type": "module",
   "main": "dist/index.js",
@@ -12,25 +12,19 @@
   },
   "scripts": {
     "build": "tsc",
-    "test": "echo \"no tests\"",
+    "test": "vitest run",
     "test:watch": "vitest",
     "lint": "eslint src",
     "lint:fix": "eslint src --fix"
   },
   "dependencies": {
-    "@quartz-community/rehype-obsidian": "^0.1.2",
-    "@quartz-community/remark-obsidian": "^0.2.4",
-    "gray-matter": "^4.0.3",
-    "rehype-raw": "^7.0.0",
-    "rehype-stringify": "^10.0.1",
-    "remark-parse": "^11.0.0",
-    "remark-rehype": "^11.1.2",
+    "@gyorgygutai/preset-obsidian-md": "*",
+    "@gyorgygutai/preset-website-shell": "*",
     "unified": "^11.0.5",
-    "unist-util-visit": "^5.1.0"
+    "vfile": "^6.0.3"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",
-    "@types/mdast": "^4.0.4",
     "@types/node": "^26.4.1",
     "eslint": "^10.10.0",
     "typescript": "^6.0.3",
