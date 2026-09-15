@@ -12,7 +12,7 @@ It converts rendered HTML into PDF. It depends on `@gyorgygutai/preset-obsidian-
 
 ## File Structure
 
-- `src/processObsidianMdToPdf.ts`: input html, output pdf
+- `src/process.ts`: input html, output pdf (re-exported by `src/index.ts`)
 - `src/parser/stripHtml.ts`: HTML → plain text
 - `src/parser/generatePdf.ts`: plain text → PDF bytes
 

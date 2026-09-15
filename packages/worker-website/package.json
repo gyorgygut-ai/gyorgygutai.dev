@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "bundleVaultIntoWorker": "tsx src/bundleVaultIntoWorker.ts",
-    "dev": "npm run bundleVaultIntoWorker && (tsx src/watchVault.ts &>/tmp/vault-watcher.log &) && wrangler dev --config src/wrangler.jsonc",
+    "dev": "npm run bundleVaultIntoWorker && (tsx src/watchVault.ts &>/dev/null &) && wrangler dev --config src/wrangler.jsonc --port 8787",
     "deploy": "npm run bundleVaultIntoWorker && wrangler deploy --config src/wrangler.jsonc",
     "test": "vitest run",
     "test:watch": "vitest",

@@ -1,4 +1,4 @@
-import { watch } from "node:fs/promises"
+import { watch } from "node:fs"
 import { spawn } from "node:child_process"
 import { join } from "node:path"
 
@@ -34,7 +34,7 @@ function scheduleBundle() {
 
 console.log("[vault-watcher] watching vault at", VAULT_DIR)
 
-const watcher = watch(VAULT_DIR, { recursive: true }, (_event, filename) => {
+const watcher = watch(VAULT_DIR, { recursive: true }, (eventType, filename) => {
   if (!filename) return
   const ext = filename.split(".").pop()?.toLowerCase()
   if (!allowedExts.has(ext as string)) return

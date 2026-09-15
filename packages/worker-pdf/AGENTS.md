@@ -15,21 +15,22 @@ It generates PDFs from vault content. It is the PDF generation layer — indepen
 
 - `src/index.ts`: builds once, serves cached immutable PDFs
 - `src/bundleVaultIntoWorker.ts`: reads vault from `../../obsidian-vault`, writes `src/generated/bundle.ts`
+- `src/watchVault.ts`: dev-only vault watcher → re-runs `bundleVaultIntoWorker` (reads no file contents)
 - `src/generated/bundle.ts`: auto-generated, gitignored
 - `src/wrangler.jsonc`
 
 ## Contracts
 
-- `src/generated/**`: gitignored, eslint/coverage ignored; stub exports `cssBundle`/`vaultFiles`/`appearanceOrder`; real `../../obsidian-vault` read only in `bundleVaultIntoWorker.ts`, run only via `bundleVaultIntoWorker`/`dev`/`deploy` — never `npm test`
+- `src/generated/**`: gitignored, eslint/coverage ignored; stub exports `cssBundle`/`vaultFiles`/`appearanceOrder`; real `../../obsidian-vault` content read only in `bundleVaultIntoWorker.ts` (via `collect-vault`); `watchVault.ts` is dev-only fs-watch, never `npm test`
 - `src/wrangler.jsonc`: `name`, `main`, `compatibility_date`, `compatibility_flags` (`nodejs_compat`), `observability`, `routes` for `*.pdf` only; no `assets`/`r2`
 
 ## Commands
 
 - `npm run bundleVaultIntoWorker` — regenerate bundle from vault (`../../obsidian-vault` → `src/generated/bundle.ts`, gitignored)
-- `npm run dev` — `bundleVaultIntoWorker` + `wrangler dev --config src/wrangler.jsonc` — serve worker locally at `http://localhost:8787`
+- `npm run dev` — `bundleVaultIntoWorker` + `watchVault.ts` watcher + `wrangler dev --config src/wrangler.jsonc --port 8788` — serve worker locally at `http://localhost:8788`
 - `npm run deploy` — `bundleVaultIntoWorker` + `wrangler deploy --config src/wrangler.jsonc` — deploy to Cloudflare prod (immutable, cached)
 
 ## Tests
 
-- `src/tests/pdf.test.ts` derives expected PDF routes from `vaultFiles` via `slugFor`/`hasAs` invariants
+- `src/tests/worker.test.ts` derives expected PDF routes from `vaultFiles` via `slugFor`/`hasAs` invariants
 - Passes on stub and real bundle

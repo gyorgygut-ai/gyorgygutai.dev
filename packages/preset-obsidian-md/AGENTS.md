@@ -29,7 +29,6 @@ One place that turns Obsidian-flavored markdown into mdast. Mostly npm plugins; 
 
 ## Contracts
 
-- Only `gray-matter` user in the repo (declared here, nowhere else)
 - Every `createPreset` plugin-array item is imported from `src/plugin/` — vendor plugins via thin re-export wrappers; `gray-matter` (helper, not a plugin item) stays direct
 - `Wikilink` type imported from `@quartz-community/remark-obsidian` — never redefined
 - `resolveTranscludes` re-parses embeds with `this.parse` (same processor config, no second setup)

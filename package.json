@@ -12,13 +12,16 @@
     "test:watch": "npm run test:watch --workspaces --if-present",
     "lint": "npm run lint --workspaces --if-present",
     "lint:fix": "npm run lint:fix --workspaces --if-present",
-    "bundleVaultIntoWorker": "npm run bundleVaultIntoWorker --workspace=packages/worker-website",
+    "bundleVaultIntoWorker": "npm run bundleVaultIntoWorker:website && npm run bundleVaultIntoWorker:pdf",
+    "bundleVaultIntoWorker:website": "npm run bundleVaultIntoWorker --workspace=packages/worker-website",
     "bundleVaultIntoWorker:pdf": "npm run bundleVaultIntoWorker --workspace=packages/worker-pdf",
-    "dev": "npm run build && npm run dev --workspace=packages/worker-website",
-    "dev:pdf": "npm run build && npm run dev --workspace=packages/worker-pdf",
+    "dev": "npm run build && concurrently -n website,pdf \"npm run dev:website\" \"npm run dev:pdf\"",
+    "dev:website": "npm run dev --workspace=packages/worker-website",
+    "dev:pdf": "npm run dev --workspace=packages/worker-pdf",
     "deploy": "npm run deploy --workspace=packages/worker-website && npm run deploy --workspace=packages/worker-pdf"
   },
   "devDependencies": {
+    "concurrently": "^10.0.5",
     "typescript": "^6.0.3",
     "vitest": "^4.1.11"
   }

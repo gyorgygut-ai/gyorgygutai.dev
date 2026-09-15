@@ -30,17 +30,17 @@
 
 - `npm test` — build presets/processors, then run all workspace tests
 - `npm run test:integration` — live website + pdf workers against the real vault
-- `npm run dev` — build, bundle vault, run wrangler dev (website)
-- `npm run dev:pdf` — bundle vault, run wrangler dev (pdf)
+- `npm run dev` — build, bundle both vaults, run both workers (website :8787 + pdf :8788)
+- `npm run dev:website` / `npm run dev:pdf` — single worker (run `npm run build` first)
 - `npm run deploy` — deploy both workers
+- `npm run bundleVaultIntoWorker` — both workers; `:website` / `:pdf` variants for one
 - `npm run lint --workspaces --if-present` — `curly: all` + multiline if bodies only
 
 ## Cross-Package Contracts
 
-- `preset-obsidian-md/src/index.ts` is SSOT for `VaultFiles`, `parseFrontmatter` (only `gray-matter` user), `hasAs`, `createPreset({vaultFiles, path})`
+- `preset-obsidian-md/src/index.ts` is SSOT for `VaultFiles`, `parseFrontmatter`, `hasAs`, `createPreset({vaultFiles, path})`
 - `Wikilink` node type comes from `@quartz-community/remark-obsidian` — no local redefinition
-- `collect-vault/src/index.ts:collectVault` is the only vault reader (`appearance.json` authoritative, alphabetical fallback); both workers' `bundleVaultIntoWorker.ts` are ~10-line callers
-- `worker-website/src/index.ts:slugFor` is SSOT for URL slug transformation (`/index`→`/`, pdf `/index.pdf`)
+- `collect-vault/src/index.ts:collectVault` is the only vault content reader (`appearance.json` authoritative, alphabetical fallback); both workers' `bundleVaultIntoWorker.ts` are ~10-line callers (dev-only `watchVault.ts` watchers excluded — they read no file contents)
 - `worker-website/src/generated/bundle.ts` and `worker-pdf/src/generated/bundle.ts` are gitignored, produced only by `bundleVaultIntoWorker` (website bundle has `assetFiles`, pdf bundle does not)
 
 ## Testing Conventions
