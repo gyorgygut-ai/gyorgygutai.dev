@@ -1,3 +1,0 @@
-# Cycle B
-
-![[cycle-a]]

@@ -27,7 +27,7 @@ describe("processor-pdf", () => {
     expect(output).toEqual(pdf("expected.pdf", "simple"))
   })
 
-  test.skip("transcluded", async () => {
+  test("transcluded", async () => {
     const output = await process({
       markdown: md("input.md", "transcluded"),
       vaultFiles: { "inner.md": md("inner.md", "transcluded") },

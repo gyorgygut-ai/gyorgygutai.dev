@@ -1,0 +1,4 @@
+---
+as: [something]
+---
+# Unknown type

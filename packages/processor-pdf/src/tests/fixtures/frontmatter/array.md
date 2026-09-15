@@ -1,5 +1,0 @@
----
-as: [page, pdf]
----
-
-# Array

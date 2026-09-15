@@ -1,0 +1,4 @@
+---
+as: [page]
+---
+# Website page
