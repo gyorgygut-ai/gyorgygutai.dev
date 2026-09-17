@@ -13,4 +13,10 @@ Every existing tool was overengineered for what I needed: my Obsidian vault as t
 - `packages/processor-md-to-pdf/` — HTML → PDF
 - `packages/worker-website/` — Cloudflare Worker
 
+## Links
+
+- **[Website]** — https://gyorgygutai.dev/
+- **[Chronological CV (PDF)]** — https://gyorgygutai.dev/pdf/chronological.pdf
+- **[Project-based CV (PDF)]** — https://gyorgygutai.dev/pdf/project-based.pdf
+
 See `AGENTS.md` for the rest.
