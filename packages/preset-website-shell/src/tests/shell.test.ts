@@ -29,4 +29,49 @@ describe("preset-website-shell", () => {
     const output = String(await processor.process(md("input.md", "shell")))
     expect(output).toBe(expected)
   })
+
+  test("injects description from meta", async () => {
+    const input = {
+      customCss: [md("customCss.css", "meta")],
+      customJs: [md("customJs.js", "meta")],
+      meta: { description: "My description" },
+    }
+    const expected = html("expected.html", "meta")
+    const processor = unified()
+      .use(rehypeParse, { fragment: true })
+      .use(createShell(input))
+      .use(rehypeStringify, { allowDangerousHtml: true })
+    const output = String(await processor.process(md("input.md", "meta")))
+    expect(output).toBe(expected)
+  })
+
+  test("injects multiple scripts", async () => {
+    const input = {
+      customCss: [md("customCss.css", "multi-js")],
+      customJs: [
+        readFileSync(join(fixturesDir, "multi-js/js1.js"), "utf-8"),
+        readFileSync(join(fixturesDir, "multi-js/js2.js"), "utf-8"),
+      ],
+    }
+    const expected = html("expected.html", "multi-js")
+    const processor = unified()
+      .use(rehypeParse, { fragment: true })
+      .use(createShell(input))
+      .use(rehypeStringify, { allowDangerousHtml: true })
+    const output = String(await processor.process(md("input.md", "multi-js")))
+    expect(output).toBe(expected)
+  })
+
+  test("produces exactly one description meta", async () => {
+    const input = {
+      meta: { description: "Only one" },
+    }
+    const expected = html("expected.html", "one-desc")
+    const processor = unified()
+      .use(rehypeParse, { fragment: true })
+      .use(createShell(input))
+      .use(rehypeStringify, { allowDangerousHtml: true })
+    const output = String(await processor.process(md("input.md", "one-desc")))
+    expect(output).toBe(expected)
+  })
 })

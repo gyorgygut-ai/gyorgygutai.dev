@@ -63,4 +63,30 @@ describe("processor-html", () => {
     const output = await process(input)
     expect(output).toBe(expected)
   })
+
+  test("combined css snippets and shell css", async () => {
+    const input = {
+      markdown: md("input.md", "combined"),
+      customCss: [
+        readFileSync(join(fixturesDir, "combined/snippet1.css"), "utf-8"),
+        readFileSync(join(fixturesDir, "combined/snippet2.css"), "utf-8"),
+      ],
+      customJs: [readFileSync(join(fixturesDir, "combined/shell.js"), "utf-8")],
+    }
+    const expected = html("expected.html", "combined")
+    const output = await process(input)
+    expect(output).toBe(expected)
+  })
+
+  test("meta title produces title element", async () => {
+    const input = {
+      markdown: md("input.md", "title"),
+      meta: { title: "My Title" },
+      customCss: [md("customCss.css", "title")],
+      customJs: [md("customJs.js", "title")],
+    }
+    const expected = html("expected.html", "title")
+    const output = await process(input)
+    expect(output).toBe(expected)
+  })
 })

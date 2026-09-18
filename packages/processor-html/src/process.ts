@@ -15,7 +15,7 @@ export interface ProcessWebsiteInput {
 export async function process(input: ProcessWebsiteInput): Promise<string> {
   const { content, data } = parseFrontmatter(input.markdown)
   const processor = unified().use(createPreset({ vaultFiles: input.vaultFiles ?? {}, path: input.path }))
-  processor.use(createShell({ customCss: input.customCss, customJs: input.customJs }))
+  processor.use(createShell({ customCss: input.customCss, customJs: input.customJs, meta: input.meta }))
   const file = new VFile(content)
   file.data.meta = { ...data, ...input.meta }
   if (input.meta?.title || data.title) {

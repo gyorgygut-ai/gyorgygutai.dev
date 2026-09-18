@@ -1,1 +1,10 @@
-{"enabledCssSnippets": ["cv-header","cv-print","cv-markdown","cv-theme","cv-profile-header","callouts"]}
+{
+  "enabledCssSnippets": [
+    "cv-header",
+    "cv-print",
+    "cv-markdown",
+    "cv-theme",
+    "cv-profile-header",
+    "callouts"
+  ]
+}

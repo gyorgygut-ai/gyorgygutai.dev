@@ -64,6 +64,19 @@ function injectMetaAndAssets(this: unknown, config: ShellConfig = {}): (tree: Ro
         })
       }
     }
+    if (meta.title) {
+      const hasTitle = head.children.some(
+        (n): n is Element => isElement(n) && n.tagName === "title"
+      )
+      if (!hasTitle) {
+        head.children.push({
+          type: "element",
+          tagName: "title",
+          properties: {},
+          children: [{ type: "text", value: String(meta.title) }],
+        })
+      }
+    }
     const customJs = config.customJs ?? []
     for (const js of customJs) {
       head.children.push({

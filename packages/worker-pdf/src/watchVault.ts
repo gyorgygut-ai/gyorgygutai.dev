@@ -1,8 +1,10 @@
 import { watch } from "node:fs"
 import { spawn } from "node:child_process"
-import { join } from "node:path"
+import { join, dirname } from "node:path"
+import { fileURLToPath } from "node:url"
 
-const VAULT_DIR = join("inputs/obsidian-vault")
+const __dirname = dirname(fileURLToPath(import.meta.url))
+const VAULT_DIR = join(__dirname, "../../../inputs/obsidian-vault")
 
 const allowedExts = new Set(["md", "png", "jpg", "jpeg", "svg", "gif", "webp", "avif", "ico", "css", "json"])
 

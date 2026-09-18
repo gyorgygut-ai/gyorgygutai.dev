@@ -53,12 +53,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "peach/job-search/Scraping Instructions.md",
+                "file": "index.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "Scraping Instructions"
+              "title": "index"
             }
           }
         ],
@@ -224,8 +224,13 @@
       "digitalgarden:Digital Garden Publication Center": false
     }
   },
-  "active": "c9bce29fed60602b",
+  "active": "c128a378542cd96a",
   "lastOpenFiles": [
+    "content/header.md",
+    "index.md",
+    "content/about.md",
+    "content/projects.md",
+    "content/experience.md",
     "peach/job-search/Target Jobs.md",
     "peach/job-search/Identifying Quick-hiring positions.md",
     "peach/job-search/Scraping Instructions.md",
@@ -241,18 +246,13 @@
     "research/Research task 1.md",
     "pdf/project-based.md",
     "research",
-    "index.md",
     "pdf/chronological.md",
-    "content/header.md",
     "app.css",
     "assets/cv_logo_bg.png",
     "AGENTS.md",
     "links.md",
     "img/user/assets/index.pdf.md",
     "formats/website.md",
-    "content/projects.md",
-    "content/about.md",
-    "content/experience.md",
     "cv.pdf",
     "img/user/assets",
     "img/user",
