@@ -15,14 +15,14 @@ function html(name: string, dir: string): string {
 
 describe("processor-html", () => {
   test("empty", async () => {
-    const input = { markdown: md("input.md", "empty"), css: [] }
+    const input = { markdown: md("input.md", "empty"), customCss: [] }
     const expected = html("expected.html", "empty")
     const output = await process(input)
     expect(output).toBe(expected)
   })
 
   test("simple", async () => {
-    const input = { markdown: md("input.md", "simple"), css: [] }
+    const input = { markdown: md("input.md", "simple"), customCss: [] }
     const expected = html("expected.html", "simple")
     const output = await process(input)
     expect(output).toBe(expected)
@@ -33,7 +33,7 @@ describe("processor-html", () => {
       markdown: md("input.md", "transcluded"),
       vaultFiles: { "inner.md": md("inner.md", "transcluded") },
       path: "input.md",
-      css: [],
+      customCss: [],
     }
     const expected = html("expected.html", "transcluded")
     const output = await process(input)
@@ -43,12 +43,23 @@ describe("processor-html", () => {
   test("styled", async () => {
     const input = {
       markdown: md("input.md", "styled"),
-      css: [
+      customCss: [
         readFileSync(join(fixturesDir, "styled/input1.css"), "utf-8"),
         readFileSync(join(fixturesDir, "styled/input2.css"), "utf-8"),
       ],
     }
     const expected = html("expected.html", "styled")
+    const output = await process(input)
+    expect(output).toBe(expected)
+  })
+
+  test("custom assets", async () => {
+    const input = {
+      markdown: md("input.md", "custom-assets"),
+      customCss: [readFileSync(join(fixturesDir, "custom-assets/customCss.css"), "utf-8")],
+      customJs: [readFileSync(join(fixturesDir, "custom-assets/customJs.js"), "utf-8")],
+    }
+    const expected = html("expected.html", "custom-assets")
     const output = await process(input)
     expect(output).toBe(expected)
   })

@@ -5,6 +5,8 @@ export interface StaticBundle {
   vaultFiles: Record<string, string>
   assetFiles?: Record<string, string>
   cssBundle: string[]
+  customCss?: string[]
+  customJs?: string[]
 }
 
 export function slugFor(path: string): string {
@@ -69,7 +71,7 @@ export function processVaultToStatic(bundle: StaticBundle): {
 {return new Response("Not found", { status: 404, headers: { "Cache-Control": "no-store" } })}
     const raw = vaultFiles[filePath]
     const meta = extractMeta(pathname)
-    const html = await process({ markdown: raw, meta, vaultFiles, path: filePath, css: cssBundle })
+    const html = await process({ markdown: raw, meta, vaultFiles, path: filePath, customCss: [...cssBundle, ...(bundle.customCss ?? [])], customJs: bundle.customJs })
     return new Response(html, { headers: { "Content-Type": "text/html; charset=utf-8", "Cache-Control": "public, max-age=31536000, immutable" } })
   }
   return { knownHtml: new Set(routeToFile.keys()), knownAssets: new Set(assets.keys()), handleRequest }

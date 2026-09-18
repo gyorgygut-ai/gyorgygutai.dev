@@ -8,7 +8,7 @@ The only code allowed to touch `../../inputs` with `node:fs`. Both workers' `bun
 
 - `collectVault(vaultRoot, shellDir, includeAssets)`: md files, optional base64 assets, `cssBundle` (vault snippets, `appearance.json` authoritative), `customCss` + `customJs` (from shellDir), `appearanceOrder`
 - `writeBundle(outFile, data, includeAssets)`: writes `src/generated/bundle.ts` (gitignored)
-- `parseArgs(defaultVaultRoot, defaultOutFile)`: `--vault` / `--out` CLI overrides
+- `parseArgs()`: `--vault` / `--shell` / `--out` required CLI args, no defaults. Returns `{ vaultRoot, shellDir, outFile }`.
 
 ## Contracts
 

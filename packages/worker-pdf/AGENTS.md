@@ -21,7 +21,7 @@ It generates PDFs from inputs. It is the PDF generation layer — independent fr
 
 ## Contracts
 
-- `src/generated/**`: gitignored, eslint/coverage ignored; stub exports `cssBundle`/`vaultFiles`/`appearanceOrder`; real `../../inputs` content read only in `bundleVaultIntoWorker.ts` (via `collect-vault`); `watchVault.ts` is dev-only fs-watch, never `npm test`
+- `src/generated/**`: gitignored, eslint/coverage ignored; stub exports `cssBundle`/`vaultFiles`/`customCss`/`customJs`/`appearanceOrder`; real `../../inputs` content read only in `bundleVaultIntoWorker.ts` (via `collect-vault`); `watchVault.ts` is dev-only fs-watch, never `npm test`
 - `src/wrangler.jsonc`: `name`, `main`, `compatibility_date`, `compatibility_flags` (`nodejs_compat`), `observability`, `routes` for `*.pdf` only; no `assets`/`r2`
 
 ## Commands

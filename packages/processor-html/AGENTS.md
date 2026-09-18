@@ -7,7 +7,7 @@ Composes preset-obsidian-md + preset-website-shell into an HTML string. Pure fun
 ## Responsibility
 
 - `process(input)`: markdown → HTML via unified pipeline
-- Passes `customCss`/`customJs` to shell via `file.data`
+- Passes `customCss`/`customJs` to shell via `createShell({ customCss, customJs })` config
 - `ProcessWebsiteInput` includes `markdown`, `meta`, `vaultFiles`, `path`, `customCss`, `customJs`
 
 ## Contracts

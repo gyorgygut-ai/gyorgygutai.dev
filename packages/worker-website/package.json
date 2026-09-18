@@ -4,7 +4,7 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "bundleVaultIntoWorker": "tsx src/bundleVaultIntoWorker.ts",
+    "bundleVaultIntoWorker": "tsx src/bundleVaultIntoWorker.ts --vault ../../inputs/obsidian-vault --shell ../../inputs/website-shell --out ./src/generated/bundle.ts",
     "dev": "npm run bundleVaultIntoWorker && (tsx src/watchVault.ts &>/dev/null &) && wrangler dev --config src/wrangler.jsonc --port 8787 --inspector-port 0",
     "deploy": "npm run bundleVaultIntoWorker && wrangler deploy --config src/wrangler.jsonc",
     "test": "vitest run",

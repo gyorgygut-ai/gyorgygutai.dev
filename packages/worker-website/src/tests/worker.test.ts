@@ -21,7 +21,7 @@ function fixture(name: string): string {
 
 describe("worker-website handler", () => {
   test("empty vault", () => {
-    const input = { vaultFiles: {}, cssBundle: [] }
+    const input = { vaultFiles: {}, cssBundle: [], customCss: [], customJs: [] }
     const handler = processVaultToStatic(input)
     expect(handler.knownHtml).toEqual(new Set())
     const res = new Request("http://localhost:8787/")
@@ -34,7 +34,7 @@ describe("worker-website handler", () => {
     for (const name of inputFiles) {
       vaultFiles[name] = md(name)
     }
-    const input = { vaultFiles, cssBundle: [] }
+    const input = { vaultFiles, cssBundle: [], customCss: [], customJs: [] }
     const handler = processVaultToStatic(input)
     expect(handler.knownHtml).toEqual(new Set(["/", "/page"]))
   })
@@ -45,7 +45,7 @@ describe("worker-website handler", () => {
     for (const name of inputFiles) {
       vaultFiles[name] = md(name)
     }
-    const input = { vaultFiles, cssBundle: [] }
+    const input = { vaultFiles, cssBundle: [], customCss: [], customJs: [] }
     const handler = processVaultToStatic(input)
     const res = new Request("http://localhost:8787/")
     const response = await handler.handleRequest(res)
@@ -59,7 +59,7 @@ describe("worker-website handler", () => {
     for (const name of inputFiles) {
       vaultFiles[name] = md(name)
     }
-    const input = { vaultFiles, cssBundle: [] }
+    const input = { vaultFiles, cssBundle: [], customCss: [], customJs: [] }
     const handler = processVaultToStatic(input)
     const res = new Request("http://localhost:8787/page")
     const response = await handler.handleRequest(res)
@@ -77,7 +77,30 @@ describe("worker-website handler", () => {
       vaultFiles[name] = readFileSync(join(fixtureInputDir, name), "utf-8")
     }
     const cssBundle = [readFileSync(join(fixtureInputDir, "style.css"), "utf-8")]
-    const input = { vaultFiles, cssBundle }
+    const input = { vaultFiles, cssBundle, customCss: [], customJs: [] }
+    const handler = processVaultToStatic(input)
+    const res = new Request("http://localhost:8787/")
+    const response = await handler.handleRequest(res)
+    const body = await response.text()
+    expect(body).toBe(readFileSync(join(fixtureExpectedDir, "home.html"), "utf-8"))
+  })
+
+  test("shell assets pipeline", async () => {
+    const fixtureDir = join(fixturesDir, "shell-assets")
+    const fixtureInputDir = join(fixtureDir, "input")
+    const fixtureAssetsDir = join(fixtureDir, "assets")
+    const fixtureExpectedDir = join(fixtureDir, "expected")
+    const inputFiles = readDir(fixtureInputDir)
+    const vaultFiles: Record<string, string> = {}
+    for (const name of inputFiles) {
+      vaultFiles[name] = readFileSync(join(fixtureInputDir, name), "utf-8")
+    }
+    const input = {
+      vaultFiles,
+      cssBundle: [],
+      customCss: [readFileSync(join(fixtureAssetsDir, "customCss.css"), "utf-8")],
+      customJs: [readFileSync(join(fixtureAssetsDir, "customJs.js"), "utf-8")],
+    }
     const handler = processVaultToStatic(input)
     const res = new Request("http://localhost:8787/")
     const response = await handler.handleRequest(res)

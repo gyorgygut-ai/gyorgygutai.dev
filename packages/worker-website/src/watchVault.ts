@@ -2,7 +2,7 @@ import { watch } from "node:fs"
 import { spawn } from "node:child_process"
 import { join } from "node:path"
 
-const VAULT_DIR = join("packages/obsidian-vault")
+const VAULT_DIR = join("inputs/obsidian-vault")
 
 const allowedExts = new Set(["md", "png", "jpg", "jpeg", "svg", "gif", "webp", "avif", "ico", "css", "json"])
 
@@ -18,7 +18,7 @@ function scheduleBundle() {
   lastBundle = Date.now()
   console.log("[vault-watcher] bundling...")
 
-  const child = spawn("npx", ["tsx", "src/bundleVaultIntoWorker.ts"], {
+  const child = spawn("npx", ["tsx", "src/bundleVaultIntoWorker.ts", "--vault", "../../inputs/obsidian-vault", "--shell", "../../inputs/website-shell", "--out", "./src/generated/bundle.ts"], {
     stdio: ["pipe", "inherit", "inherit"],
     shell: true,
   })
