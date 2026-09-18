@@ -33,5 +33,5 @@ It composes the processors into a deployable Cloudflare Worker that builds once 
 
 ## Tests
 
-- `src/tests/worker.test.ts` derives expected routes from `vaultFiles` via `slugFor`/`hasAs` invariants
+- `src/tests/worker.test.ts` builds `vaultFiles` from fixtures and asserts known routes; independent of `generated/bundle`
 - Passes on stub and real bundle

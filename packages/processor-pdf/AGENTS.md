@@ -1,8 +1,8 @@
-# Processor — HTML → PDF
+# Processor — Markdown → PDF
 
 ## Why This Package Exists
 
-It converts rendered HTML into PDF. It depends on `@gyorgygutai/preset-obsidian-md` for the HTML input.
+It converts markdown into PDF. It depends on `@gyorgygutai/preset-obsidian-md` for the markdown→HTML pipeline.
 
 ## Responsibility
 
@@ -12,7 +12,7 @@ It converts rendered HTML into PDF. It depends on `@gyorgygutai/preset-obsidian-
 
 ## File Structure
 
-- `src/process.ts`: input html, output pdf (re-exported by `src/index.ts`)
+- `src/process.ts`: input markdown, output pdf (re-exported by `src/index.ts`)
 - `src/parser/stripHtml.ts`: HTML → plain text
 - `src/parser/generatePdf.ts`: plain text → PDF bytes
 

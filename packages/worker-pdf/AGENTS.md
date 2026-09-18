@@ -32,5 +32,5 @@ It generates PDFs from vault content. It is the PDF generation layer — indepen
 
 ## Tests
 
-- `src/tests/worker.test.ts` derives expected PDF routes from `vaultFiles` via `slugFor`/`hasAs` invariants
+- `src/tests/worker.test.ts` builds `vaultFiles` from fixtures and asserts known PDF routes; independent of `generated/bundle`
 - Passes on stub and real bundle

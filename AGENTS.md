@@ -15,11 +15,10 @@
 
 - `obsidian-vault`: Open in Obsidian or VS Code. No code, no build step.
   Edit markdown, assets, or `.obsidian/snippets/*.css`.
-- `preset-obsidian-md`: `src/index.ts` is imports + plugin array + tiny helpers (`VaultFiles`, `parseFrontmatter`, `hasAs`, `createPreset`). Custom code lives only in `src/plugin/` (`callout`, `wikilink`, `resolveTranscludes`).
-  Test with `npx vitest run` in the package.
+- `preset-obsidian-md`: `src/index.ts` is imports + plugin array + tiny helpers (`VaultFiles`, `parseFrontmatter`, `hasAs`, `createPreset`). Custom code lives only in `src/plugin/` (`callout`, `wikilink`, `transclusion`).
 - `processor-html` / `processor-pdf`: thin `process()` wrappers over `createPreset`. No duplicated parsing.
 - `collect-vault`: `collectVault(vaultRoot, includeAssets)` + `writeBundle`. Used only by the workers' `bundleVaultIntoWorker` scripts (run via `tsx`, never bundled to edge, never imported by tests).
-- `worker-website`: Integration layer. Depends on both processors and the vault.
+- `worker-website`: Integration layer. Depends on processor-html.
   Run `npm run dev --workspace=packages/worker-website` to bundle vault and start wrangler dev.
   Run `npm run deploy --workspace=packages/worker-website` to deploy to Cloudflare.
   Only `collect-vault` reads `../../obsidian-vault` — no other package touches the vault directly.
@@ -45,7 +44,6 @@
 
 ## Testing Conventions
 
-- One `*.test.ts` per subject; input → assert output
-- Fixtures deterministic; no shared `tests/`
+- Processors/workers: one `*.test.ts` per subject; input → assert output
+- Presets without a dedicated suite are covered via processor tests + integration
 - Vault-agnostic: tests never read `../../obsidian-vault`
-- Worker tests derive routes from bundle invariants — passes on stub and real bundle

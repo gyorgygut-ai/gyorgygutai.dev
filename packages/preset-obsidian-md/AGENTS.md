@@ -20,7 +20,7 @@ One place that turns Obsidian-flavored markdown into mdast. Mostly npm plugins; 
 ## File Structure
 
 - `src/index.ts`: imports, `VaultFiles`, `parseFrontmatter`, `hasAs`, `createPreset` — the plugin array
-- `src/plugin/`: custom code — `callout.ts`, `wikilink.ts` (handler), `resolveTranscludes.ts` (in-memory `vaultFiles` resolver) — plus thin re-export wrappers for vendor plugins: `remarkParse.ts`, `remarkObsidian.ts`, `remarkRehype.ts`, `rehypeRaw.ts`, `rehypeObsidian.ts`
+- `src/plugin/`: custom code — `callout.ts`, `wikilink.ts` (handler), `transclusion.ts` (in-memory `vaultFiles` resolver) — plus thin re-export wrappers per plugin
 - `src/tests/`
 
 ## Public API
@@ -36,6 +36,4 @@ One place that turns Obsidian-flavored markdown into mdast. Mostly npm plugins; 
 
 ## Tests
 
-- One `*.test.ts` per subject; input → assert output
-- `pipeline.test.ts`: end-to-end render through `createPreset`
-- Deterministic; no external I/O
+- None. Covered indirectly via processor-html/processor-pdf tests, plus the integration suite.

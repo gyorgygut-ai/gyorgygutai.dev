@@ -3,7 +3,6 @@ import { readFileSync, readdirSync } from "node:fs"
 import { join, resolve } from "node:path"
 import { processVaultToStatic } from "../processVaultToStatic"
 import { slugFor } from "../processVaultToStatic"
-import { parseFrontmatter, hasAs } from "@gyorgygutai/preset-obsidian-md"
 
 const fixturesDir = resolve(join(import.meta.dirname, "fixtures"))
 const inputDir = join(fixturesDir, "input")
@@ -19,12 +18,6 @@ function md(name: string): string {
 
 function fixture(name: string): string {
   return readFileSync(join(expectedDir, name), "utf-8")
-}
-
-function expectedFileForRoute(route: string): string | null {
-  if (route === "/") return "home.html"
-  if (route === "/page") return "page.html"
-  return null
 }
 
 describe("worker-website handler", () => {
