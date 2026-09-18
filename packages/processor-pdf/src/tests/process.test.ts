@@ -18,21 +18,27 @@ function pdf(name: string, dir: string): Uint8Array {
 
 describe("processor-pdf", () => {
   test("empty", async () => {
-    const output = await process({ markdown: md("input.md", "empty") })
-    expect(output).toEqual(pdf("expected.pdf", "empty"))
+    const input = { markdown: md("input.md", "empty") }
+    const expected = pdf("expected.pdf", "empty")
+    const output = await process(input)
+    expect(output).toEqual(expected)
   })
 
   test("simple", async () => {
-    const output = await process({ markdown: md("input.md", "simple") })
-    expect(output).toEqual(pdf("expected.pdf", "simple"))
+    const input = { markdown: md("input.md", "simple") }
+    const expected = pdf("expected.pdf", "simple")
+    const output = await process(input)
+    expect(output).toEqual(expected)
   })
 
   test("transcluded", async () => {
-    const output = await process({
+    const input = {
       markdown: md("input.md", "transcluded"),
       vaultFiles: { "inner.md": md("inner.md", "transcluded") },
       path: "input.md",
-    })
-    expect(output).toEqual(pdf("expected.pdf", "transcluded"))
+    }
+    const expected = pdf("expected.pdf", "transcluded")
+    const output = await process(input)
+    expect(output).toEqual(expected)
   })
 })

@@ -6,14 +6,18 @@ Obsidian vault → static website → Cloudflare Worker.
 
 Every existing tool was overengineered for what I needed: my Obsidian vault as the single source of truth for my website. No CMS. No double entry. No sync. Just write, deploy.
 
+## Inputs
+
+- `inputs/obsidian-vault/` — Obsidian vault (content + `.obsidian`)
+- `inputs/website-shell/` — website shell config: global.css, app.js
+
 ## Packages
 
-- `packages/obsidian-vault/` — Obsidian vault (content + `.obsidian`)
 - `packages/preset-obsidian-md/` — unified preset: Obsidian markdown → mdast (npm plugins + 3 custom files)
 - `packages/preset-website-shell/` — unified preset: mdast → HTML document shell
 - `packages/processor-html/` — thin wrapper: preset + shell → HTML string
 - `packages/processor-pdf/` — thin wrapper: preset → plain text → PDF bytes
-- `packages/collect-vault/` — build-time vault reader: md/assets/css → generated bundle
+- `packages/collect-vault/` — build-time reader: vault + shell → generated bundle
 - `packages/worker-website/` — Cloudflare Worker (HTML + assets)
 - `packages/worker-pdf/` — Cloudflare Worker (PDF only)
 

@@ -35,9 +35,11 @@ function scheduleBundle() {
 console.log("[vault-watcher] watching vault at", VAULT_DIR)
 
 const watcher = watch(VAULT_DIR, { recursive: true }, (eventType, filename) => {
-  if (!filename) return
+  if (!filename) 
+{return}
   const ext = filename.split(".").pop()?.toLowerCase()
-  if (!allowedExts.has(ext as string)) return
+  if (!allowedExts.has(ext as string)) 
+{return}
 
   scheduleBundle()
 })

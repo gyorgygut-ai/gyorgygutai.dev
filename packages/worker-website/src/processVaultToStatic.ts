@@ -4,6 +4,7 @@ import { hasAs, parseFrontmatter } from "@gyorgygutai/preset-obsidian-md"
 export interface StaticBundle {
   vaultFiles: Record<string, string>
   assetFiles?: Record<string, string>
+  cssBundle: string[]
 }
 
 export function slugFor(path: string): string {
@@ -31,7 +32,7 @@ export function processVaultToStatic(bundle: StaticBundle): {
   knownAssets: Set<string>
   handleRequest: (request: Request) => Promise<Response>
 } {
-  const { vaultFiles, assetFiles } = bundle
+  const { vaultFiles, assetFiles, cssBundle } = bundle
   const routeToFile = new Map<string, string>()
   const assets = new Map<string, { bytes: Uint8Array; mime: string }>()
   for (const [path, raw] of Object.entries(vaultFiles)) {
@@ -68,7 +69,7 @@ export function processVaultToStatic(bundle: StaticBundle): {
 {return new Response("Not found", { status: 404, headers: { "Cache-Control": "no-store" } })}
     const raw = vaultFiles[filePath]
     const meta = extractMeta(pathname)
-    const html = await process({ markdown: raw, meta, vaultFiles, path: filePath })
+    const html = await process({ markdown: raw, meta, vaultFiles, path: filePath, css: cssBundle })
     return new Response(html, { headers: { "Content-Type": "text/html; charset=utf-8", "Cache-Control": "public, max-age=31536000, immutable" } })
   }
   return { knownHtml: new Set(routeToFile.keys()), knownAssets: new Set(assets.keys()), handleRequest }

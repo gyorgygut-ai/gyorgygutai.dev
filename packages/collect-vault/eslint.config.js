@@ -7,6 +7,7 @@ export default tseslint.config(
   {
     rules: {
       curly: ["error", "all"],
+      "@typescript-eslint/no-explicit-any": "error",
       "nonblock-statement-body-position": ["error", "below"],
     },
   },

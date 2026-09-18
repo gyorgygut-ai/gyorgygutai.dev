@@ -1,7 +1,7 @@
 import { processVaultToStatic, slugFor } from "./processVaultToStatic"
-import { vaultFiles, assetFiles } from "./generated/bundle"
+import { vaultFiles, assetFiles, cssBundle } from "./generated/bundle"
 
-const handler = processVaultToStatic({ vaultFiles, assetFiles })
+const handler = processVaultToStatic({ vaultFiles, assetFiles, cssBundle })
 
 export { slugFor }
 

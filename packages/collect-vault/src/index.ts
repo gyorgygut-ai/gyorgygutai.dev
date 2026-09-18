@@ -4,7 +4,7 @@ import { dirname, join, relative, resolve } from "node:path"
 export interface VaultData {
   mdFiles: Array<readonly [string, string]>
   assetFiles: Array<readonly [string, string]>
-  cssBundle: string
+  cssBundle: string[]
   appearanceOrder: string[]
 }
 
@@ -91,19 +91,17 @@ export function collectVault(vaultRoot: string, includeAssets: boolean): VaultDa
     // Unreadable appearance.json: fall back to alphabetical CSS order.
   }
 
-  cssFiles = orderCssFiles(cssFiles, ordered)
+   cssFiles = orderCssFiles(cssFiles, ordered)
 
-  const cssBundle = cleanCss(
-    cssFiles
-      .map((f) => {
-        try {
-          return readFileSync(join(cssDir, f), "utf-8")
-        } catch {
-          return ""
-        }
-      })
-      .join("\n"),
-  )
+   const cssBundle = cssFiles
+     .map((f) => {
+       try {
+         return readFileSync(join(cssDir, f), "utf-8")
+       } catch {
+         return ""
+       }
+     })
+     .filter((c) => c.trim() !== "")
 
   const mdEntries = mdFiles.map((rel) => [rel, readFileSync(join(vaultRoot, rel), "utf-8")] as const)
 

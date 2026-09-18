@@ -8,6 +8,7 @@ export interface ProcessWebsiteInput {
   meta?: Record<string, unknown>
   vaultFiles?: VaultFiles
   path?: string
+  css: string[]
 }
 
 export async function process(input: ProcessWebsiteInput): Promise<string> {
@@ -19,6 +20,10 @@ export async function process(input: ProcessWebsiteInput): Promise<string> {
   if (input.meta?.title || data.title) {
     file.data.title = String(input.meta?.title ?? data.title ?? "")
   }
-  return String(await processor.process(file))
+  let html = String(await processor.process(file))
+  if (input.css.length > 0) {
+    html = html.replace("</head>", `<style>\n${input.css.join("\n").trim()}\n</style></head>`)
+  }
+  return html
 }
 export default process

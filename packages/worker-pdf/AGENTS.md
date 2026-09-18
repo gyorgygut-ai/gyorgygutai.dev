@@ -2,7 +2,7 @@
 
 ## Why This Package Exists
 
-It generates PDFs from vault content. It is the PDF generation layer — independent from the website Worker.
+It generates PDFs from inputs. It is the PDF generation layer — independent from the website Worker.
 
 ## Responsibility
 
@@ -14,19 +14,19 @@ It generates PDFs from vault content. It is the PDF generation layer — indepen
 ## File Structure
 
 - `src/index.ts`: builds once, serves cached immutable PDFs
-- `src/bundleVaultIntoWorker.ts`: reads vault from `../../obsidian-vault`, writes `src/generated/bundle.ts`
-- `src/watchVault.ts`: dev-only vault watcher → re-runs `bundleVaultIntoWorker` (reads no file contents)
+- `src/bundleVaultIntoWorker.ts`: reads inputs from `../../inputs`, writes `src/generated/bundle.ts`
+- `src/watchVault.ts`: dev-only inputs watcher → re-runs `bundleVaultIntoWorker` (reads no file contents)
 - `src/generated/bundle.ts`: auto-generated, gitignored
 - `src/wrangler.jsonc`
 
 ## Contracts
 
-- `src/generated/**`: gitignored, eslint/coverage ignored; stub exports `cssBundle`/`vaultFiles`/`appearanceOrder`; real `../../obsidian-vault` content read only in `bundleVaultIntoWorker.ts` (via `collect-vault`); `watchVault.ts` is dev-only fs-watch, never `npm test`
+- `src/generated/**`: gitignored, eslint/coverage ignored; stub exports `cssBundle`/`vaultFiles`/`appearanceOrder`; real `../../inputs` content read only in `bundleVaultIntoWorker.ts` (via `collect-vault`); `watchVault.ts` is dev-only fs-watch, never `npm test`
 - `src/wrangler.jsonc`: `name`, `main`, `compatibility_date`, `compatibility_flags` (`nodejs_compat`), `observability`, `routes` for `*.pdf` only; no `assets`/`r2`
 
 ## Commands
 
-- `npm run bundleVaultIntoWorker` — regenerate bundle from vault (`../../obsidian-vault` → `src/generated/bundle.ts`, gitignored)
+- `npm run bundleVaultIntoWorker` — regenerate bundle from inputs (`../../inputs` → `src/generated/bundle.ts`, gitignored)
 - `npm run dev` — `bundleVaultIntoWorker` + `watchVault.ts` watcher + `wrangler dev --config src/wrangler.jsonc --port 8788` — serve worker locally at `http://localhost:8788`
 - `npm run deploy` — `bundleVaultIntoWorker` + `wrangler deploy --config src/wrangler.jsonc` — deploy to Cloudflare prod (immutable, cached)
 
