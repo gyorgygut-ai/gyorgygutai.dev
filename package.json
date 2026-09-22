@@ -6,7 +6,7 @@
     "packages/*"
   ],
   "scripts": {
-    "build": "npm run build --workspace=packages/preset-obsidian-md && npm run build --workspace=packages/preset-website-shell && npm run build --workspace=packages/processor-pdf && npm run build --workspace=packages/processor-html",
+    "build": "npm run build --workspace=packages/preset-obsidian-md && npm run build --workspace=packages/preset-website && npm run build --workspace=packages/processor-pdf && npm run build --workspace=packages/processor-html",
     "test": "npm run build && npm run test --workspaces --if-present",
     "test:integration": "vitest run tests/integration.test.ts",
     "test:watch": "npm run test:watch --workspaces --if-present",

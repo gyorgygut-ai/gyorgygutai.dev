@@ -14,7 +14,7 @@ Every existing tool was overengineered for what I needed: my Obsidian vault as t
 ## Packages
 
 - `packages/preset-obsidian-md/` — unified preset: Obsidian markdown → mdast (npm plugins + 3 custom files)
-- `packages/preset-website-shell/` — unified preset: mdast → HTML document shell
+- `packages/preset-website/` — unified preset: mdast → HTML document shell
 - `packages/processor-html/` — thin wrapper: preset + shell → HTML string
 - `packages/processor-pdf/` — thin wrapper: preset → plain text → PDF bytes
 - `packages/collect-vault/` — build-time reader: vault + shell → generated bundle

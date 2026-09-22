@@ -1,5 +1,5 @@
 {
-  "name": "@gyorgygutai/preset-website-shell",
+  "name": "@gyorgygutai/preset-website",
   "version": "0.0.0",
   "private": true,
   "type": "module",

@@ -19,7 +19,7 @@
   },
   "dependencies": {
     "@gyorgygutai/preset-obsidian-md": "*",
-    "@gyorgygutai/preset-website-shell": "*",
+    "@gyorgygutai/preset-website": "*",
     "unified": "^11.0.5",
     "vfile": "^6.0.3"
   },

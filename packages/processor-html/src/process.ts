@@ -2,7 +2,7 @@ import { unified } from "unified"
 import { VFile } from "vfile"
 import grayMatter from "gray-matter"
 import createPreset from "@gyorgygutai/preset-obsidian-md"
-import { createShell } from "@gyorgygutai/preset-website-shell"
+import { createShell } from "@gyorgygutai/preset-website"
 
 export interface ProcessWebsiteInput {
   markdown: string

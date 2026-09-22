@@ -15,7 +15,7 @@ function html(name: string, dir: string): string {
   return readFileSync(join(fixturesDir, dir, name), "utf-8")
 }
 
-describe("preset-website-shell", () => {
+describe("preset-website", () => {
   test("injects custom css and js", async () => {
     const input = {
       customCss: [md("customCss.css", "shell")],
