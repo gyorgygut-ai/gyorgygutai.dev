@@ -1,8 +1,18 @@
+import { readFileSync } from "node:fs"
+import { join, dirname } from "node:path"
 import type { PluggableList } from "unified"
 import rehypeDocument from "rehype-document"
 import rehypeStringify from "rehype-stringify"
 import type { Element, Root, RootContent } from "hast"
 import { rehypeMain } from "./rehypeMain"
+import injectStyles from "./injectStyles"
+
+const dirnamePath = dirname(new URL(import.meta.url).pathname)
+
+const BUILTIN_CSS = [
+  readFileSync(join(dirnamePath, "obsidian-vars.css"), "utf-8"),
+  readFileSync(join(dirnamePath, "obsidian.css"), "utf-8"),
+]
 
 export interface ShellConfig {
   customCss?: string[]
@@ -36,15 +46,6 @@ function injectMetaAndAssets(this: unknown, config: ShellConfig = {}): (tree: Ro
         tagName: "meta",
         properties: { name: "color-scheme", content: "dark light" },
         children: [],
-      })
-    }
-    const customCss = config.customCss ?? []
-    for (const css of customCss) {
-      head.children.push({
-        type: "element",
-        tagName: "style",
-        properties: {},
-        children: [{ type: "text", value: css }],
       })
     }
     const meta = config.meta ?? {}
@@ -93,6 +94,7 @@ export function createShell(config: ShellConfig = {}): PluggableList {
   return [
     [rehypeDocument, { title: "", responsive: true, language: "en" }],
     [injectMetaAndAssets, config],
+    [injectStyles, [...BUILTIN_CSS, ...(config.customCss ?? [])]],
     rehypeMain,
     [rehypeStringify, { allowDangerousHtml: true }],
   ]

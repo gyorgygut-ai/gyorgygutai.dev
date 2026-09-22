@@ -1,31 +1,37 @@
 # Phase 1: Rename `preset-website-shell` → `preset-website`
 
-## Why
-The package name "preset-website-shell" is misleading. It produces the full HTML document shell, not just a "preset". The new name is cleaner and matches its actual responsibility.
+**Status: DONE** (committed & pushed)
 
-## Changes
+---
 
-### 1. Update package configs
-- `packages/preset-website-shell/package.json`: `"@gyorgygutai/preset-website-shell"` → `"@gyorgygutai/preset-website"`
-- `packages/preset-website-shell/tsconfig.json`: no change
-- `packages/preset-website-shell/vitest.config.ts`: no change
+# Phase 2: Trim `global.css`
 
-### 2. Update all import references
-Find every `@gyorgygutai/preset-website-shell` reference across the monorepo:
-- `packages/processor-html/package.json` → `dependencies`
-- `packages/worker-website/package.json` → `dependencies`
-- `packages/worker-pdf/package.json` → `dependencies`
-- `packages/processor-html/src/process.ts` → `import { createShell } from "@gyorgygutai/preset-website-shell"`
-- `packages/worker-website/src/processVaultToStatic.ts` → if it imports anything from it
-- `packages/preset-website-shell/src/tests/shell.test.ts` → test imports
-- `packages/processor-html/src/tests/process.test.ts` → test imports
-- `packages/worker-website/src/tests/worker.test.ts` → if it imports from it
-- `packages/worker-pdf/package.json` → `dependencies`
+**Status: DONE** (committed & pushed — 857 → 566 lines, removed 291 lines of Obsidian-desktop-only selectors)
 
-### 3. Rename the directory
-`packages/preset-website-shell/` → `packages/preset-website/`
+Removed:
+- `a.external-link::after` (desktop icon, not in HTML output)
+- All `ul[data-task="*"]` rules (remark plugin produces `<input type="checkbox">`, not `data-task` attributes)
+- Duplicate `hr` rule (exact duplicate of earlier `hr` at line 165)
+- `p > img + em` (rehype produces `<figure><figcaption>`, not `<p><em>`)
+- `.markdown-embed*`, `.markdown-embed-link*` (Digital Garden plugin classes)
+- `.search-result*` (desktop search UI)
+- `.table-view-table`, `.dv-table-header` (Dataview plugin classes)
+- `.mermaid*` (remark-obsidian renders `<svg>` directly)
 
-### 4. Update AGENTS.md
-Update structure section and all cross-package contract references.
+Kept `.internal-embed` as standalone selector (produced by `resolveTranscludes`).
 
-### 5. Run `npm install` + `npm test` to verify no imports are broken.
+---
+
+# Phase 3: Split CSS with correct variable precedence
+
+**Status: DONE** (all 31 tests pass)
+
+- `preset-website/src/obsidian-vars.css` — official Obsidian CSS variable defaults (1228 lines)
+- `preset-website/src/obsidian.css` — website selectors (539 lines)
+- `preset-website/src/injectStyles.ts` — HAST plugin for `<style>` injection
+- `preset-website/src/index.ts` — reads both CSS at module load, injects in correct order
+- `preset-website/src/tests/shell.test.ts` — rewritten with `buildExpected()`, reads CSS from source
+- 4x `expected.html` deleted from preset-website test fixtures
+- `inputs/website-shell/global.css` deleted (moved to obsidian.css)
+- CSS path resolution: `dirname` relative to each module's location (works from both `src/` and `dist/`)
+- All fixture expected.html files regenerated (worker-website, processor-html) to include built-in CSS

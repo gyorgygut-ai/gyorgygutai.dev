@@ -1,30 +1,3 @@
-/* ==========================================================================
-   Obsidian CSS Variables — website mapping
-   All variables are consumed via var() — change them in cv-theme.css and
-   the website updates automatically.
-   ========================================================================== */
-
-/* --------------- root / body ------------------------------------------- */
-:root {
-  --font-interface:
-    -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans", Helvetica,
-    Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji";
-  --font-text:
-    -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans", Helvetica,
-    Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji";
-  --font-monospace:
-    ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas,
-    "Liberation Mono", monospace;
-  --font-mermaid:
-    -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans",
-    Helvetica, Arial, sans-serif;
-  --font-text-size: 16px;
-  --font-size-blockquote: 0.9em;
-  --font-size-tag: 0.9em;
-  --font-size-inline-code: 0.85em;
-  --font-size-file-title: 2rem;
-  --font-weight-semibold: 600;
-}
 
 body {
   background: var(--background-primary);
@@ -125,22 +98,6 @@ a.external-link {
   text-decoration: var(--link-external-decoration, none);
 }
 
-a.external-link::after {
-  content: "";
-  display: inline-block;
-  width: 0.8em;
-  height: 0.8em;
-  margin-left: 0.3em;
-  vertical-align: sub;
-  background: currentColor;
-  -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6'/%3E%3Cpolyline points='15 3 21 3 21 9'/%3E%3Cline x1='10' y1='14' x2='21' y2='3'/%3E%3C/svg%3E");
-  mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6'/%3E%3Cpolyline points='15 3 21 3 21 9'/%3E%3Cline x1='10' y1='14' x2='21' y2='3'/%3E%3C/svg%3E");
-  -webkit-mask-size: contain;
-  mask-size: contain;
-  -webkit-mask-repeat: no-repeat;
-  mask-repeat: no-repeat;
-}
-
 strong {
   font-weight: var(--font-weight-semibold, 600);
   color: var(--text-normal);
@@ -218,192 +175,6 @@ input[type="checkbox"] {
 input[type="checkbox"]:checked {
   background-color: var(--text-accent);
   border-color: var(--text-accent);
-}
-
-ul[data-task]:not(.task-list-holder-ul),
-ul[data-task] > li {
-  list-style: none;
-}
-
-ul[data-task] > li::before {
-  content: "";
-  width: 0.75em;
-  height: 0.75em;
-  display: inline-block;
-  vertical-align: text-top;
-  border: 1.5px solid var(--list-marker-color, var(--background-modifier-border));
-  border-radius: 2px;
-  margin-right: 0.4em;
-}
-
-ul[data-task=">"]::before,
-ul[data-task=">"] > li::before {
-  border-radius: 50%;
-  width: 0.6em;
-  height: 0.6em;
-  border: 1.5px solid var(--text-muted);
-}
-
-ul[data-task="-"]::before,
-ul[data-task="~"]::before {
-  text-decoration: line-through;
-  opacity: 0.5;
-}
-
-ul[data-task="*"]::before,
-ul[data-task="*"] > li::before {
-  content: "\2605";
-  border: none;
-  color: var(--text-accent);
-  font-size: 0.8em;
-}
-
-ul[data-task="?"]::before,
-ul[data-task="?"] > li::before {
-  content: "?";
-  border: none;
-  background: none;
-  width: auto;
-  height: auto;
-  font-weight: 700;
-  font-size: 0.75em;
-  text-align: center;
-  line-height: 1;
-}
-
-ul[data-task="!"]::before,
-ul[data-task="!"] > li::before {
-  content: "!";
-  border: none;
-  background: none;
-  width: auto;
-  height: auto;
-  color: var(--text-accent);
-  font-weight: 700;
-  font-size: 0.75em;
-  text-align: center;
-  line-height: 1;
-}
-
-ul[data-task="\""]::before,
-ul[data-task="\""] > li::before {
-  content: "\"";
-  border: none;
-  background: none;
-  width: auto;
-  height: auto;
-  font-size: 1.4em;
-  line-height: 1;
-}
-
-ul[data-task="D"]::before,
-ul[data-task="D"] > li::before {
-  content: "\1F4D4";
-  border: none;
-  background: none;
-  width: auto;
-  height: auto;
-  font-size: 0.8em;
-}
-
-ul[data-task="d"]::before,
-ul[data-task="d"] > li::before {
-  content: "\1F3af";
-  border: none;
-  background: none;
-  width: auto;
-  height: auto;
-  font-size: 0.8em;
-}
-
-ul[data-task="P"]::before,
-ul[data-task="P"] > li::before {
-  content: "\1F4C5";
-  border: none;
-  background: none;
-  width: auto;
-  height: auto;
-  font-size: 0.8em;
-}
-
-ul[data-task="G"]::before,
-ul[data-task="G"] > li::before {
-  content: "\1F3AF";
-  border: none;
-  background: none;
-  width: auto;
-  height: auto;
-  font-size: 0.8em;
-}
-
-ul[data-task="R"]::before,
-ul[data-task="R"] > li::before {
-  content: "\1F4B4";
-  border: none;
-  background: none;
-  width: auto;
-  height: auto;
-  font-size: 0.8em;
-}
-
-ul[data-task="U"]::before,
-ul[data-task="U"] > li::before {
-  content: "\2191";
-  border: none;
-  background: none;
-  width: auto;
-  height: auto;
-  font-size: 0.8em;
-}
-
-ul[data-task="L"]::before,
-ul[data-task="L"] > li::before {
-  content: "\1F44B";
-  border: none;
-  background: none;
-  width: auto;
-  height: auto;
-  font-size: 0.8em;
-}
-
-ul[data-task="I"]::before,
-ul[data-task="I"] > li::before {
-  content: "\1F4D6";
-  border: none;
-  background: none;
-  width: auto;
-  height: auto;
-  font-size: 0.8em;
-}
-
-ul[data-task="S"]::before,
-ul[data-task="S"] > li::before {
-  content: "\2713";
-  border: none;
-  background: none;
-  width: auto;
-  height: auto;
-  font-size: 0.8em;
-}
-
-ul[data-task="c"]::before,
-ul[data-task="c"] > li::before {
-  content: "\263F";
-  border: none;
-  background: none;
-  width: auto;
-  height: auto;
-  font-size: 0.8em;
-}
-
-ul[data-task="f"]::before,
-ul[data-task="f"] > li::before {
-  content: "\2640";
-  border: none;
-  background: none;
-  width: auto;
-  height: auto;
-  font-size: 0.8em;
 }
 
 /* --------------- blockquote -------------------------------------------- */
@@ -492,14 +263,6 @@ tr:last-child td {
   border-bottom: none;
 }
 
-/* --------------- horizontal rule from markdown ------------------------- */
-hr {
-  border: none;
-  height: 1px;
-  background: var(--hr-color, var(--background-modifier-border));
-  margin: 2rem 0;
-}
-
 /* --------------- images ------------------------------------------------ */
 img {
   max-width: 100%;
@@ -509,32 +272,12 @@ img {
   display: block;
 }
 
-p > img + em {
-  display: block;
-}
-
 /* --------------- embeds / transclusions -------------------------------- */
-.markdown-embed,
 .internal-embed {
   margin: 0.5em 0;
   border: none;
   padding: var(--embed-padding, 0);
   line-height: var(--embed-line-height, var(--p-line-height, 1.6));
-}
-
-.markdown-embed-title {
-  display: none;
-}
-
-.markdown-embed-link {
-  float: right;
-  color: var(--text-accent);
-  text-decoration: none;
-  font-weight: 600;
-}
-
-.markdown-embed-link:hover {
-  color: var(--text-accent-hover, var(--text-accent));
 }
 
 /* --------------- callouts ---------------------------------------------- */
@@ -703,35 +446,6 @@ details.callout {
   padding-left: 1.5em;
 }
 
-/* --------------- search/highlight -------------------------------------- */
-.search-result {
-  margin: 1rem 0;
-  padding: 0.75em 1em;
-  border-radius: 6px;
-  background: var(--background-secondary, var(--background-primary));
-  border: 1px solid var(--background-modifier-border);
-}
-
-.search-result h3 {
-  margin-bottom: 0.25em;
-}
-
-.search-result-item {
-  margin: 0;
-  color: var(--text-normal);
-}
-
-.search-result-highlight {
-  background: var(--text-highlight-bg, rgba(255, 219, 6, 0.3));
-  color: var(--text-highlight-color, inherit);
-  padding: 0 0.1em;
-  border-radius: 2px;
-}
-
-.search-result-file-mismatched-link {
-  color: var(--text-error);
-}
-
 /* --------------- scrollbars -------------------------------------------- */
 ::-webkit-scrollbar {
   width: var(--scrollbar-width, 8px);
@@ -753,38 +467,6 @@ details.callout {
 
 ::-webkit-scrollbar-corner {
   background: var(--scrollbar-corner-color, transparent);
-}
-
-/* --------------- dataview / table rendering ---------------------------- */
-.table-view-table {
-  border-collapse: collapse;
-  width: 100%;
-  margin: 1rem 0;
-}
-
-.table-view-table > tbody > tr > td,
-.table-view-table > thead > tr > th,
-.dv-table-header > div {
-  padding: 0.5em 0.75em;
-  border: 1px solid var(--background-modifier-border);
-  text-align: left;
-}
-
-.dv-table-header > div {
-  background: var(--table-header-background, var(--background-secondary));
-  font-weight: 600;
-}
-
-/* --------------- mermaid ----------------------------------------------- */
-.mermaid {
-  text-align: center;
-  margin: 1.5rem 0;
-  overflow-x: auto;
-}
-
-.mermaid svg {
-  max-width: 100%;
-  height: auto;
 }
 
 /* --------------- print ------------------------------------------------- */

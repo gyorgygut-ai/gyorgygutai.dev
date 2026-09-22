@@ -1,12 +1,12 @@
 ---
-dg-publish: true
+dg-publish: false
 dg-show-inline-title: true
 dg-permalink: links
 as: page
 title: 💪🏾 Notable Links
 ---
 
-## [Face Value](https://face-value.gyorgygutai.dev) 
+## [Face Value](https://face-value.gyorgygutai.dev)
 
 A minimal website that does fun things to your face. NextJS frontend, Flux.2 Klein 9B inference server on Runpod serverless.
 

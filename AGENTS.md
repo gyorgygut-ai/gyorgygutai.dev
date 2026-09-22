@@ -5,7 +5,7 @@
 - `inputs/obsidian-vault/` — Obsidian vault (content + `.obsidian`)
 - `inputs/website-shell/` — website shell config: global.css, app.js
 - `packages/preset-obsidian-md/` — unified preset: Obsidian markdown → mdast (npm plugins + 3 custom files)
-- `packages/preset-website/` — unified preset: mdast → HTML document shell
+- `packages/preset-website/` — unified preset: mdast → HTML document shell (injects `obsidian-vars.css`, `obsidian.css`, `customCss`)
 - `packages/processor-html/` — thin wrapper: preset + shell → HTML string
 - `packages/processor-pdf/` — thin wrapper: preset → plain text → PDF bytes
 - `packages/collect-vault/` — build-time reader: inputs → generated bundle

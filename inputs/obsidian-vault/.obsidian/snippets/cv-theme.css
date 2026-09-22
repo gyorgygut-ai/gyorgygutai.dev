@@ -30,7 +30,9 @@
     --h6-weight: 600;
     --h6-color: #eee;
 
-    --p-spacing: 0.75rem;
+    --p-spacing: 0.45rem;
+    --heading-spacing: 1rem;
+    /* --heading-spacing: calc(var(--p-spacing) * 2.5); */
 
     --link-color: #eee;
     --link-external-color: #eee;
@@ -49,11 +51,17 @@
         word-break: normal;
     }
 
-    .header-separator {
-        margin: 1rem 0;
+    h1, h2, h3, h4 {
+        margin-top: var(--heading-spacing);
+    }
+
+    .markdown-rendered hr {
+        margin: 1.5rem 0;
     }
 
     .markdown-embed {
         padding-left: 0;
     }
 }
+
+/* updated */
