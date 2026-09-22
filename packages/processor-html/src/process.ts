@@ -1,19 +1,20 @@
 import { unified } from "unified"
 import { VFile } from "vfile"
-import { createPreset, parseFrontmatter, type VaultFiles } from "@gyorgygutai/preset-obsidian-md"
+import grayMatter from "gray-matter"
+import createPreset from "@gyorgygutai/preset-obsidian-md"
 import { createShell } from "@gyorgygutai/preset-website-shell"
 
 export interface ProcessWebsiteInput {
   markdown: string
   meta?: Record<string, unknown>
-  vaultFiles?: VaultFiles
+  vaultFiles?: Record<string, string>
   path?: string
   customCss: string[]
   customJs?: string[]
 }
 
 export async function process(input: ProcessWebsiteInput): Promise<string> {
-  const { content, data } = parseFrontmatter(input.markdown)
+  const { content, data } = grayMatter(input.markdown)
   const processor = unified().use(createPreset({ vaultFiles: input.vaultFiles ?? {}, path: input.path }))
   processor.use(createShell({ customCss: input.customCss, customJs: input.customJs, meta: input.meta }))
   const file = new VFile(content)

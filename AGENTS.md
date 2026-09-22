@@ -17,7 +17,7 @@
 - `inputs/obsidian-vault/`: Open in Obsidian or VS Code. No code, no build step.
   Edit markdown, assets, or `.obsidian/snippets/*.css`.
 - `inputs/website-shell/`: Website config files (global.css, app.js). Bundled at build time by worker.
-- `preset-obsidian-md`: `src/index.ts` is imports + plugin array + tiny helpers (`VaultFiles`, `parseFrontmatter`, `hasAs`, `createPreset`). Custom code lives only in `src/plugin/` (`callout`, `wikilink`, `transclusion`).
+- `preset-obsidian-md`: `src/index.ts` is imports + plugin array + `createPreset`. Custom code lives only in `src/plugin/` (`callout`, `wikilink`, `transclusion`).
 - `processor-html` / `processor-pdf`: thin `process()` wrappers over `createPreset`. No duplicated parsing.
 - `collect-vault`: `collectVault(vaultRoot, shellDir, includeAssets)` + `writeBundle`. Used only by the workers' `bundleVaultIntoWorker` scripts (run via `tsx`, never bundled to edge, never imported by tests).
 - `worker-website`: Integration layer. Depends on processor-html.
@@ -39,7 +39,7 @@
 
 ## Cross-Package Contracts
 
-- `preset-obsidian-md/src/index.ts` is SSOT for `VaultFiles`, `parseFrontmatter`, `hasAs`, `createPreset({vaultFiles, path})`
+- `preset-obsidian-md/src/index.ts` is SSOT for `VaultFiles`, `PresetOptions`, `createPreset({vaultFiles, path})`
 - `Wikilink` node type comes from `@quartz-community/remark-obsidian` — no local redefinition
 - `collect-vault/src/index.ts:collectVault` is the only inputs reader (`appearance.json` authoritative, alphabetical fallback); both workers' `bundleVaultIntoWorker.ts` are ~10-line callers (dev-only `watchVault.ts` watchers excluded — they read no file contents)
 - `worker-website/src/generated/bundle.ts` and `worker-pdf/src/generated/bundle.ts` are gitignored, produced only by `bundleVaultIntoWorker` (website bundle has `assetFiles`, pdf bundle does not)

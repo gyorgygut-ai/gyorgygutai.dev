@@ -15,19 +15,6 @@ export interface PresetOptions {
   path?: string
 }
 
-export function parseFrontmatter(markdown: string): { content: string; data: Record<string, unknown> } {
-  const { content, data } = grayMatter(markdown)
-  return { content, data }
-}
-
-export function hasAs(data: Record<string, unknown>, target: string): boolean {
-  const as = data.as as string | string[] | undefined
-  if (Array.isArray(as)) {
-    return as.includes(target)
-  }
-  return as === target
-}
-
 const obsidianOptions = {
   wikilinks: true,
   highlights: true,
@@ -41,7 +28,7 @@ const rehypeOptions = { allowDangerousHtml: true, handlers: { wikilink: wikilink
 
 const htmlOptions = { checkbox: true, mermaid: false }
 
-export function createPreset(options: PresetOptions) {
+export default function createPreset(options: PresetOptions) {
   const transcludes = [resolveTranscludes, { vaultFiles: options.vaultFiles, path: options.path }] as [
     typeof resolveTranscludes,
     { vaultFiles: VaultFiles; path?: string },

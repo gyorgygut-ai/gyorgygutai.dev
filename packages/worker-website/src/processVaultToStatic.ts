@@ -1,5 +1,5 @@
 import { process } from "@gyorgygutai/processor-html"
-import { hasAs, parseFrontmatter } from "@gyorgygutai/preset-obsidian-md"
+import grayMatter from "gray-matter"
 
 export interface StaticBundle {
   vaultFiles: Record<string, string>
@@ -38,10 +38,11 @@ export function processVaultToStatic(bundle: StaticBundle): {
   const routeToFile = new Map<string, string>()
   const assets = new Map<string, { bytes: Uint8Array; mime: string }>()
   for (const [path, raw] of Object.entries(vaultFiles)) {
-    const { data } = parseFrontmatter(raw)
-    if (hasAs(data, "home"))
+    const { data } = grayMatter(raw)
+    const as = data.as as string | string[] | undefined
+    if (Array.isArray(as) ? as.includes("home") : as === "home")
 {routeToFile.set("/", path)}
-    if (hasAs(data, "page"))
+    if (Array.isArray(as) ? as.includes("page") : as === "page")
 {routeToFile.set(slugFor(path), path)}
   }
   for (const [rel, b64] of Object.entries(assetFiles ?? {})) {
@@ -52,7 +53,7 @@ export function processVaultToStatic(bundle: StaticBundle): {
     const filePath = routeToFile.get(pathname)
     if (!filePath)
 {return {}}
-    const { data } = parseFrontmatter(vaultFiles[filePath])
+    const { data } = grayMatter(vaultFiles[filePath])
     return data || {}
   }
   async function handleRequest(request: Request): Promise<Response> {

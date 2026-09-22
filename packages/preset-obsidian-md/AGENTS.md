@@ -7,7 +7,7 @@ One place that turns Obsidian-flavored markdown into mdast. Mostly npm plugins; 
 ## Responsibility
 
 - Export `createPreset({vaultFiles, path})`: imports + plugin array, nothing else
-- Frontmatter (`parseFrontmatter`, `hasAs`), callouts, transclusions, wikilinks, embedded images
+- Wikilinks, callouts, transclusions, embedded images
 
 ## Obsidian Support
 
@@ -19,13 +19,13 @@ One place that turns Obsidian-flavored markdown into mdast. Mostly npm plugins; 
 
 ## File Structure
 
-- `src/index.ts`: imports, `VaultFiles`, `parseFrontmatter`, `hasAs`, `createPreset` — the plugin array
+- `src/index.ts`: imports, `VaultFiles`, `PresetOptions`, `createPreset` — the plugin array
 - `src/plugin/`: custom code — `callout.ts`, `wikilink.ts` (handler), `transclusion.ts` (in-memory `vaultFiles` resolver) — plus thin re-export wrappers per plugin
 - `src/tests/`
 
 ## Public API
 
-- `src/index.ts` is the single source of truth for exports: `createPreset`, `parseFrontmatter`, `hasAs`, `VaultFiles`, `PresetOptions`
+- `src/index.ts` is the single source of truth for exports: `createPreset`, `VaultFiles`, `PresetOptions`
 
 ## Contracts
 

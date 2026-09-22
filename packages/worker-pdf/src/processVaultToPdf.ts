@@ -1,5 +1,5 @@
 import { process } from "@gyorgygutai/processor-pdf"
-import { hasAs, parseFrontmatter } from "@gyorgygutai/preset-obsidian-md"
+import grayMatter from "gray-matter"
 
 export interface PdfBundle {
   vaultFiles: Record<string, string>
@@ -48,9 +48,10 @@ export function processVaultToPdf(bundle: PdfBundle): {
   const knownPdf = new Set<string>()
   const routeToFile = new Map<string, string>()
   for (const [path, raw] of Object.entries(vaultFiles)) {
-    const { data } = parseFrontmatter(raw)
+    const { data } = grayMatter(raw)
     const slug = slugFor(path)
-    if (hasAs(data, "pdf")) {
+    const as = data.as as string | string[] | undefined
+    if (Array.isArray(as) ? as.includes("pdf") : as === "pdf") {
       const pdfSlug = slug === "/" ? "/index.pdf" : `${slug}.pdf`
       knownPdf.add(pdfSlug)
       routeToFile.set(pdfSlug, path)
