@@ -1,0 +1,10 @@
+{
+  "emeraldwalk.runonsave": {
+    "commands": [
+      {
+        "match": "\\.obsidian[\\\\/]snippets[\\\\/].*\\.css$",
+        "cmd": "rsync -av --delete \"${workspaceFolder}/.obsidian/snippets/\" \"${workspaceFolder:Digital Garden}/src/site/styles/user/\""
+      }
+    ]
+  }
+}

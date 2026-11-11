@@ -1,0 +1,41 @@
+{
+  "name": "@gyorgygutai/builder-pdf",
+  "version": "0.0.0",
+  "type": "module",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "scripts": {
+    "build": "tsc",
+    "build:pdf": "tsx src/buildPdfs.ts",
+    "test:unit": "vitest run",
+    "test:acceptance": "vitest run src/tests/acceptance.test.ts",
+    "test:watch": "vitest",
+    "lint": "oxlint src",
+    "lint:fix": "eslint src --fix"
+  },
+  "dependencies": {
+    "@gyorgygutai/builder-website": "*",
+    "@gyorgygutai/collector-vault": "*",
+    "@gyorgygutai/preset-obsidian-md": "*",
+    "gray-matter": "^4.0.3",
+    "puppeteer": "^23.11.1",
+    "rehype-stringify": "^10.0.1",
+    "unified": "^11.0.5",
+    "vfile": "^6.0.3"
+  },
+  "devDependencies": {
+    "@eslint/js": "^10.0.1",
+    "@types/node": "^26.4.1",
+    "eslint": "^10.10.0",
+    "oxlint": "^1.86.0",
+    "tsx": "^4.23.13",
+    "typescript": "^6.0.3",
+    "vitest": "^4.1.11"
+  }
+}

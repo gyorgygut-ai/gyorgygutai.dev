@@ -1,0 +1,24 @@
+:root,
+.theme-dark {
+    --background-primary: #1c1b1b;
+    --hr-color: var(--background-primary);
+    --bg-aurora: linear-gradient(115deg,
+            #081c49 0%,
+            #1450a0 17%,
+            #257bd2 36%,
+            #6659a8 51%,
+            #bf344e 68%,
+            #e6a53c 86%,
+            #ffdc77 100%);
+    --bold-color: #eee;
+    --text-normal: #c2c0c0;
+    --h1-color: #fff;
+    --h2-color: #c2c0c0;
+    --h3-color: #eee;
+    --h4-color: #eee;
+    --h5-color: #888;
+    --h6-color: #eee;
+    --link-color: #eee;
+    --link-external-color: #eee;
+    --list-marker-color: #bbb;
+}

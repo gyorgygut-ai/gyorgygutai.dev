@@ -1,0 +1,11 @@
+{
+  "name": "@gyorgygutai/remark-plugin-obsidian-transclusion",
+  "version": "0.0.0",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": { ".": { "types": "./dist/index.d.ts", "import": "./dist/index.js" } },
+  "scripts": { "lint": "oxlint src", "build": "tsc", "test:unit": "vitest run --passWithNoTests" },
+  "dependencies": { "@types/mdast": "^4.0.4", "@quartz-community/remark-obsidian": "^0.2.4", "gray-matter": "^4.0.3", "unified": "^11.0.5", "unist-util-visit": "^5.1.0" },
+  "devDependencies": { "@types/node": "^26.4.1", "oxlint": "^1.86.0", "typescript": "^6.0.3", "vitest": "^4.1.11" }
+}

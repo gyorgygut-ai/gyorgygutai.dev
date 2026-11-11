@@ -1,0 +1,239 @@
+{
+  "main": {
+    "id": "d6d89e3cd5042d06",
+    "type": "split",
+    "children": [
+      {
+        "id": "790a20eb02430550",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "e3e9eadf293eb70c",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "pdf/cv_gyorgygutai_project_based.md",
+                "mode": "preview",
+                "source": false
+              },
+              "icon": "lucide-file",
+              "title": "cv_gyorgygutai_project_based"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "vertical"
+  },
+  "left": {
+    "id": "0a84da1f7355afba",
+    "type": "split",
+    "children": [
+      {
+        "id": "891d9c15a2b0271a",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "c9bce29fed60602b",
+            "type": "leaf",
+            "state": {
+              "type": "file-explorer",
+              "state": {
+                "sortOrder": "alphabetical",
+                "autoReveal": false,
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-folder-closed",
+              "title": "Files"
+            }
+          },
+          {
+            "id": "57e9812c701de924",
+            "type": "leaf",
+            "state": {
+              "type": "search",
+              "state": {
+                "query": "",
+                "matchingCase": false,
+                "explainSearch": false,
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical"
+              },
+              "icon": "lucide-search",
+              "title": "Search"
+            }
+          },
+          {
+            "id": "6fe8a6a5c2ff7fe6",
+            "type": "leaf",
+            "state": {
+              "type": "bookmarks",
+              "state": {},
+              "icon": "lucide-bookmark",
+              "title": "Bookmarks"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 248.28515625
+  },
+  "right": {
+    "id": "ff77bf959050730a",
+    "type": "split",
+    "children": [
+      {
+        "id": "2af9cb636e6dad00",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "fd6c54460826c811",
+            "type": "leaf",
+            "state": {
+              "type": "backlink",
+              "state": {
+                "file": "pdf/cv_gyorgygutai.md",
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical",
+                "showSearch": false,
+                "searchQuery": "",
+                "backlinkCollapsed": false,
+                "unlinkedCollapsed": true
+              },
+              "icon": "links-coming-in",
+              "title": "Backlinks"
+            }
+          },
+          {
+            "id": "7e64ce97161506c1",
+            "type": "leaf",
+            "state": {
+              "type": "outgoing-link",
+              "state": {
+                "file": "web/web.md",
+                "linksCollapsed": false,
+                "unlinkedCollapsed": true
+              },
+              "icon": "links-going-out",
+              "title": "Outgoing links"
+            }
+          },
+          {
+            "id": "1f74b2ea2fcf57d1",
+            "type": "leaf",
+            "state": {
+              "type": "tag",
+              "state": {
+                "sortOrder": "frequency",
+                "useHierarchy": true,
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-tags",
+              "title": "Tags"
+            }
+          },
+          {
+            "id": "d5dae9cba77c8386",
+            "type": "leaf",
+            "state": {
+              "type": "all-properties",
+              "state": {
+                "sortOrder": "frequency",
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-archive",
+              "title": "All properties"
+            }
+          },
+          {
+            "id": "d6106f630b0e90eb",
+            "type": "leaf",
+            "state": {
+              "type": "outline",
+              "state": {
+                "file": "pdf/cv_gyorgygutai.md",
+                "followCursor": false,
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-list",
+              "title": "Outline"
+            }
+          }
+        ],
+        "currentTab": 1
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300,
+    "collapsed": true
+  },
+  "left-ribbon": {
+    "hiddenItems": {
+      "switcher:Open quick switcher": false,
+      "graph:Open graph view": false,
+      "canvas:Create new canvas": false,
+      "daily-notes:Open today's daily note": false,
+      "templates:Insert template": false,
+      "command-palette:Open command palette": false,
+      "bases:Create new base": false,
+      "digitalgarden:Digital Garden Publication Center": false
+    }
+  },
+  "active": "e3e9eadf293eb70c",
+  "lastOpenFiles": [
+    "pdf/cv_gyorgygutai_long.md",
+    "pdf/cv_gyorgygutai.md",
+    "pdf/cv_gyorgygutai_project_based.md",
+    "web/web.md",
+    "pdf/sections/header.md",
+    "AGENTS.md",
+    "assets/sipsip-demo.gif",
+    "web/sections/navbar.md",
+    "web/sections/projects.md",
+    "web/sections/header.md",
+    "web/sections/carousel.md",
+    "web/sections/about.md",
+    "web/sections/hero.md",
+    "web/sections/links.md",
+    "pdf/sections/career.md",
+    "assets/slide9-brothers.jpg",
+    "assets/slide8-ted-lasso.jpg",
+    "assets/slide7-mayday.jpg",
+    "assets/slide6-utolso-befutok.jpg",
+    "assets/slide5-matchbox.jpg",
+    "assets/slide4-awkwafina.jpg",
+    "assets/slide3-tendzing.jpg",
+    "assets/slide2-nocturne.jpg",
+    "assets/slide1-stick.jpg",
+    "web/sections/resume.md",
+    "web/sections/links copy.md",
+    "web/sections/skills.md",
+    "web/sections/header copy.md",
+    "assets/cv_photo_2026_2.png.md",
+    "assets",
+    "img/user/assets/cv_photo_2026_2.png.md",
+    "img/user/assets",
+    "pdf/assets",
+    "img/user",
+    "img",
+    "pdf/sections/skills.md",
+    "pdf/sections/projects.md",
+    "pdf/sections/links.md",
+    "pdf/sections/about.md",
+    "pdf/sections/history.md",
+    "pdf/sections/projects copy.md",
+    "pdf/content",
+    "pdf/sections",
+    "web/sections",
+    "web/content",
+    "web"
+  ]
+}

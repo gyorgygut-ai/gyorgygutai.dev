@@ -1,0 +1,10 @@
+:root,
+.theme-dark {
+    --p-spacing: 0.3rem;
+    --heading-spacing: 2rem;
+    --hr-spacing: 1rem;
+    --hr-spacing-hero: calc(var(--hr-spacing) * 3.6);
+    --hr-spacing-prominent: calc(var(--hr-spacing) * 2);
+    --dg-content-padding-top-mobile: 32px;
+    --dg-content-padding-top: var(--dg-content-padding-top-mobile);
+}

@@ -1,0 +1,15 @@
+{
+  "enabledCssSnippets": [
+    "theme-colors",
+    "theme-spacing",
+    "theme-typography",
+    "global-overrides",
+    "global-print",
+    "component-profile-header",
+    "component-carousel",
+    "component-progress",
+    "component-navbar",
+    "component-hero",
+    "component-header"
+  ]
+}

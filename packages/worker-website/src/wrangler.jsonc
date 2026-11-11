@@ -1,0 +1,23 @@
+{
+  "name": "worker-website",
+  "main": "index.ts",
+  "compatibility_date": "2026-09-08",
+  "compatibility_flags": ["nodejs_compat"],
+  "assets": {
+    "directory": "../dist",
+    "binding": "ASSETS",
+    "run_worker_first": true
+  },
+  "services": [
+    {
+      "binding": "PDF",
+      "service": "worker-pdf"
+    }
+  ],
+  "observability": {
+    "enabled": true,
+    "traces": {
+      "enabled": true
+    }
+  }
+}

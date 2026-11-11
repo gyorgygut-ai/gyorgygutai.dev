@@ -1,0 +1,41 @@
+{
+  "name": "@gyorgygutai/builder-website",
+  "version": "0.0.0",
+  "type": "module",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "scripts": {
+    "build": "tsc && mkdir -p dist/styles && cp src/styles/*.css dist/styles/",
+    "build:website": "tsx src/buildWebsite.ts",
+    "test:unit": "vitest run",
+    "test:acceptance": "vitest run src/tests/acceptance.test.ts",
+    "test:watch": "vitest",
+    "lint": "oxlint src",
+    "lint:fix": "eslint src --fix"
+  },
+  "dependencies": {
+    "@gyorgygutai/collector-vault": "*",
+    "@gyorgygutai/preset-obsidian-md": "*",
+    "gray-matter": "^4.0.3",
+    "rehype-document": "^7.0.3",
+    "rehype-stringify": "^10.0.1",
+    "unified": "^11.0.5",
+    "vfile": "^6.0.3"
+  },
+  "devDependencies": {
+    "@eslint/js": "^10.0.1",
+    "@types/node": "^26.4.1",
+    "eslint": "^10.10.0",
+    "typescript": "^6.0.3",
+    "typescript-eslint": "^8.70.0",
+    "vitest": "^4.1.11",
+    "oxlint": "^1.86.0",
+    "rehype-parse": "^9.0.1"
+  }
+}

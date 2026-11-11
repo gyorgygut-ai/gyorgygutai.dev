@@ -1,0 +1,36 @@
+{
+  "name": "gyorgygutai-dev",
+  "version": "0.0.0",
+  "private": true,
+  "workspaces": [
+    "packages/*"
+  ],
+  "scripts": {
+    "verify:t1": "npm run lint --workspaces --if-present",
+    "verify:t2": "npm run build --workspace=@gyorgygutai/contracts && npm run build --workspace=@gyorgygutai/collector-vault && npm run build --workspace=@gyorgygutai/remark-plugin-obsidian-callout && npm run build --workspace=@gyorgygutai/remark-plugin-obsidian-transclusion && npm run build --workspace=@gyorgygutai/remark-rehype-obsidian-wikilink-handler && npm run build --workspace=@gyorgygutai/preset-obsidian-md && npm run build --workspace=@gyorgygutai/builder-website && npm run build --workspace=@gyorgygutai/builder-pdf && npm run build --workspace=@gyorgygutai/worker-website && npm run build --workspace=@gyorgygutai/worker-pdf",
+    "verify:t3": "npm run test:unit --workspaces --if-present",
+    "verify:t4": "npm run test:acceptance",
+    "verify": "npm run verify:t1 && npm run verify:t2 && npm run verify:t3 && npm run verify:t4",
+    "build": "npm run verify:t2",
+    "test": "npm run verify",
+    "test:watch": "npm run test:watch --workspaces --if-present",
+    "lint": "oxlint",
+    "lint:fix": "oxlint --fix",
+    "env:load": "dotenvx run --env-file=.env --env-file=.env.local --",
+    "test:acceptance": "npm run test:acceptance --workspaces --if-present && vitest run tests/integration.test.ts",
+    "build:workers": "npm run build --workspace=@gyorgygutai/worker-website && npm run build --workspace=@gyorgygutai/worker-pdf",
+    "dev": "npm run build && npx --yes wrangler@latest dev --config packages/worker-website/src/wrangler.jsonc --config packages/worker-pdf/src/wrangler.jsonc --port 8787 --inspector-port 0",
+    "dev:website": "npm run serve --workspace=@gyorgygutai/worker-website",
+    "dev:pdf": "npm run serve --workspace=@gyorgygutai/worker-pdf",
+    "deploy:website": "npm run env:load -- sh -c 'node -e \"import(\\\"./packages/contracts/dist/index.js\\\").then(m => m.getCloudflareDeploymentEnv())\" && npm run deploy --workspace=@gyorgygutai/worker-website'",
+    "deploy:pdf": "npm run env:load -- sh -c 'node -e \"import(\\\"./packages/contracts/dist/index.js\\\").then(m => m.getCloudflareDeploymentEnv())\" && npm run deploy --workspace=@gyorgygutai/worker-pdf'",
+    "deploy": "npm run deploy:pdf && npm run deploy:website"
+  },
+  "devDependencies": {
+    "@dotenvx/dotenvx": "^2.38.2",
+    "concurrently": "^10.0.5",
+    "oxlint": "^1.86.0",
+    "typescript": "^6.0.3",
+    "vitest": "^4.1.11"
+  }
+}

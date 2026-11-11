@@ -1,0 +1,27 @@
+{
+  "name": "@gyorgygutai/collector-vault",
+  "version": "0.0.0",
+  "type": "module",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "scripts": {
+    "build": "tsc",
+    "test:unit": "vitest run --passWithNoTests",
+    "test": "vitest run --passWithNoTests",
+    "lint": "oxlint src"
+  },
+  "devDependencies": {
+    "@eslint/js": "^10.0.1",
+    "@types/node": "^26.4.1",
+    "eslint": "^10.10.0",
+    "typescript": "^6.0.3",
+    "vitest": "^4.1.11",
+    "oxlint": "^1.86.0"
+  }
+}

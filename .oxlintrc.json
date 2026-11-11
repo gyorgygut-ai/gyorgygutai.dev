@@ -1,0 +1,29 @@
+{
+  "$schema": "./node_modules/oxlint/configuration_schema.json",
+  "categories": {
+    "correctness": "error",
+    "suspicious": "warn"
+  },
+  "plugins": [
+    "eslint"
+  ],
+  "rules": {
+    "curly": ["error", "all"],
+    "no-console": "warn",
+    "eslint/no-unused-vars": ["error", { "argsIgnorePattern": "^_" }],
+    "arrow-body-style": ["error", "as-needed"],
+    "object-shorthand": ["error", "always"]
+  },
+  "ignorePatterns": [
+    "node_modules",
+    ".obsidian",
+    "dist",
+    "build",
+    ".next",
+    "vendor",
+    "**/fixtures/**",
+    "**/*.bundle.js",
+    "**/coverage",
+    "**/.turbo"
+  ]
+}

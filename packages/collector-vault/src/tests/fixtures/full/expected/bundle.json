@@ -1,0 +1,16 @@
+{
+  "cssBundle": [
+    ":root { --color: red; }\n",
+    ":root { --color: blue; }\n",
+    ":root { --alpha: true; }\n"
+  ],
+  "appearanceOrder": ["theme-colors", "global-overrides"],
+  "vaultFiles": {
+    "pdf/cv.md": "---\nas: pdf\n---\n\n# CV\n",
+    "web/index.md": "---\nas: page\ntitle: Home\n---\n\n# Home\n",
+    "web/sections/about.md": "---\nas: page\n---\n\n# About\n"
+  },
+  "assetFiles": {
+    "assets/photo.png": "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAAC0lEQVR42mNk+M8AAwBhAQCBlwAAAABJRU5ErkJggg=="
+  }
+}

@@ -1,0 +1,39 @@
+:root,
+.theme-dark {
+    --hero-offset-mobile: -4%;
+    --hero-offset-desktop: -8%;
+}
+
+@keyframes em-aurora-breathe {
+    from { background-size: 200% 100%; }
+    to { background-size: 100% 100%; }
+}
+
+/* keep letter size fixed; only the gradient field breathes on scroll */
+h1 em {
+    animation-name: em-aurora-breathe;
+    animation-timeline: view();
+    animation-range: cover;
+    animation-fill-mode: both;
+    animation-timing-function: linear;
+}
+
+.hero {
+    overflow-x: clip;
+    margin: 0 calc(var(--size-4-8) * -1);
+}
+
+.hero-offset {
+    margin-left: var(--hero-offset-mobile);
+}
+
+@media (min-width: 769px) {
+    .hero {
+        margin: 0;
+        overflow: initial;
+    }
+
+    .hero-offset {
+        margin-left: var(--hero-offset-desktop);
+    }
+}

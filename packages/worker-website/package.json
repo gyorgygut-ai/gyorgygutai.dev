@@ -1,0 +1,29 @@
+{
+  "name": "@gyorgygutai/worker-website",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "node ../builder-website/dist/buildWebsite.js --vault \"${VAULT_ROOT:-../../inputs/vault-gyorgygutai}\" --out ./dist && tsc --noEmit",
+    "dev": "npm run build && (tsx src/watchVault.ts &) && wrangler dev --config src/wrangler.jsonc --port 8787 --inspector-port 0",
+    "serve": "wrangler dev --config src/wrangler.jsonc --port 8787 --inspector-port 0",
+    "deploy": "npm run build && wrangler deploy --config src/wrangler.jsonc --routes \"$CLOUDFLARE_ZONE_NAME/*\"",
+    "test:unit": "vitest run",
+    "test:acceptance": "vitest run src/tests/acceptance.test.ts",
+    "test:watch": "vitest",
+    "lint": "oxlint src",
+    "lint:fix": "oxlint --fix src"
+  },
+  "dependencies": { "@gyorgygutai/builder-website": "*" },
+  "devDependencies": {
+    "@cloudflare/vitest-plugin": "^1.1.4",
+    "@eslint/js": "^10.0.1",
+    "@types/node": "^26.4.1",
+    "eslint": "^10.10.0",
+    "tsx": "^4.23.13",
+    "typescript": "^6.0.3",
+    "typescript-eslint": "^8.70.0",
+    "vitest": "^4.1.11",
+    "wrangler": "^4.160.0"
+  }
+}

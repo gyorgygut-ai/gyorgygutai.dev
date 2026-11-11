@@ -1,0 +1,12 @@
+.DS_Store
+.env.local
+.env.keys
+node_modules
+peach/
+research/
+Research - Obsidian MD to HTML-PDF Tools (Last 2 Years).md
+packages/*/node_modules
+packages/*/dist
+packages/*/coverage
+packages/*/**/.wrangler
+inputs/vault-gyorgygutai/.obsidian/plugins/digitalgarden/data.json
