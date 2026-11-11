@@ -16,7 +16,7 @@
     "test:watch": "npm run test:watch --workspaces --if-present",
     "lint": "oxlint",
     "lint:fix": "oxlint --fix",
-    "env:load": "dotenvx run --ignore=MISSING_ENV_FILE --env-file=.env --env-file=.env.local --",
+    "env:load": "dotenvx run --ignore=MISSING_ENV_FILE -f .env -f .env.local --",
     "test:acceptance": "npm run test:acceptance --workspaces --if-present && vitest run tests/integration.test.ts",
     "build:workers": "npm run build --workspace=@gyorgygutai/worker-website && npm run build --workspace=@gyorgygutai/worker-pdf",
     "dev": "npm run build && npx --yes wrangler@latest dev --config packages/worker-website/src/wrangler.jsonc --config packages/worker-pdf/src/wrangler.jsonc --port 8787 --inspector-port 0",
