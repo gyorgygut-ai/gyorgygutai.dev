@@ -7,7 +7,6 @@
         -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans", Helvetica,
         Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji";
     --font-text-size: 18px;
-    --dg-content-font-size: var(--font-text-size);
     --link-decoration: none;
     --link-external-decoration: none;
     --h1-size: min(37.5vw, 16rem);

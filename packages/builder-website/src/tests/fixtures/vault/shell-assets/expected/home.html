@@ -1246,8 +1246,8 @@ body {
 
 main.content {
   margin: 0 auto;
-  max-width: var(--max-width, 720px);
-  padding: 2rem 1.5rem;
+  max-width: var(--file-line-width, 700px);
+  padding: var(--file-margins, 2rem 1.5rem);
 }
 
 /* --------------- headings ---------------------------------------------- */
@@ -1516,67 +1516,13 @@ img {
 }
 
 /* --------------- callouts ---------------------------------------------- */
-div.callout,
-details.callout {
+blockquote.callout {
   border: 1px solid var(--callout-color, var(--background-modifier-border));
   border-radius: var(--callout-radius, 8px);
   padding: var(--callout-padding, 0.75rem 1rem);
   margin: 1rem 0;
   background: var(--callout-background, var(--background-primary-alt));
   overflow: hidden;
-}
-
-.callout-title {
-  display: flex;
-  align-items: flex-start;
-  gap: 0.5em;
-  font-weight: var(--callout-title-weight, 600);
-  color: var(--callout-color, var(--text-muted));
-  padding: var(--callout-title-padding, 0.25em 0);
-  margin-bottom: 0.25em;
-  font-size: var(--callout-title-size, 0.95em);
-}
-
-.callout-icon {
-  width: var(--callout-icon-size, 1em);
-  height: var(--callout-icon-size, 1em);
-  flex: 0 0 var(--callout-icon-size, 1em);
-  background-color: currentColor;
-  -webkit-mask-size: contain;
-  mask-size: contain;
-  -webkit-mask-repeat: no-repeat;
-  mask-repeat: no-repeat;
-  display: inline-block;
-  vertical-align: middle;
-  margin-top: 0.1em;
-}
-
-.callout-fold {
-  cursor: pointer;
-}
-
-.callout-fold::before {
-  content: "\25BC";
-  font-size: 0.7em;
-  opacity: 0.7;
-  display: inline-block;
-  vertical-align: middle;
-}
-
-.callout-fold.is-collapsed::before {
-  transform: rotate(-90deg);
-}
-
-.callout-content {
-  margin-top: 0.25em;
-}
-
-.callout-content > :first-child {
-  margin-top: 0;
-}
-
-.callout-content > :last-child {
-  margin-bottom: 0;
 }
 
 /* Callout level colors (Obsidian default scheme) */
@@ -1631,7 +1577,6 @@ details.callout {
   --callout-color: var(--callout-lev8-color, #db4242);
 }
 
-.callout[data-callout="bug"],
 .callout[data-callout="bug"] {
   --callout-color: var(--callout-lev9-color, #db4242);
 }
@@ -1731,30 +1676,18 @@ details.callout {
     widows: 3;
   }
 
-  pre, blockquote, table, .callout, .markdown-embed {
+  pre, blockquote, table, .callout {
     page-break-inside: avoid;
-  }
-
-  .markdown-embed {
-    border: none;
-    padding: 0;
   }
 
   .internal-embed {
     display: none;
   }
 
-  .callout-fold {
-    display: none;
-  }
 }
 
 /* --------------- responsive -------------------------------------------- */
 @media (max-width: 600px) {
-  main.content {
-    padding: 1rem 0.75rem;
-  }
-
   h1 {
     font-size: var(--h1-size-mobile, var(--h1-size, 2em));
   }

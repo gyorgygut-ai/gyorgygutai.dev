@@ -9,8 +9,6 @@
 :root,
 .theme-dark {
     --embed-padding: 0;
-    --dg-filetree-width: 0;
-    --dg-transclusion-padding: 0;
 
     h1 {
         max-width: 10ch;
@@ -60,11 +58,6 @@
 
     .markdown-embed {
         padding-left: 0;
-    }
-
-    .content {
-        margin: auto;
-        max-width: var(--dg-content-max-width);
     }
 
     h1 em,
